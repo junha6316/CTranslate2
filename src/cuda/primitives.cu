@@ -5,6 +5,7 @@
 #include <hipblas/hipblas.h>
 #include <thrust/extrema.h>
 #define cudaMemcpyAsync hipMemcpyAsync
+#define cudaMemcpy2DAsync hipMemcpy2DAsync
 #define cudaMemcpyDeviceToDevice hipMemcpyDeviceToDevice
 #define cudaMemcpyDeviceToHost hipMemcpyDeviceToHost
 #define cudaMemcpyHostToDevice hipMemcpyHostToDevice
@@ -74,6 +75,17 @@ namespace ctranslate2 {
   void primitives<Device::CUDA>::copy(const T* x, T* y, dim_t size) {
     CUDA_CHECK(cudaMemcpyAsync(y, x, size * sizeof (T),
                                cudaMemcpyDeviceToDevice, cuda::get_cuda_stream()));
+  }
+
+  template<>
+  template <typename T>
+  void primitives<Device::CUDA>::copy_2d(const T* src, dim_t src_pitch,
+                                         T* dst, dim_t dst_pitch,
+                                         dim_t width, dim_t height) {
+    CUDA_CHECK(cudaMemcpy2DAsync(dst, dst_pitch * sizeof (T),
+                                 src, src_pitch * sizeof (T),
+                                 width * sizeof (T), height,
+                                 cudaMemcpyDeviceToDevice, cuda::get_cuda_stream()));
   }
 
   template<>
@@ -764,6 +776,8 @@ namespace ctranslate2 {
   primitives<Device::CUDA>::indexed_fill(T*, T, const int32_t*, dim_t); \
   template void                                                         \
   primitives<Device::CUDA>::copy<T>(const T* x, T* y, dim_t size);      \
+  template void                                                         \
+  primitives<Device::CUDA>::copy_2d<T>(const T*, dim_t, T*, dim_t, dim_t, dim_t); \
   template T                                                            \
   primitives<Device::CUDA>::sum(const T* array, dim_t size);            \
   template dim_t                                                        \

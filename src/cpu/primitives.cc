@@ -69,6 +69,15 @@ namespace ctranslate2 {
   }
 
   template<>
+  template <typename T>
+  void primitives<Device::CPU>::copy_2d(const T* src, dim_t src_pitch,
+                                        T* dst, dim_t dst_pitch,
+                                        dim_t width, dim_t height) {
+    for (dim_t i = 0; i < height; ++i)
+      std::copy(src + i * src_pitch, src + i * src_pitch + width, dst + i * dst_pitch);
+  }
+
+  template<>
   template <typename U, typename V>
   void primitives<Device::CPU>::convert(const U* x, V* y, dim_t size) {
     std::copy(x, x + size, y);
@@ -1168,6 +1177,8 @@ namespace ctranslate2 {
   primitives<Device::CPU>::indexed_fill(T*, T, const int32_t*, dim_t);  \
   template void                                                         \
   primitives<Device::CPU>::copy(const T* x, T* y, dim_t size);          \
+  template void                                                         \
+  primitives<Device::CPU>::copy_2d(const T*, dim_t, T*, dim_t, dim_t, dim_t); \
   template T                                                            \
   primitives<Device::CPU>::sum(const T* array, dim_t size);             \
   template dim_t                                                        \

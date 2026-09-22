@@ -22,6 +22,12 @@ namespace ctranslate2 {
 
     template <typename T>
     static void copy(const T* x, T* y, dim_t size);
+    // Copies "height" rows of "width" elements from a buffer whose rows are "src_pitch"
+    // elements apart into a buffer whose rows are "dst_pitch" elements apart.
+    template <typename T>
+    static void copy_2d(const T* src, dim_t src_pitch,
+                        T* dst, dim_t dst_pitch,
+                        dim_t width, dim_t height);
     template <typename U, typename V>
     static void convert(const U* x, V* y, dim_t size);
 
