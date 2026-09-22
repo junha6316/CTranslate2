@@ -1,0 +1,98 @@
+{
+  "tally": {
+    "small|float16": {
+      "control_diff": 0,
+      "treat_diff": 1,
+      "n": 10
+    },
+    "small|int8_float16": {
+      "control_diff": 0,
+      "treat_diff": 4,
+      "n": 10
+    },
+    "large-v3|float16": {
+      "control_diff": 0,
+      "treat_diff": 0,
+      "n": 10
+    },
+    "large-v3|int8_float16": {
+      "control_diff": 0,
+      "treat_diff": 3,
+      "n": 10
+    }
+  },
+  "detail": [
+    {
+      "config": "small|float16",
+      "case": "korean|beam5",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " 안녕하세요. 오늘 퐁듀는 어떠션하요. 저 후에 서비스로 이용해 주셔서 감사드립니다.",
+      "off2": " 안녕하세요. 오늘 퐁듀는 어떠션하요. 저 후에 서비스로 이용해 주셔서 감사드립니다.",
+      "on": " 안녕하세요. 오늘 퐁화 풍기 노토션하요. 저 후에 서비스로 이용해 주셔서 감사합니다."
+    },
+    {
+      "config": "small|int8_float16",
+      "case": "jfk_short_en|beam5",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " And so, my fellow Americans, ask not what your country can do for you. Ask what you can do for your country.",
+      "off2": " And so, my fellow Americans, ask not what your country can do for you. Ask what you can do for your country.",
+      "on": " And so my fellow Americans, ask not what your country can do for you, ask what you can do for your country."
+    },
+    {
+      "config": "small|int8_float16",
+      "case": "korean|beam5",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " 안녕하세요. 오늘 퐁무가 퐁무가 도전하요. 저 툴이 서비스로 이용해 주셔서 감사합니다.",
+      "off2": " 안녕하세요. 오늘 퐁무가 퐁무가 도전하요. 저 툴이 서비스로 이용해 주셔서 감사합니다.",
+      "on": " 안녕하세요. 오늘 턴과 풍기는 어떠션하요. 저 흥이 서비스로 이용해 주셔서 감사드립니다."
+    },
+    {
+      "config": "small|int8_float16",
+      "case": "physics_en|beam1",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob",
+      "off2": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob",
+      "on": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob"
+    },
+    {
+      "config": "small|int8_float16",
+      "case": "physics_en|beam5",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob",
+      "off2": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob",
+      "on": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob"
+    },
+    {
+      "config": "large-v3|int8_float16",
+      "case": "korean|beam1",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " 안녕하세요. 오늘 통화 품질을 어떠셨나요? 저희도 비싼 룰이온 해주셔서 감사합니다.",
+      "off2": " 안녕하세요. 오늘 통화 품질을 어떠셨나요? 저희도 비싼 룰이온 해주셔서 감사합니다.",
+      "on": " 안녕하세요. 오늘 통화 품질은 어떠셨나요? 저희도 비싼 룰이온 해주셔서 감사합니다."
+    },
+    {
+      "config": "large-v3|int8_float16",
+      "case": "korean|beam5",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " 안녕하세요. 오늘 통화 품질은 어떠셨나요? 저희들이 서비스를 이용해 주셔서 감사합니다.",
+      "off2": " 안녕하세요. 오늘 통화 품질은 어떠셨나요? 저희들이 서비스를 이용해 주셔서 감사합니다.",
+      "on": " 안녕하세요. 오늘 통과 품질은 어떠셨나요? 저희도 비스듬히 온 해추스여서 감사합니다."
+    },
+    {
+      "config": "large-v3|int8_float16",
+      "case": "physics_en|beam5",
+      "control_deterministic": true,
+      "flash_matches": false,
+      "off1": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob",
+      "off2": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob",
+      "on": " Now I want to return to the conservation of mechanical energy. I have here a pendulum. I have an object that weighs 15 kilograms, and I can lift it up one meter, which I have done now. That means I've done work. Mgh is the work I have done, believe me. I've increased the potential energy of this ob"
+    }
+  ]
+}

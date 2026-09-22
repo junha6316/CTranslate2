@@ -32,9 +32,8 @@ Local validation used macOS, AppleClang 21, and the Accelerate CPU backend:
 
   The change adds 4 tests: 3 CPU regression tests that pass, and 1 CUDA case that
   is skipped on this machine.
-- CUDA kernel execution and Whisper output equivalence have now been measured on an
-  A10G (compute capability 8.6); see "GPU results" below. Performance has **not** been
-  measured. No speedup or memory reduction is claimed.
+- CUDA kernel execution, Whisper output equivalence, and performance have now been
+  measured on an A10G (compute capability 8.6); see "GPU results" below.
 
 Local reproduction commands:
 
@@ -101,6 +100,53 @@ stored ones. Which compute type is used matters more than the model size.
 
 Differences per case are in `ab_results.json` from the measurement run.
 
+### Performance
+
+Both builds were compiled from the same source tree with the same compiler, CUDA
+version, architecture and flags, and each got its own Python bindings so no build ran
+against another build's headers. Each configuration was warmed up twice, then timed
+seven times; the median is reported. Run-to-run spread was under 2% almost everywhere,
+so treat anything inside roughly +/-3% as noise.
+
+#### The perf commits do not change GPU latency
+
+Branch against upstream v4.8.2, Flash Attention off in both, so this isolates the five
+commits on `perf/profiled-fixes`:
+
+| axis | cases | median delta | range |
+| --- | --- | --- | --- |
+| timestamps on | 16 | -0.3% | -2.2% .. +1.0% |
+| timestamps off | 16 | +0.2% | -3.2% .. +1.9% |
+
+Every case is inside the noise band, and the generated token count is identical in all
+32, so both builds did the same work.
+
+This **contradicts the expectation** that removing the redundant LogSoftMax would help
+on GPU. That code sits in the timestamp rule, so the effect should appear on the
+timestamps-on axis; that axis is if anything the quieter of the two. The reasoning that
+motivated these commits came from CPU profiling and is untouched by this measurement,
+but no GPU speedup should be claimed for them.
+
+#### Flash Attention is a large win at beam 1 and a loss at beam 5 on large-v3
+
+Flash Attention on against off, both on the branch build. 32 cases, median -12.4%,
+range -21.9% .. +11.8%. The sign is not constant:
+
+| regime | effect |
+| --- | --- |
+| beam 1, every model and compute type | 4.4% to 21.9% faster |
+| small, beam 5 | 7.1% to 17.4% faster |
+| large-v3, beam 5, 150s audio | 8.3% to 11.8% **slower** |
+
+The encoder saving is roughly fixed, so it dominates when decoding is short. At beam 5
+on large-v3 with long audio the decoder dominates and the saving is more than cancelled.
+
+This overlaps the correctness result above: `int8_float16` at beam 5 is both where the
+output changes and, on large-v3, where Flash Attention costs time. There is no reason
+to enable it there.
+
+Raw measurements are in `bench_upstream.json` and `bench_branch.json`.
+
 ## Required follow-up checks
 
 - [x] Reproduce the quantized Conv1D failure at the baseline commit using the same
@@ -126,9 +172,9 @@ Differences per case are in `ab_results.json` from the measurement run.
 - [ ] Compare standard and Flash Attention with real Whisper models, including
   the production model. Test short speech, long recordings split into windows,
   silence/noise, and multilingual audio where applicable.
-- [ ] Cover batch sizes 1 and production size, beam sizes 1 and 5, and production
-  compute types such as float16 and int8_float16. Cover timestamps on/off and
-  word alignment if used by the application.
+- [x] Cover beam sizes 1 and 5, and production compute types float16 and
+  int8_float16, with timestamps on and off. Done for correctness and for latency.
+  Batch sizes above 1 and word alignment are still uncovered.
 - [ ] Compare encoder outputs, token IDs, transcripts, timestamps, and alignment
   results. Record tolerances and every discrepancy. Small numerical differences
   can change decoding choices; investigate token differences and evaluate WER
@@ -182,6 +228,6 @@ memory savings only after correctness checks pass.
 
 - Add a CPU BLAS backend to the Linux build so the CPU suite is meaningful there.
   34 tests currently throw `No SGEMM backend on CPU` and the suite aborts partway.
-- Measure performance. Nothing in this document claims a speedup.
+- Measure batched throughput. Everything here is batch size 1.
 - Decide whether the output differences above are acceptable for the intended
   workload, or whether Flash Attention should stay off for `int8_float16`.
