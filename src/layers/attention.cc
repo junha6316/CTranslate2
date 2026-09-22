@@ -175,6 +175,76 @@ namespace ctranslate2 {
       }
     }
 
+    // The decoder self-attention cache is stored with spare room in its time dimension so
+    // that a step can be written in place instead of rebuilding the whole cache with a
+    // concatenation. The capacity is kept a multiple of this block: growing it copies, and
+    // appending within it does not.
+    constexpr dim_t kv_cache_block = 32;
+
+    // Copies "steps" time steps of "rows" (batch x head) sequences from src into dst,
+    // starting at time "dst_offset" in dst. Both tensors are laid out
+    // [rows, capacity, depth], with the capacities given separately because they differ.
+    static void copy_cache_steps(const StorageView& src, dim_t src_capacity,
+                                 StorageView& dst, dim_t dst_capacity,
+                                 dim_t rows, dim_t steps, dim_t depth, dim_t dst_offset) {
+      if (steps == 0)
+        return;
+      DEVICE_AND_TYPE_DISPATCH(
+        src.device(), src.dtype(),
+        (primitives<D>::copy_2d(src.data<T>(), src_capacity * depth,
+                                dst.data<T>() + dst_offset * depth, dst_capacity * depth,
+                                steps * depth, rows)));
+    }
+
+    // Writes x [batch, heads, steps, depth] into cache [batch, heads, capacity, depth] at
+    // time "offset", growing the capacity when the new steps do not fit.
+    static void append_to_cache(StorageView& cache, const StorageView& x, dim_t offset) {
+      const dim_t batch = x.dim(0);
+      const dim_t heads = x.dim(1);
+      const dim_t steps = x.dim(2);
+      const dim_t depth = x.dim(3);
+      const dim_t rows = batch * heads;
+      const dim_t length = offset + steps;
+      dim_t capacity = cache.empty() ? 0 : cache.dim(2);
+
+      // "offset" is the number of steps already in the cache. It comes from the decoder
+      // step counter, which also drives the position encoder and the rotary embeddings, so
+      // a wrong value would already corrupt the positions. Check what can still be
+      // checked: the shape no longer carries the length, but the capacity is always
+      // round_up(length, kv_cache_block), so a correct offset falls in the last block.
+      // That catches an offset that is off by a block or more, not one that is off by a
+      // few steps.
+      if (offset < 0 || offset > capacity
+          || (capacity > 0
+              && (offset <= capacity - kv_cache_block
+                  || cache.dim(0) != batch || cache.dim(1) != heads || cache.dim(3) != depth)))
+        throw std::runtime_error("Self-attention cache of shape "
+                                 + (capacity == 0 ? std::string("(empty)")
+                                    : std::to_string(cache.dim(0)) + "x"
+                                    + std::to_string(cache.dim(1)) + "x"
+                                    + std::to_string(capacity) + "x"
+                                    + std::to_string(cache.dim(3)))
+                                 + " cannot take " + std::to_string(steps)
+                                 + " step(s) at offset " + std::to_string(offset));
+
+      if (capacity < length) {
+        const dim_t new_capacity = ((length + kv_cache_block - 1) / kv_cache_block
+                                    * kv_cache_block);
+        // This has to build a new tensor. Resizing the cache in place would keep the
+        // existing buffer whenever it is large enough (StorageView::reserve), and every
+        // row would then sit at the wrong offset for the new time pitch.
+        StorageView grown({batch, heads, new_capacity, depth}, x.dtype(), x.device());
+        // The steps past the current length are never read by attention, but the beam
+        // reordering gathers the whole tensor, so leave no undefined bytes behind.
+        grown.zero();
+        copy_cache_steps(cache, capacity, grown, new_capacity, rows, offset, depth, 0);
+        cache = std::move(grown);
+        capacity = new_capacity;
+      }
+
+      copy_cache_steps(x, steps, cache, capacity, rows, steps, depth, offset);
+    }
+
     static void dot_product_attention(const StorageView& queries,
                                       const StorageView& keys,
                                       const StorageView& values,
@@ -194,13 +264,18 @@ namespace ctranslate2 {
                                       bool with_cache = false,
                                       dim_t beam_size = 1,
                                       Alibi* alibi = nullptr,
-                                      StorageView* position_bias = nullptr) {
+                                      StorageView* position_bias = nullptr,
+                                      dim_t cached_keys_length = 0) {
       PROFILE("dot_product_attention");
+
+      // The keys and values tensors may be a cache with spare capacity, in which case only
+      // the first "keys_length" time steps hold data.
+      const dim_t keys_length = cached_keys_length > 0 ? cached_keys_length : keys.dim(-2);
 
       std::unique_ptr<const StorageView> relative_positions;
       if (relative_position_keys || relative_position_values || relative_asymmetric_position_keys) {
         const dim_t query_length = queries.dim(2);
-        const dim_t key_length = keys.dim(2);
+        const dim_t key_length = keys_length;
         if (relative_asymmetric_position_keys)
           relative_positions = std::make_unique<StorageView>(
             make_asymmetric_relative_positions(query_length,
@@ -214,7 +289,7 @@ namespace ctranslate2 {
       }
 
       const ops::MatMul keys_matmul(/*trans_a=*/false, /*trans_b=*/true, queries_scale);
-      keys_matmul(queries, keys, output);
+      keys_matmul(queries, keys, output, cached_keys_length);
       if (relative_position_keys)
         add_relative_representations(queries,
                                      *relative_positions,
@@ -236,7 +311,7 @@ namespace ctranslate2 {
 
         if (position_bias->empty()) {
           const dim_t query_length = queries.dim(2);
-          const dim_t key_length = keys.dim(2);
+          const dim_t key_length = keys_length;
           *position_bias = compute_relative_bias(*relative_attention_bias,
                                                  query_length,
                                                  key_length,
@@ -274,7 +349,7 @@ namespace ctranslate2 {
       }
 
       const ops::MatMul values_matmul;
-      values_matmul(attn, values, output);
+      values_matmul(attn, values, output, cached_keys_length);
       if (relative_position_values)
         add_relative_representations(attn,
                                      *relative_positions,
@@ -471,6 +546,16 @@ namespace ctranslate2 {
 
       bool prefilling = (_sliding_window > 0 && values_lengths);
 
+      // Self-attention caches without a sliding window and without merged time/head
+      // dimensions are stored with spare capacity and written in place. The other paths
+      // keep rebuilding the cache: the sliding window assumes the cache starts at time 0,
+      // and the merged layout is not [batch, heads, time, depth].
+      const bool preallocated_cache = (_self_attention
+                                       && _sliding_window == 0
+                                       && !_merge_time_and_head_dims);
+      // Non-zero when the cache holds fewer steps than its time dimension allows.
+      dim_t cached_keys_length = 0;
+
       if (!_self_attention) {
 
         process_cross_attention(queries, values, fused_proj, queries_proj, keys_proj,
@@ -534,7 +619,11 @@ namespace ctranslate2 {
         }
 
         if (cached_keys != nullptr) {
-          if (cached_keys->empty()) {
+          if (preallocated_cache) {
+            append_to_cache(*cached_keys, keys_proj, offset);
+            append_to_cache(*cached_values, values_proj, offset);
+            cached_keys_length = offset + keys_proj.dim(_cache_time_dim);
+          } else if (cached_keys->empty()) {
             *cached_keys = std::move(keys_proj);
             *cached_values = std::move(values_proj);
           } else {
@@ -582,7 +671,8 @@ namespace ctranslate2 {
                             bool(cached_keys),
                             beam_size,
                             _alibi,
-                            position_bias);
+                            position_bias,
+                            cached_keys_length);
 
       if (prefilling && cached_keys && cached_keys->shape()[2] > _sliding_window) {
         // set only last sliding_window tokens to cached_keys and cached_values after computing attention

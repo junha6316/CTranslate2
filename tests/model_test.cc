@@ -113,6 +113,36 @@ TEST(ModelTest, EncoderDecoderNoLength) {
   EXPECT_EQ(output_wo_length, output_w_length);
 }
 
+// The self-attention cache is written in place at the step the decoder passes in, so a
+// caller that forgets to advance the step would overwrite earlier steps. The cache cannot
+// tell exactly how many steps it holds, but it does reject a step that is a whole block
+// behind, which is what a reset or a skipped forward looks like.
+TEST(ModelTest, DecoderRejectsStaleStep) {
+  auto model = models::Model::load(default_model_dir())->as_sequence_to_sequence();
+  auto& encoder_decoder = dynamic_cast<models::EncoderDecoderReplica&>(*model);
+  auto& encoder = encoder_decoder.encoder();
+  auto& decoder = encoder_decoder.decoder();
+
+  StorageView source_ids({1, 6}, std::vector<int32_t>{31, 10, 19, 13, 5, 7});
+
+  StorageView encoder_output;
+  encoder(source_ids, encoder_output);
+
+  layers::DecoderState state = decoder.initial_state();
+  state.emplace("memory", encoder_output);
+
+  std::vector<int32_t> ids(40);
+  for (size_t i = 0; i < ids.size(); ++i)
+    ids[i] = int32_t(1 + i % 20);
+  StorageView prompt({1, dim_t(ids.size())}, ids);
+  StorageView next({1, 1}, std::vector<int32_t>{5});
+
+  StorageView logits;
+  decoder(0, prompt, state, &logits);
+  EXPECT_THROW(decoder(5, next, state, &logits), std::runtime_error);
+  EXPECT_NO_THROW(decoder(dim_t(ids.size()), next, state, &logits));
+}
+
 TEST(ModelTest, DecoderIterativeSequence) {
   auto model = models::Model::load(default_model_dir())->as_sequence_to_sequence();
   auto& encoder_decoder = dynamic_cast<models::EncoderDecoderReplica&>(*model);

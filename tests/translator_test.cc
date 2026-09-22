@@ -123,6 +123,27 @@ TEST_P(SearchVariantTest, SetMinDecodingLength) {
   EXPECT_EQ(result.output().size(), options.min_decoding_length);
 }
 
+// A decode long enough to grow the self-attention cache several times past its
+// preallocated block. The expected strings were produced before the cache stopped being
+// rebuilt at every step, so this pins the output across that change.
+TEST_P(SearchVariantTest, LongDecodingKeepsCachedAttentionExact) {
+  Translator translator = default_translator();
+  TranslationOptions options;
+  options.beam_size = GetParam();
+  options.min_decoding_length = 100;
+  options.max_decoding_length = 100;
+  std::vector<std::string> input = {"آ" ,"ت" ,"ز" ,"م" ,"و" ,"ن"};
+  auto result = translator.translate_batch({input}, options)[0];
+  std::string output;
+  for (const auto& token : result.output())
+    output += token;
+  const std::string expected = (GetParam() == 1
+    ? "atzmonenenehehehehennehehehtehehehehehtememehounehehehehehehehumennnnehtamennnnnnehumoumehehehehehen"
+    : "atzmonetenehehehennnehehehennnnnehehehehoumehehehehehehehehaumehumennehtamennnnnne'tamennneheheheheh");
+  EXPECT_EQ(result.output().size(), size_t(100));
+  EXPECT_EQ(output, expected);
+}
+
 TEST_P(SearchVariantTest, SetMaxInputLength) {
   Translator translator = default_translator();
   TranslationOptions options;
