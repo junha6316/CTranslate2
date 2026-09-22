@@ -932,7 +932,7 @@ namespace ctranslate2 {
           if (return_scores)
             step_result.score = score;
           if (return_logits_vocab)
-            step_result.logits = std::move(logits_orig);
+            step_result.logits = logits_orig;
           if (_callback(std::move(step_result))) {
             is_finished = true;
           }
