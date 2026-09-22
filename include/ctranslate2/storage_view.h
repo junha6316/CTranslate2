@@ -245,6 +245,7 @@ namespace ctranslate2 {
     Allocator* _allocator = nullptr;
     void* _data = nullptr;
     dim_t _allocated_size = 0;
+    dim_t _allocated_item_size = 0;
     dim_t _size = 0;
     Shape _shape;
   };

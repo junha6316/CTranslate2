@@ -79,6 +79,7 @@ namespace ctranslate2 {
     , _allocator(other._allocator)
     , _data(other._data)
     , _allocated_size(other._allocated_size)
+    , _allocated_item_size(other._allocated_item_size)
     , _size(other._size)
     , _shape(std::move(other._shape)) {
     other._allocator = nullptr;  // other no longer owns the data.
@@ -142,7 +143,7 @@ namespace ctranslate2 {
   }
 
   dim_t StorageView::reserved_memory() const {
-    return _allocated_size * item_size();
+    return _allocated_size * _allocated_item_size;
   }
 
   StorageView& StorageView::clear() {
@@ -158,23 +159,28 @@ namespace ctranslate2 {
     _data = nullptr;
     _allocator = nullptr;
     _allocated_size = 0;
+    _allocated_item_size = 0;
     return clear();
   }
 
   StorageView& StorageView::reserve(dim_t size) {
     if (size < 0)
       THROW_RUNTIME_ERROR("tensor size must be non-negative");
-    if (size <= _allocated_size)
-      return *this;
     const dim_t is = item_size();
     if (is <= 0 || size > std::numeric_limits<dim_t>::max() / is)
       THROW_RUNTIME_ERROR("tensor byte size overflows dim_t");
+    // Compare byte sizes, not element counts: the buffer may have been allocated
+    // for a different dtype. _allocated_size * _allocated_item_size is the real
+    // capacity, so leave both untouched when the request already fits.
+    if (size * is <= _allocated_size * _allocated_item_size)
+      return *this;
     release();
     _allocator = &get_allocator(_device);
     _data = _allocator->allocate(static_cast<size_t>(size * is), _device_index);
     if (_data == nullptr)
       THROW_RUNTIME_ERROR("failed to allocated memory");
     _allocated_size = size;
+    _allocated_item_size = is;
     return *this;
   }
 
@@ -295,6 +301,7 @@ namespace ctranslate2 {
     std::swap(_allocator, other._allocator);
     std::swap(_data, other._data);
     std::swap(_allocated_size, other._allocated_size);
+    std::swap(_allocated_item_size, other._allocated_item_size);
     std::swap(_size, other._size);
     std::swap(_shape, other._shape);
     return *this;
@@ -393,6 +400,7 @@ namespace ctranslate2 {
     release();
     _data = static_cast<void*>(data);
     _allocated_size = compute_size(shape);
+    _allocated_item_size = item_size();
     _size = _allocated_size;
     return reshape(std::move(shape));
   }
