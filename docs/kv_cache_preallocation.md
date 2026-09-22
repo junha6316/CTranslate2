@@ -113,9 +113,14 @@ derives it from the same step counter it feeds to the position encoder
 **`primitives<D>::copy_2d`** plus two file-static helpers in `attention.cc`
 (`copy_cache_steps`, `append_to_cache`) — writes `src [B, H, n, D]` into
 `cache [B, H, C, D]` at time `offset`. `B*H` rows of `n*D` contiguous elements,
-destination row pitch `C*D`. CPU: a loop of `std::copy`. CUDA: one `cudaMemcpy2DAsync` on
-the compute stream. The same helper does the copy when the cache grows (`offset = 0` into
-the larger buffer), so `ops::Concat` disappears from this path entirely.
+destination row pitch `C*D`. CPU: a loop of `std::copy`. CUDA: one block per row. The same
+helper does the copy when the cache grows (`offset = 0` into the larger buffer), so
+`ops::Concat` disappears from this path entirely.
+
+The CUDA side started as a single `cudaMemcpy2DAsync`, which looked free because it is not
+a kernel launch. It is not free: the trace measured it at 7.34 us on the host against
+4.77 us for `cudaLaunchKernel`, over 31,824 calls. The kernel is worth about 1% end to end
+over the memcpy, measured as a paired run.
 
 Growing always builds a new tensor. Resizing the cache in place would be wrong:
 `StorageView::reserve` keeps the existing buffer whenever it is large enough
@@ -180,20 +185,18 @@ Predicted, not measured: removing about 61,000 of the 281,000 allocate/free pair
 2.911 s GPU budget. That is roughly **3-8% end to end**, with the host side dominating
 because the decode is launch-bound.
 
-Against that, the new costs: one `B*H*C*D` memset per growth, and one `cudaMemcpy2DAsync`
-per layer per step in place of the `Concat` kernel. Whether a strided 2-D copy beats a
-small kernel launch here is **not measured** — `cudaMemcpy2DAsync` on device-to-device
-memory usually lowers to a kernel anyway, so the saving to claim is the allocation churn
-and the copied volume, not the launch.
+Against that, the new costs: one `B*H*C*D` memset per growth, and one copy kernel per
+layer per step in place of the `Concat` kernel. The launch count is therefore unchanged;
+what goes away is the allocation pair behind every `Concat` and the whole-cache copy.
 
-It will be measured with `/opt/bench.py` against upstream v4.8.2, warmup 2 plus 7
+It was measured with `/opt/bench.py` against upstream v4.8.2, warmup 2 plus 7
 measured runs, median, noise band +/-3%. Control axes:
 
-- **encoder-only** and **beam 1 with a short audio** — no long cache accumulates, so
-  neither should move. If they do, the gain is not this change.
-- **beam 5 with a short audio** — the cache is allocated and zeroed but barely fills, so
-  this axis carries the new memset cost without the removed `Concat` cost. It separates the
-  two.
+- **flash attention on** — the decoder self-attention then goes through
+  `FlashMultiHeadAttention`, which this change does not touch. This is the control that
+  worked.
+- short audio at beam 1 and beam 5 were also meant as controls, on the assumption that the
+  gain is the quadratic copy. They are not: see the measurements below.
 
 ## Risks
 
@@ -229,13 +232,39 @@ Side observation, not a gate: the 150-step CPU decode in the driver above runs i
 against 0.58-0.60 s before the change, five runs each. CPU is not the target and there is no
 control axis here, so this is indicative only.
 
-Still to run on the GPU box (`i-074f30405a215073e`, stopped):
+On the GPU box (`i-074f30405a215073e`, A10G, CUDA 12.8):
 
-1. `/opt/tok.py` token dump vs upstream, compared with `/opt/diff.py`: 32/32 exact.
-2. `--gtest_filter='CUDA/*'`: 175 passed, 3 skipped, 0 failed. This is the first run of
-   `primitives<CUDA>::copy_2d` and of cuBLAS with an oversized B batch stride from this
-   code path.
-3. `/opt/bench.py` with the control axis described above.
+| gate | result |
+| --- | --- |
+| token equality | 32/32 exact against upstream v4.8.2 **and** against the branch tip, scores identical too |
+| CUDA suite | 178 passed / 3 skipped / 0 failed; the 3 extra over the previous 175 are this change's own test |
+| decoded length | identical in all 64 benchmark rows |
+
+Performance, paired against the branch tip rebuilt and measured **in the same session**
+(the older `bench_gate.json` is not a usable baseline: the control moves with it, so it
+predates the timestamp-gate commit):
+
+| axis | n | median | range |
+| --- | --- | --- | --- |
+| flash off — the changed path | 32 | **-5.21%** | -7.79% to -1.63% |
+| flash on — control, has its own preallocation | 32 | -0.18% | -3.00% to +0.44% |
+
+An earlier build of the same change using `cudaMemcpy2DAsync` instead of the copy kernel
+measured -3.32% on the same axis, with the control at -0.26%. The two comparisons against
+the tip differ by more than the direct kernel-versus-memcpy run does (-1.02%), so read the
+gain as **3 to 5%**, not as a single number.
+
+What the trace says about the mechanism, same workload as `gpu_bottlenecks.md`:
+
+| | branch tip | this change |
+| --- | --- | --- |
+| `cudaMallocAsync`/`cudaFreeAsync` | 281,121 each | 253,223 each |
+| host CUDA API total | 4.387 s | 4.039 s |
+
+The saving is the allocation pair behind every `Concat`, not the copied volume. That is why
+the short-audio rows gain about as much as the long ones: the allocation churn is per step,
+not per cache length. The "beam 1 with a short audio" axis in the design above is therefore
+**not** a control for this change; only flash-on is.
 
 Traced by hand but not run anywhere in the C++ suite:
 
