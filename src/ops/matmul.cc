@@ -12,12 +12,24 @@ namespace ctranslate2 {
     }
 
     void MatMul::operator()(const StorageView& a, const StorageView& b, StorageView& c) const {
+      operator()(a, b, c, 0);
+    }
+
+    void MatMul::operator()(const StorageView& a,
+                            const StorageView& b,
+                            StorageView& c,
+                            const dim_t b_rows) const {
       PROFILE("MatMul");
-      DEVICE_AND_FLOAT_DISPATCH("MatMul", a.device(), a.dtype(), (compute<D, T>(a, b, c)));
+      if (b_rows < 0 || b_rows > b.dim(-2))
+        throw std::invalid_argument("MatMul: b_rows is out of range");
+      DEVICE_AND_FLOAT_DISPATCH("MatMul", a.device(), a.dtype(), (compute<D, T>(a, b, c, b_rows)));
     }
 
     template <Device D, typename T>
-    void MatMul::compute(const StorageView& a, const StorageView& b, StorageView& c) const {
+    void MatMul::compute(const StorageView& a,
+                         const StorageView& b,
+                         StorageView& c,
+                         const dim_t b_rows) const {
       dim_t m, k_a;
       if (_trans_a) {
         m = a.dim(-1);
@@ -27,13 +39,18 @@ namespace ctranslate2 {
         k_a = a.dim(-1);
       }
 
+      // Rows of b that hold data, and rows that are allocated. They differ when b is a
+      // KV cache with spare capacity, in which case the trailing rows are never read.
+      const dim_t b_used_rows = b_rows > 0 ? b_rows : b.dim(-2);
+      const dim_t b_stored_rows = b.dim(-2);
+
       dim_t k_b, n;
       if (_trans_b) {
-        n = b.dim(-2);
+        n = b_used_rows;
         k_b = b.dim(-1);
       } else {
         n = b.dim(-1);
-        k_b = b.dim(-2);
+        k_b = b_used_rows;
       }
 
       if (k_a != k_b)
@@ -41,7 +58,7 @@ namespace ctranslate2 {
 
       const dim_t k = k_a;
       const dim_t a_batch_size = a.size() / (m * k);
-      const dim_t b_batch_size = b.size() / (k * n);
+      const dim_t b_batch_size = b.size() / (b_stored_rows * b.dim(-1));
 
       if (a_batch_size != b_batch_size)
         throw std::invalid_argument("MatMul: batch dimension of inputs a and b should match");
@@ -61,7 +78,7 @@ namespace ctranslate2 {
 
       if (batch_size > 1) {
         const dim_t stridea = m * k;
-        const dim_t strideb = k * n;
+        const dim_t strideb = b_stored_rows * b.dim(-1);
         const dim_t stridec = m * n;
         primitives<D>::gemm_batch_strided(_trans_a, _trans_b,
                                           m, n, k,

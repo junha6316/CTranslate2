@@ -1,3 +1,4 @@
+#include <limits>
 #include <algorithm>
 #include "test_utils.h"
 #include "ctranslate2/layers/attention.h"
@@ -580,6 +581,69 @@ TEST_P(OpDeviceFPTest, Gemm) {
     expect_storage_eq(y.to_float32(), expected, error);
   }
 };
+
+// A KV cache stored with spare capacity must give the same product as the same data
+// stored compactly: the rows past b_rows are skipped, not read.
+TEST_P(OpDeviceFPTest, MatMulSpareRows) {
+  const Device device = GetParam().device;
+  const DataType dtype = GetParam().dtype;
+  const float error = GetParam().error;
+
+  const dim_t depth = 4;
+  const dim_t length = 5;
+  const dim_t capacity = 8;
+
+  auto make_value = [](dim_t i) { return float((i * 37 % 19) - 9) / 10.f; };
+
+  for (const dim_t batch : {dim_t(1), dim_t(6)}) {
+    std::vector<float> compact(batch * length * depth);
+    // Poison the spare rows: if the GEMM ever reads them, a NaN reaches the output.
+    std::vector<float> padded(batch * capacity * depth,
+                              std::numeric_limits<float>::quiet_NaN());
+    for (dim_t b = 0; b < batch; ++b) {
+      for (dim_t t = 0; t < length; ++t) {
+        for (dim_t d = 0; d < depth; ++d) {
+          const float v = make_value((b * length + t) * depth + d);
+          compact[(b * length + t) * depth + d] = v;
+          padded[(b * capacity + t) * depth + d] = v;
+        }
+      }
+    }
+
+    const StorageView b_compact({batch, length, depth}, compact);
+    const StorageView b_padded({batch, capacity, depth}, padded);
+
+    // queries x keys^T: the spare rows would show up as extra columns of the output.
+    {
+      std::vector<float> queries(batch * 2 * depth);
+      for (size_t i = 0; i < queries.size(); ++i)
+        queries[i] = make_value(dim_t(i) + 3);
+      const StorageView a = StorageView({batch, 2, depth}, queries).to(device).to(dtype);
+      const ops::MatMul op(false, true);
+      StorageView expected(dtype, device);
+      StorageView got(dtype, device);
+      op(a, b_compact.to(device).to(dtype), expected);
+      op(a, b_padded.to(device).to(dtype), got, length);
+      EXPECT_EQ(got.shape(), expected.shape());
+      expect_storage_eq(got.to_float32(), expected.to_float32(), error);
+    }
+
+    // attention x values: here the spare rows would be summed into the output.
+    {
+      std::vector<float> attn(batch * 2 * length);
+      for (size_t i = 0; i < attn.size(); ++i)
+        attn[i] = make_value(dim_t(i) + 7);
+      const StorageView a = StorageView({batch, 2, length}, attn).to(device).to(dtype);
+      const ops::MatMul op;
+      StorageView expected(dtype, device);
+      StorageView got(dtype, device);
+      op(a, b_compact.to(device).to(dtype), expected);
+      op(a, b_padded.to(device).to(dtype), got, length);
+      EXPECT_EQ(got.shape(), expected.shape());
+      expect_storage_eq(got.to_float32(), expected.to_float32(), error);
+    }
+  }
+}
 
 TEST_P(OpDeviceFPTest, GemmBias) {
   const Device device = GetParam().device;
