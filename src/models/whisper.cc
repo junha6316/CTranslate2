@@ -1,8 +1,11 @@
 #include "ctranslate2/models/whisper.h"
 
 #include <algorithm>
+#include <limits>
+#include <vector>
 
 #include "ctranslate2/decoding.h"
+#include "ctranslate2/ops/timestamp_gate.h"
 
 #include "dispatch.h"
 #include "dtw.h"
@@ -829,35 +832,19 @@ namespace ctranslate2 {
           // comparing a max against a logsumexp over that row gives the same answer
           // on the raw logits. logsumexp already shifts by the max internally, so
           // this stays numerically safe.
-          for (const dim_t batch_id : check_timestamps_prob_for_batch) {
-            bool sample_timestamp = false;
+          //
+          // TimestampGate both compares and masks. Returning the comparison to host
+          // code instead would cost two blocking device-to-host transfers per row,
+          // which on GPU is the whole cost of this rule: a reduction over 16 elements
+          // takes as long as one over 50257 because the round trip dominates.
+          const std::vector<int32_t> rows(check_timestamps_prob_for_batch.begin(),
+                                          check_timestamps_prob_for_batch.end());
+          const StorageView row_ids({static_cast<dim_t>(rows.size())}, rows, logits.device());
 
-            DEVICE_AND_FLOAT_DISPATCH(
-              "ApplyTimestampRules", logits.device(), logits.dtype(),
-              (sample_timestamp = should_sample_timestamp<D, T>(logits, batch_id)));
-
-            if (sample_timestamp) {
-              for (size_t i = 0; i < _timestamp_begin_id; ++i)
-                disable_tokens.add(batch_id, i);
-            }
-          }
+          ops::TimestampGate(_timestamp_begin_id,
+                             _timestamp_end_id - _timestamp_begin_id + 1)(
+                               logits, row_ids, std::numeric_limits<float>::lowest());
         }
-      }
-
-      template <Device D, typename T>
-      bool should_sample_timestamp(const StorageView& logits, const dim_t batch_id) {
-        const dim_t num_text_tokens = _timestamp_begin_id;
-        const dim_t num_timestamp_tokens = _timestamp_end_id - _timestamp_begin_id + 1;
-
-        const T* text_log_probs = logits.index<T>({batch_id, 0});
-        const T* timestamp_log_probs = text_log_probs + num_text_tokens;
-
-        // If sum of probability over timestamps is above any other token, sample timestamp.
-        const float max_text_token_log_prob = primitives<D>::max(text_log_probs, num_text_tokens);
-        const float timestamp_log_prob = primitives<D>::logsumexp(timestamp_log_probs,
-                                                                  num_timestamp_tokens);
-
-        return timestamp_log_prob > max_text_token_log_prob;
       }
 
     };
