@@ -16,6 +16,19 @@ Below are some general recommendations to further improve performance.
 * Use a NVIDIA GPU with Tensor Cores (Compute Capability >= 7.0)
 * Pass multiple GPU IDs to `device_index` to execute on multiple GPUs
 
+### Flash Attention
+
+On supported NVIDIA GPUs (Ampere or newer), `flash_attention=True` enables
+Flash Attention 2 for self-attention with float16 or bfloat16 computation.
+The build must include Flash Attention support (`WITH_FLASH_ATTN=ON`).
+
+Whisper applies this option to both the encoder and decoder. Encoder attention
+is bidirectional; decoder attention remains causal. Encoder calls requiring
+length masks, padding removal, relative position representations, or Q/K/V
+normalization use standard attention to preserve their semantics. Requests for
+encoder attention weights and unsupported encoder head sizes also use standard
+attention. These fallback paths do not receive the Flash Attention speedup.
+
 ## Translator
 
 * The default beam size for translation is 2, but consider setting `beam_size=1` to improve performance

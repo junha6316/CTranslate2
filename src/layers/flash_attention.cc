@@ -1,4 +1,5 @@
 #include "ctranslate2/layers/flash_attention.h"
+#include "ctranslate2/layers/attention.h"
 
 namespace ctranslate2 {
   namespace layers {
@@ -11,23 +12,48 @@ namespace ctranslate2 {
                                            Alibi* alibi)
       : AttentionLayer(model, scope, num_heads, self_attention, pre_norm, is_decoder, alibi, true)
       , _cache_time_dim(1)
+      , _encoder_fallback(is_decoder ? nullptr : std::make_unique<MultiHeadAttention>(
+          model, scope, num_heads, self_attention, pre_norm, is_decoder, alibi))
+      , _encoder_requires_fallback(!is_decoder && (
+          model.get_variable_if_exists(scope + "/relative_attention_bias")
+          || model.get_variable_if_exists(scope + "/relative_position_keys")
+          || model.get_variable_if_exists(scope + "/relative_asymmetric_position_keys")
+          || model.get_variable_if_exists(scope + "/relative_position_values")
+          || model.get_variable_if_exists(scope + "/q_norm/gamma")
+          || model.get_variable_if_exists(scope + "/k_norm/gamma")
+          || model.get_variable_if_exists(scope + "/v_norm/gamma")
+          || alibi || _sliding_window != 0 || _d_head > 256 || _d_head % 8 != 0))
     {
       ERROR_CHECK((self_attention), "FlashAttention only supports the self-attention");
     }
 
     void FlashMultiHeadAttention::operator()(const StorageView& queries,
-                                             const StorageView&,
+                                             const StorageView& values,
                                              const StorageView* values_lengths,
                                              StorageView& output,
                                              StorageView* cached_keys,
                                              StorageView* cached_values,
                                              StorageView* attention,
                                              const Padder* queries_padder,
-                                             const Padder*,
+                                             const Padder* values_padder,
                                              bool return_normalized_attention,
-                                             StorageView*,
+                                             StorageView* position_bias,
                                              dim_t offset) const {
       PROFILE("MultiHeadAttention");
+      // The dense FlashAttention kernel does not consume encoder length masks,
+      // relative position biases, or Q/K/V normalization. Keep those semantics
+      // in the standard implementation, including its positional-embedding flag.
+      // Its weights reference the same model storage as the FlashAttention layer.
+      if (_encoder_fallback
+          && (_encoder_requires_fallback || values_lengths || queries_padder
+              || values_padder || attention || (position_bias && *position_bias))) {
+        (*_encoder_fallback)(queries, values, values_lengths, output,
+                            cached_keys, cached_values, attention,
+                            queries_padder, values_padder,
+                            return_normalized_attention, position_bias, offset);
+        return;
+      }
+
       const Device device = queries.device();
       const DataType dtype = queries.dtype();
 
@@ -110,7 +136,7 @@ namespace ctranslate2 {
 
       // init output
       StorageView context(dtype, device);
-      ops::FlashAttention fl_attn_ops(_queries_scale, _sliding_window);
+      ops::FlashAttention fl_attn_ops(_queries_scale, _sliding_window, _is_decoder);
       fl_attn_ops(queries_proj, keys_proj, values_proj, context, cached_keys, cached_values, attention,
                   return_normalized_attention, rotary_cos, rotary_sin, rotary_interleaved, nullptr/*alibli*/, offset);
 

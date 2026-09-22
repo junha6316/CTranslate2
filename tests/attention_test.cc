@@ -1,5 +1,162 @@
 #include "test_utils.h"
 #include "ctranslate2/layers/attention.h"
+#include "ctranslate2/layers/flash_attention.h"
+
+namespace {
+  class EncoderAttentionModel : public models::Model {
+  public:
+    static constexpr dim_t num_heads = 2;
+    static constexpr dim_t head_size = 8;
+    static constexpr dim_t depth = num_heads * head_size;
+
+    EncoderAttentionModel(const FloatType type, const std::string& feature = "") {
+      StorageView qkv({3 * depth, depth}, 0.f);
+      StorageView projection({depth, depth}, 0.f);
+      for (dim_t i = 0; i < depth; ++i) {
+        projection.at<float>({i, i}) = 1.f;
+        for (dim_t j = 0; j < 3; ++j)
+          qkv.at<float>({j * depth + i, i}) = 1.f;
+      }
+      register_variable("attn/linear_0/weight", std::move(qkv));
+      register_variable("attn/linear_1/weight", std::move(projection));
+      if (feature == "relative_attention_bias") {
+        register_variable("attn/relative_attention_bias",
+                          StorageView({4, num_heads}, std::vector<float>{
+                              0.f, 0.2f, 0.3f, -0.4f, 0.5f, 0.1f, -0.2f, 0.7f}));
+        register_variable("attn/relative_attention_max_distance", StorageView(int32_t(8)));
+      } else if (!feature.empty()) {
+        register_variable("attn/" + feature + "/gamma", StorageView({head_size}, 1.5f));
+      }
+      const ComputeType compute_type = type.dtype == DataType::FLOAT32 ? ComputeType::FLOAT32
+        : type.dtype == DataType::FLOAT16 ? ComputeType::FLOAT16 : ComputeType::BFLOAT16;
+      set_compute_type(compute_type, type.device, 0);
+      set_device(type.device);
+    }
+
+  protected:
+    std::unique_ptr<Model> clone() const override { return nullptr; }
+  };
+
+  StorageView encoder_attention_input(const FloatType type) {
+    StorageView input({2, 3, EncoderAttentionModel::depth}, 0.f);
+    for (dim_t i = 0; i < input.size(); ++i)
+      input.data<float>()[i] = float(i % 13 - 6) / 10.f;
+    return input.to(type.dtype).to(type.device);
+  }
+}
+
+class FlashEncoderAttentionTest : public ::testing::TestWithParam<FloatType> {
+protected:
+  void SetUp() override {
+    if (GetParam().device == Device::CUDA
+        && (get_device_count(Device::CUDA) == 0
+            || !mayiuse_bfloat16(Device::CUDA)))
+      GTEST_SKIP() << "FlashAttention requires an Ampere or newer CUDA GPU";
+  }
+};
+
+TEST_P(FlashEncoderAttentionTest, PreservesLengthMaskAndPaddingRemoval) {
+  const auto type = GetParam();
+  EncoderAttentionModel model(type);
+  layers::MultiHeadAttention reference(model, "attn", EncoderAttentionModel::num_heads, true);
+  layers::FlashMultiHeadAttention flash(model, "attn", EncoderAttentionModel::num_heads, true);
+  StorageView lengths({2}, std::vector<int32_t>{1, 3});
+  auto mask = layers::AttentionLayer::prepare_length_mask(
+    lengths.to(type.device), EncoderAttentionModel::num_heads, 3);
+  Padder padder(lengths.to(type.device), 3);
+  for (const bool remove_padding : {false, true}) {
+    auto input = encoder_attention_input(type);
+    if (remove_padding)
+      padder.remove_padding(input);
+    const Padder* padding = remove_padding ? &padder : nullptr;
+    StorageView expected(type.dtype, type.device), actual(type.dtype, type.device);
+    reference(input, input, &mask, expected, nullptr, nullptr, nullptr, padding, padding);
+    flash(input, input, &mask, actual, nullptr, nullptr, nullptr, padding, padding);
+    expect_storage_eq(actual.to_float32(), expected.to_float32(), type.error);
+  }
+}
+
+TEST_P(FlashEncoderAttentionTest, PreservesRelativePositionBias) {
+  const auto type = GetParam();
+  EncoderAttentionModel model(type, "relative_attention_bias");
+  layers::MultiHeadAttention reference(model, "attn", EncoderAttentionModel::num_heads, true);
+  layers::FlashMultiHeadAttention flash(model, "attn", EncoderAttentionModel::num_heads, true);
+  EXPECT_TRUE(flash.has_positional_embeddings());
+  const auto input = encoder_attention_input(type);
+  StorageView expected(type.dtype, type.device), actual(type.dtype, type.device);
+  StorageView expected_bias(type.dtype, type.device), actual_bias(type.dtype, type.device);
+  // Exercise both creation and reuse of the bias across encoder layers.
+  for (int layer = 0; layer < 2; ++layer) {
+    reference(input, input, nullptr, expected, nullptr, nullptr, nullptr,
+              nullptr, nullptr, true, &expected_bias);
+    flash(input, input, nullptr, actual, nullptr, nullptr, nullptr,
+          nullptr, nullptr, true, &actual_bias);
+    ASSERT_FALSE(actual_bias.empty());
+    expect_storage_eq(actual.to_float32(), expected.to_float32(), type.error);
+    expect_storage_eq(actual_bias.to_float32(), expected_bias.to_float32(), type.error);
+  }
+}
+
+TEST_P(FlashEncoderAttentionTest, PreservesProjectionNormalization) {
+  const auto type = GetParam();
+  for (const std::string feature : {"q_norm", "k_norm", "v_norm"}) {
+    SCOPED_TRACE(feature);
+    EncoderAttentionModel model(type, feature);
+    layers::MultiHeadAttention reference(model, "attn", EncoderAttentionModel::num_heads, true);
+    layers::FlashMultiHeadAttention flash(model, "attn", EncoderAttentionModel::num_heads, true);
+    const auto input = encoder_attention_input(type);
+    StorageView expected(type.dtype, type.device), actual(type.dtype, type.device);
+    reference(input, input, nullptr, expected);
+    flash(input, input, nullptr, actual);
+    expect_storage_eq(actual.to_float32(), expected.to_float32(), type.error);
+  }
+}
+
+TEST_P(FlashEncoderAttentionTest, UnmaskedEncoderIsBidirectionalAndDecoderIsCausal) {
+  const auto type = GetParam();
+  if (type.device != Device::CUDA)
+    GTEST_SKIP() << "The FlashAttention kernel requires CUDA";
+  EncoderAttentionModel model(type);
+  const auto input = encoder_attention_input(type);
+  for (const bool is_decoder : {false, true}) {
+    SCOPED_TRACE(is_decoder);
+    layers::MultiHeadAttention reference(model, "attn", EncoderAttentionModel::num_heads,
+                                         true, true, is_decoder);
+    layers::FlashMultiHeadAttention flash(model, "attn", EncoderAttentionModel::num_heads,
+                                          true, true, is_decoder);
+    StorageView expected(type.dtype, type.device), actual(type.dtype, type.device);
+    StorageView lengths({2}, std::vector<int32_t>{3, 3}, type.device);
+    auto causal_mask = layers::AttentionLayer::prepare_length_mask(
+      lengths, EncoderAttentionModel::num_heads, 3, /*mask_future=*/true);
+    reference(input, input, is_decoder ? &causal_mask : nullptr, expected);
+    flash(input, input, nullptr, actual);
+    expect_storage_eq(actual.to_float32(), expected.to_float32(), type.error);
+
+    auto changed = input.to_float32().to(Device::CPU);
+    for (dim_t d = 0; d < EncoderAttentionModel::depth; ++d)
+      changed.at<float>({0, 2, d}) += 0.75f;
+    changed.move_to(type.device, type.dtype);
+    StorageView changed_output(type.dtype, type.device);
+    flash(changed, changed, nullptr, changed_output);
+    const auto before = actual.to_float32().to(Device::CPU);
+    const auto after = changed_output.to_float32().to(Device::CPU);
+    const float difference = std::abs(after.at<float>({0, 0, 0}) - before.at<float>({0, 0, 0}));
+    if (is_decoder)
+      EXPECT_LE(difference, type.error);
+    else
+      EXPECT_GT(difference, 0.01f);
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(CPU, FlashEncoderAttentionTest,
+                        ::testing::Values(FloatType{Device::CPU, DataType::FLOAT32, 1e-5f}),
+                        fp_test_name);
+#ifdef CT2_WITH_FLASH_ATTN
+INSTANTIATE_TEST_SUITE_P(CUDA, FlashEncoderAttentionTest,
+                        ::testing::Values(FloatType{Device::CUDA, DataType::FLOAT16, 5e-3f},
+                                          FloatType{Device::CUDA, DataType::BFLOAT16, 3e-2f}),
+                        fp_test_name);
+#endif
 
 class MockModel : public models::Model {
 public:

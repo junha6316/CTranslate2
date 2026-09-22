@@ -32,7 +32,9 @@ namespace ctranslate2 {
                       dim_t offset = 0) const override;
 
       virtual bool has_positional_embeddings() const override {
-        return  _rotary_embeddings || _alibi;
+        return _encoder_fallback
+          ? _encoder_fallback->has_positional_embeddings()
+          : bool(_rotary_embeddings || _alibi);
       }
 
     private:
@@ -47,6 +49,8 @@ namespace ctranslate2 {
                                 dim_t beam_size = 1);
 
       const dim_t _cache_time_dim;
+      const std::unique_ptr<AttentionLayer> _encoder_fallback;
+      const bool _encoder_requires_fallback;
       static constexpr dim_t _offset_free_space{512};
     };
   }
