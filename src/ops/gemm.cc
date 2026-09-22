@@ -4,6 +4,10 @@
 
 #include "dispatch.h"
 
+#ifdef CT2_WITH_CUBLASLT
+#  include "cuda/gemm_lt.h"
+#endif
+
 namespace ctranslate2 {
   namespace ops {
 
@@ -24,6 +28,60 @@ namespace ctranslate2 {
       }
     }
 
+#ifdef CT2_WITH_CUBLASLT
+    // c = op(a) * op(b) + bias (+ residual) in a single cuBLASLt call, so that the bias
+    // and the residual do not cost a separate elementwise kernel launch.
+    template <typename T>
+    static bool gemm_bias_epilogue(const StorageView& a,
+                                   const StorageView& b,
+                                   StorageView& c,
+                                   const bool trans_a,
+                                   const bool trans_b,
+                                   const StorageView& bias,
+                                   const StorageView* residual) {
+      const dim_t k = a.dim(trans_a ? -2 : -1);
+      const dim_t n = b.dim(trans_b ? -2 : -1);
+      const dim_t m = a.size() / k;  // Collapse leading dimensions.
+
+      if (bias.dtype() != a.dtype() || bias.size() != n)
+        return false;
+
+      Shape output_shape(a.shape());
+      output_shape[output_shape.size() - 2] = a.dim(trans_a ? -1 : -2); // m
+      output_shape[output_shape.size() - 1] = n;
+      c.resize(std::move(output_shape));
+
+      if (residual && (residual->dtype() != a.dtype() || residual->size() != c.size()))
+        return false;
+
+      return cuda::gemm_bias_lt<T>(trans_a, trans_b,
+                                   m, n, k,
+                                   a.data<T>(), trans_a ? m : k,
+                                   b.data<T>(), trans_b ? k : n,
+                                   bias.data<T>(),
+                                   residual ? residual->data<T>() : nullptr,
+                                   c.data<T>(), n);
+    }
+
+    static bool gemm_bias_epilogue(const StorageView& a,
+                                   const StorageView& b,
+                                   StorageView& c,
+                                   const bool trans_a,
+                                   const bool trans_b,
+                                   const StorageView& bias,
+                                   const StorageView* residual) {
+      switch (a.dtype()) {
+      case DataType::FLOAT32:
+        return gemm_bias_epilogue<float>(a, b, c, trans_a, trans_b, bias, residual);
+      case DataType::FLOAT16:
+        return gemm_bias_epilogue<float16_t>(a, b, c, trans_a, trans_b, bias, residual);
+      case DataType::BFLOAT16:
+        return gemm_bias_epilogue<bfloat16_t>(a, b, c, trans_a, trans_b, bias, residual);
+      default:
+        return false;
+      }
+    }
+#endif
 
     Gemm::Gemm(float alpha,
                float beta,
@@ -64,6 +122,15 @@ namespace ctranslate2 {
       case DataType::FLOAT32:
       case DataType::FLOAT16:
       case DataType::BFLOAT16: {
+#ifdef CT2_WITH_CUBLASLT
+        if (a.device() == Device::CUDA
+            && bias
+            && !_activation_type
+            && _alpha == 1
+            && _beta == 0
+            && gemm_bias_epilogue(a, b, c, _trans_a, _trans_b, *bias, residual))
+          return;
+#endif
         DEVICE_AND_FLOAT_DISPATCH("Gemm", a.device(), a.dtype(),
                                   (compute<D, T, T>(a, b, c, a_shift_compensation)));
         break;

@@ -610,6 +610,18 @@ if (WITH_CUDA)
     list(APPEND SOURCES src/cuda/cublas_stub.cc)
   else()
     list(APPEND LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
+
+    # cuBLASLt folds the Dense bias and residual into the GEMM epilogue. The stub
+    # above does not cover it, so it is only used when linking cuBLAS directly.
+    find_library(CUDA_CUBLASLT_LIBRARY NAMES cublasLt
+      PATHS ${CUDA_TOOLKIT_ROOT_DIR}/lib64 ${CUDA_TOOLKIT_ROOT_DIR}/lib ${CUDA_TOOLKIT_ROOT_DIR}/lib/x64
+      NO_DEFAULT_PATH)
+    if(CUDA_CUBLASLT_LIBRARY)
+      message(STATUS "Found cuBLASLt library: ${CUDA_CUBLASLT_LIBRARY}")
+      list(APPEND LIBRARIES ${CUDA_CUBLASLT_LIBRARY})
+      list(APPEND CUDA_SOURCES src/cuda/gemm_lt.cu)
+      set_property(SOURCE src/ops/gemm.cc APPEND PROPERTY COMPILE_DEFINITIONS CT2_WITH_CUBLASLT)
+    endif()
   endif()
   if (WITH_FLASH_ATTN)
     add_definitions(-DCT2_WITH_FLASH_ATTN)

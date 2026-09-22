@@ -698,6 +698,67 @@ TEST_P(OpDeviceFPTest, GemmResidual) {
   }
 };
 
+// The Dense configuration (alpha 1, beta 0, no activation): on CUDA the bias and the
+// residual are applied in the cuBLASLt epilogue. The output buffer is poisoned so the
+// test fails if the epilogue reads it instead of the residual.
+TEST_P(OpDeviceFPTest, GemmBiasEpilogue) {
+  const Device device = GetParam().device;
+  const DataType dtype = GetParam().dtype;
+  const float error = GetParam().error;
+
+  auto make_value = [](dim_t i) { return float((i * 37 % 23) - 11) / 40.f; };
+
+  const dim_t k = 64;
+  for (const dim_t m : {dim_t(1), dim_t(5), dim_t(7)}) {
+    for (const dim_t n : {dim_t(3), dim_t(37)}) {
+      for (const bool trans_b : {false, true}) {
+        for (const bool with_residual : {false, true}) {
+          std::vector<float> a_values(m * k);
+          std::vector<float> b_values(k * n);
+          std::vector<float> bias_values(n);
+          std::vector<float> residual_values(m * n);
+          for (dim_t i = 0; i < m * k; ++i)
+            a_values[i] = make_value(i);
+          for (dim_t i = 0; i < k * n; ++i)
+            b_values[i] = make_value(i + 5);
+          for (dim_t i = 0; i < n; ++i)
+            bias_values[i] = make_value(i + 11);
+          for (dim_t i = 0; i < m * n; ++i)
+            residual_values[i] = make_value(i + 17);
+
+          // Reference computed on the host: b is stored as [k, n] or, transposed, [n, k].
+          std::vector<float> expected_values(m * n);
+          for (dim_t i = 0; i < m; ++i) {
+            for (dim_t j = 0; j < n; ++j) {
+              float sum = 0;
+              for (dim_t l = 0; l < k; ++l)
+                sum += a_values[i * k + l] * (trans_b ? b_values[j * k + l]
+                                                      : b_values[l * n + j]);
+              sum += bias_values[j];
+              if (with_residual)
+                sum += residual_values[i * n + j];
+              expected_values[i * n + j] = sum;
+            }
+          }
+
+          const StorageView a = StorageView({m, k}, a_values).to(device).to(dtype);
+          const StorageView b = StorageView(trans_b ? Shape{n, k} : Shape{k, n}, b_values)
+            .to(device).to(dtype);
+          const StorageView bias = StorageView({n}, bias_values).to(device).to(dtype);
+          const StorageView residual = StorageView({m, n}, residual_values)
+            .to(device).to(dtype);
+          StorageView c = StorageView({m, n}, std::numeric_limits<float>::quiet_NaN())
+            .to(device).to(dtype);
+
+          const ops::Gemm op(1.0, 0.0, false, trans_b);
+          op(a, b, c, nullptr, &bias, with_residual ? &residual : nullptr);
+          expect_storage_eq(c.to_float32(), StorageView({m, n}, expected_values), error);
+        }
+      }
+    }
+  }
+}
+
 TEST_P(OpDeviceFPTest, GemmGELU) {
   const Device device = GetParam().device;
   const DataType dtype = GetParam().dtype;
