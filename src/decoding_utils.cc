@@ -17,21 +17,28 @@ namespace ctranslate2 {
   }
 
   void DisableTokens::apply() {
-    const dim_t num_indices = _flat_indices.size();
-    if (num_indices == 0)
-      return;
-
     const Device device = _logits.device();
     const DataType dtype = _logits.dtype();
-    const StorageView flat_indices({num_indices}, _flat_indices, device);
 
-    DEVICE_AND_TYPE_DISPATCH(device, dtype,
-                             primitives<D>::indexed_fill(_logits.data<T>(),
-                                                         static_cast<T>(_disable_value),
-                                                         flat_indices.data<int32_t>(),
-                                                         num_indices));
+    const dim_t num_indices = _flat_indices.size();
+    if (num_indices > 0) {
+      const StorageView flat_indices({num_indices}, _flat_indices, device);
 
-    _flat_indices.clear();
+      DEVICE_AND_TYPE_DISPATCH(device, dtype,
+                               primitives<D>::indexed_fill(_logits.data<T>(),
+                                                           static_cast<T>(_disable_value),
+                                                           flat_indices.data<int32_t>(),
+                                                           num_indices));
+
+      _flat_indices.clear();
+    }
+
+    if (!_ranges.empty()) {
+      const dim_t num_ranges = _ranges.size() / 3;
+      const StorageView ranges({num_ranges, 3}, _ranges, device);
+      ops::FillRanges()(_logits, ranges, _disable_value);
+      _ranges.clear();
+    }
   }
 
 

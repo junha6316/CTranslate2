@@ -78,8 +78,10 @@ Against upstream v4.8.2, Flash Attention off in both:
 
 | axis | cases | median | range |
 | --- | --- | --- | --- |
-| timestamps on | 16 | **-5.6%** | -22.2% .. -0.9% |
-| timestamps off | 16 | +0.2% | -2.7% .. +1.9% |
+| timestamps on | 16 | **-8.2%** | -33.6% .. -0.8% |
+| timestamps off | 16 | +0.1% | control, rule never runs |
+
+That is the gate plus the range fill described next.
 
 Timestamps off is the control: the rule never runs there, and that axis does not move,
 which is what attributes the gain to this change rather than to drift.
@@ -89,10 +91,10 @@ the number of decode steps. Total latency, timestamps on, beam 5:
 
 | config | upstream | pre-gate | gate |
 | --- | --- | --- | --- |
-| small / float16 / 150s | 506.5ms | 503.3ms | **394.0ms** |
-| small / int8_float16 / 150s | 605.1ms | 611.4ms | **484.6ms** |
-| large-v3 / float16 / 150s | 1239.0ms | 1242.4ms | **1146.3ms** |
-| large-v3 / int8_float16 / 150s | 1214.4ms | 1224.3ms | **1129.2ms** |
+| small / float16 / 150s | 506.5ms | 503.3ms | **336.4ms** |
+| small / int8_float16 / 150s | 605.1ms | 611.4ms | **415.8ms** |
+| large-v3 / float16 / 150s | 1239.0ms | 1242.4ms | **1109.6ms** |
+| large-v3 / int8_float16 / 150s | 1214.4ms | 1224.3ms | **1078.9ms** |
 
 Put another way, what enabling timestamps costs:
 
@@ -107,3 +109,20 @@ Roughly 40% of the cost of the timestamp rule is gone. What remains is the rest 
 rule, which still walks sequences on the host.
 
 Raw measurements are in `bench_gate.json`.
+
+## Second fix: disable token ranges instead of token lists
+
+`DisableTokens::add` records one host-side index per token and uploads the list every
+step. The timestamp rule disabled tokens in five places, and **every one of them was a
+contiguous span**: the text vocabulary, the timestamp vocabulary, everything below EOT,
+everything up to the last timestamp. Disabling the text vocabulary alone is 50,257
+sorted inserts on the host and a 200 KB transfer, per row, per step.
+
+`add_range` records three integers instead, and `ops::FillRanges` writes the constant
+with one kernel. On CPU it is a `std::fill` and never leaves the host.
+
+Measured on top of the gate: median a further -2.4%, up to -14.6%. The two together
+are -8.2% median against upstream and -33.6% at best. The gain again concentrates at
+beam 5 and on long audio, because that is where the rule runs most often.
+
+Tokens still match upstream in all 32 cases; CUDA suite 175 passed, 3 skipped, 0 failed.

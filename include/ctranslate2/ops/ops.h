@@ -25,6 +25,7 @@
 #include "sigmoid.h"
 #include "swish.h"
 #include "tile.h"
+#include "fill_ranges.h"
 #include "timestamp_gate.h"
 #include "topk.h"
 #include "topp_mask.h"

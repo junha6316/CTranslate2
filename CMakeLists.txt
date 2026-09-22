@@ -200,6 +200,8 @@ set(SOURCES
   src/ops/tanh.cc
   src/ops/tile.cc
   src/ops/tile_cpu.cc
+  src/ops/fill_ranges.cc
+  src/ops/fill_ranges_cpu.cc
   src/ops/timestamp_gate.cc
   src/ops/timestamp_gate_cpu.cc
   src/ops/topk.cc
@@ -250,6 +252,7 @@ set(CUDA_SOURCES
   src/ops/rotary_gpu.cu
   src/ops/softmax_gpu.cu
   src/ops/tile_gpu.cu
+  src/ops/fill_ranges_gpu.cu
   src/ops/timestamp_gate_gpu.cu
   src/ops/topk_gpu.cu
   src/ops/topp_mask_gpu.cu
@@ -751,6 +754,7 @@ elseif(WITH_HIP)
     src/ops/rotary_cpu.cc
     src/ops/softmax_cpu.cc
     src/ops/tile_cpu.cc
+    src/ops/fill_ranges_cpu.cc
     src/ops/timestamp_gate_cpu.cc
     src/ops/topk_cpu.cc
     src/ops/topp_mask_cpu.cc

@@ -59,6 +59,27 @@ namespace ctranslate2 {
         add(batch_id, token_id);
     }
 
+    // Disable [begin_token_id, end_token_id) in one go.
+    //
+    // Enumerating a range through add() builds one host-side index per token and
+    // uploads the whole list: disabling the text vocabulary is 50k entries and a
+    // 200 KB transfer, every step. A range is three integers and a fill.
+    void add_range(dim_t batch_id, dim_t begin_token_id, dim_t end_token_id) {
+      if (end_token_id <= begin_token_id)
+        return;
+
+      if (_logits_data) {
+        // On CPU we directly assign the value.
+        float* row = _logits_data + batch_id * _vocabulary_size;
+        std::fill(row + begin_token_id, row + end_token_id, _disable_value);
+
+      } else {
+        _ranges.push_back(static_cast<int32_t>(batch_id));
+        _ranges.push_back(static_cast<int32_t>(begin_token_id));
+        _ranges.push_back(static_cast<int32_t>(end_token_id));
+      }
+    }
+
     void apply();
 
   private:
@@ -68,6 +89,7 @@ namespace ctranslate2 {
     const dim_t _batch_size;
     const dim_t _vocabulary_size;
     std::vector<int32_t> _flat_indices;
+    std::vector<int32_t> _ranges;  // flattened triples of (batch, begin, end)
   };
 
   // Base class for processing the output logits.
