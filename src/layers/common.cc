@@ -234,11 +234,15 @@ namespace ctranslate2 {
     }
 
     const StorageView& SinusoidalPositionEncoder::get_position_encoding(dim_t max_time) {
-      if (max_time > _encoding.dim(0))
-        _encoding = generate_sinusoidal_position_encoding(max_time,
+      if (max_time > _encoding.dim(0)) {
+        // Grow geometrically. Generating exactly max_time positions rebuilds the
+        // whole table on every step once generation passes the initial size.
+        const dim_t num_positions = std::max(max_time, _encoding.dim(0) * 2);
+        _encoding = generate_sinusoidal_position_encoding(num_positions,
                                                           _encoding.dim(1),
                                                           _encoding.dtype(),
                                                           _encoding.device());
+      }
       return _encoding;
     }
 
