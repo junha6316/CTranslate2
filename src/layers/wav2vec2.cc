@@ -19,7 +19,7 @@ namespace ctranslate2 {
       PROFILE("Wav2Vec2LayerNormConvLayer");
 
       StorageView buffer(input.dtype(), input.device());
-      buffer = std::move(input);
+      buffer = input;
       _conv(buffer, output);
       _transpose(output, buffer);
       _output_norm(buffer, output);

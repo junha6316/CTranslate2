@@ -822,18 +822,19 @@ namespace ctranslate2 {
         }
 
         if (!check_timestamps_prob_for_batch.empty()) {
-          // Apply all changes to the logits before computing the log softmax.
+          // Apply all changes to the logits before reading them.
           disable_tokens.apply();
 
-          StorageView log_probs(logits.dtype(), logits.device());
-          ops::LogSoftMax()(logits, log_probs);
-
+          // LogSoftMax subtracts the same constant from every element of a row, so
+          // comparing a max against a logsumexp over that row gives the same answer
+          // on the raw logits. logsumexp already shifts by the max internally, so
+          // this stays numerically safe.
           for (const dim_t batch_id : check_timestamps_prob_for_batch) {
             bool sample_timestamp = false;
 
             DEVICE_AND_FLOAT_DISPATCH(
-              "ApplyTimestampRules", log_probs.device(), log_probs.dtype(),
-              (sample_timestamp = should_sample_timestamp<D, T>(log_probs, batch_id)));
+              "ApplyTimestampRules", logits.device(), logits.dtype(),
+              (sample_timestamp = should_sample_timestamp<D, T>(logits, batch_id)));
 
             if (sample_timestamp) {
               for (size_t i = 0; i < _timestamp_begin_id; ++i)
@@ -844,11 +845,11 @@ namespace ctranslate2 {
       }
 
       template <Device D, typename T>
-      bool should_sample_timestamp(const StorageView& log_probs, const dim_t batch_id) {
+      bool should_sample_timestamp(const StorageView& logits, const dim_t batch_id) {
         const dim_t num_text_tokens = _timestamp_begin_id;
         const dim_t num_timestamp_tokens = _timestamp_end_id - _timestamp_begin_id + 1;
 
-        const T* text_log_probs = log_probs.index<T>({batch_id, 0});
+        const T* text_log_probs = logits.index<T>({batch_id, 0});
         const T* timestamp_log_probs = text_log_probs + num_text_tokens;
 
         // If sum of probability over timestamps is above any other token, sample timestamp.
