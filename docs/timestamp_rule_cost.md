@@ -60,6 +60,11 @@ timestamp tokens to a logsumexp, compares them in shared memory, and masks the t
 tokens when the timestamp side wins. Nothing is read back to the host. The CPU path
 keeps the old per-row logic, which is the right shape there.
 
+The block is 1024 threads. Only one block is launched per checked row, so at beam 5
+the kernel occupies at most 5 of the A10G's 80 SMs; the width has to come from threads
+inside the block, not from blocks. Going from 256 to 1024 threads moved the median
+from -4.5% to -5.6% and the best case from -20.2% to -22.2%.
+
 ### It produces identical tokens
 
 Token ids were dumped from this build and from upstream v4.8.2 across 32 cases
@@ -73,7 +78,7 @@ Against upstream v4.8.2, Flash Attention off in both:
 
 | axis | cases | median | range |
 | --- | --- | --- | --- |
-| timestamps on | 16 | **-4.5%** | -20.2% .. -0.7% |
+| timestamps on | 16 | **-5.6%** | -22.2% .. -0.9% |
 | timestamps off | 16 | +0.2% | -2.7% .. +1.9% |
 
 Timestamps off is the control: the rule never runs there, and that axis does not move,
@@ -84,10 +89,10 @@ the number of decode steps. Total latency, timestamps on, beam 5:
 
 | config | upstream | pre-gate | gate |
 | --- | --- | --- | --- |
-| small / float16 / 150s | 506.5ms | 503.3ms | **404.0ms** |
-| small / int8_float16 / 150s | 605.1ms | 611.4ms | **497.5ms** |
-| large-v3 / float16 / 150s | 1239.0ms | 1242.4ms | **1151.2ms** |
-| large-v3 / int8_float16 / 150s | 1214.4ms | 1224.3ms | **1135.2ms** |
+| small / float16 / 150s | 506.5ms | 503.3ms | **394.0ms** |
+| small / int8_float16 / 150s | 605.1ms | 611.4ms | **484.6ms** |
+| large-v3 / float16 / 150s | 1239.0ms | 1242.4ms | **1146.3ms** |
+| large-v3 / int8_float16 / 150s | 1214.4ms | 1224.3ms | **1129.2ms** |
 
 Put another way, what enabling timestamps costs:
 

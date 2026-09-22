@@ -8,7 +8,7 @@
 namespace ctranslate2 {
   namespace ops {
 
-    constexpr int timestamp_gate_threads = 256;
+    constexpr int timestamp_gate_threads = 1024;
 
     // One block per row. The block reduces the text tokens to a max and the timestamp
     // tokens to a logsumexp, compares them, and masks the text tokens if the timestamp
