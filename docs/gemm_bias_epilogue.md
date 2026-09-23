@@ -32,7 +32,9 @@ with E ≈ 660 (12 layers × 5 chunks × 11 runs) gives, as an **estimate**:
 - no residual (`add_block_broadcast`): 2D + E + memory KV ≈ **31,200**
 - Dense bias total ≈ **77,300**; the remaining ≈ 1,800 of the 79,118 are most likely
   plain `ops::Add` calls, which share the `cuda::plus` functor and are not biases.
-  (Refuted by the trace, see Results: all 79,118 are Dense biases.)
+  (Refuted by the trace, see Results: all 79,118 are Dense biases. E was also wrong:
+  the workload decodes a single 30 s window, so E = 12 layers × 13 decodes = 156.
+  With that, 3D + 2E = 46,644, exactly the `plus3` count.)
 
 Unverified: these counts. The first step on the GPU box is to read the **existing**
 `/opt/prof_kvk.nsys-rep` with `cuda_gpu_kern_sum` (no new profiling) and split the
@@ -129,7 +131,7 @@ the box.
 
 ## Results
 
-Same workload as before (`/opt/prof.py`: whisper-small float16, beam 5, 150 s audio,
+Same workload as before (`/opt/prof.py`: whisper-small float16, beam 5, first 30 s of the 150 s lecture,
 10 decodes, timestamps on). The "before" launch counts are the existing
 `9352e203` trace from the previous session, reused as instructed rather than
 re-profiled; the same binary state was rebuilt and installed to a separate prefix in
