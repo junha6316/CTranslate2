@@ -1,6 +1,7 @@
 #include "ctranslate2/ops/gather.h"
 
 #include <algorithm>
+#include <limits>
 
 #include "dispatch.h"
 
@@ -40,6 +41,18 @@ namespace ctranslate2 {
       }
     }
 
+
+#ifdef CT2_WITH_CUDA
+    // Defined in gather_gpu.cu. Copies rows of 16-byte words: dst[t] row i is src[t] row
+    // indices[i], with a row of row_size[t] words.
+    void gather_rows_cuda(const std::vector<const void*>& src,
+                          const std::vector<void*>& dst,
+                          const std::vector<dim_t>& row_size,
+                          const int32_t* indices,
+                          dim_t num_indices);
+    // Upper bound on the threads of one gather_rows_cuda launch (blocks x threads).
+    constexpr dim_t gather_rows_max_threads = 1024 * 256;
+#endif
 
     Gather::Gather(const dim_t axis, const dim_t batch_dims)
       : _axis(axis)
@@ -83,6 +96,54 @@ namespace ctranslate2 {
       output.resize(compute_output_shape(data, input, axis));
       DEVICE_AND_TYPE_DISPATCH(data.device(), data.dtype(),
                                (compute<D, T>(data, input, axis, _batch_dims, output)));
+    }
+
+    void Gather::batch(const std::vector<StorageView*>& data, const StorageView& input) {
+#ifdef CT2_WITH_CUDA
+      if (input.device() == Device::CUDA) {
+        PROFILE("GatherBatch");
+        constexpr dim_t word_size = 16;  // sizeof (uint4)
+        std::vector<StorageView*> gathered;
+        std::vector<StorageView> outputs;
+        std::vector<const void*> src;
+        std::vector<void*> dst;
+        std::vector<dim_t> row_size;
+        outputs.reserve(data.size());  // dst holds pointers into these buffers
+
+        for (StorageView* value : data) {
+          if (value->device() != Device::CUDA || value->empty()) {
+            Gather()(*value, input);
+            continue;
+          }
+          const dim_t row_bytes = value->stride(0) * value->item_size();
+          // The kernel indexes words with 32-bit integers, on both sides of the copy, and
+          // its grid-stride loop must not wrap past the last word.
+          const dim_t words = row_bytes / word_size * std::max(value->dim(0), input.size());
+          if (row_bytes % word_size != 0
+              || words > std::numeric_limits<uint32_t>::max() - gather_rows_max_threads) {
+            Gather()(*value, input);
+            continue;
+          }
+
+          outputs.emplace_back(compute_output_shape(*value, input, 0),
+                               value->dtype(),
+                               Device::CUDA);
+          gathered.push_back(value);
+          src.push_back(value->buffer());
+          dst.push_back(outputs.back().buffer());
+          row_size.push_back(row_bytes / word_size);
+        }
+
+        if (!gathered.empty() && input.size() > 0)
+          gather_rows_cuda(src, dst, row_size, input.data<int32_t>(), input.size());
+        for (size_t i = 0; i < gathered.size(); ++i)
+          *gathered[i] = std::move(outputs[i]);
+        return;
+      }
+#endif
+
+      for (StorageView* value : data)
+        Gather()(*value, input);
     }
 
   }

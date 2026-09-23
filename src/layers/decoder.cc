@@ -46,12 +46,16 @@ namespace ctranslate2 {
         merge_batch_beam(beam_indices);
       }
 
+      // The replicated entries (the self-attention caches) all take the same indices, so
+      // gather them together: on GPU that is one kernel launch instead of one per tensor.
+      std::vector<StorageView*> replicated;
       for (auto& [name, value] : state) {
         if (replicate_state(name))
-          ops::Gather()(value, beam_indices);
+          replicated.push_back(&value);
         else if (alive_batches)
           ops::Gather()(value, *alive_batches);
       }
+      ops::Gather::batch(replicated, beam_indices);
     }
 
     void Decoder::replicate_state(DecoderState& state, const dim_t beam_size) const {

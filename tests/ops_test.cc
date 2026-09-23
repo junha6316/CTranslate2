@@ -438,6 +438,36 @@ TEST_P(OpDeviceTest, GatherData2DIndex2D) {
   expect_storage_eq(output, expected);
 }
 
+TEST_P(OpDeviceTest, GatherBatch) {
+  // More tensors than one CUDA launch takes (32 per launch; 48 of these 60 qualify), rows
+  // of different sizes including one that is not a multiple of 16 bytes (per-tensor path),
+  // repeated indices, and more indices than rows.
+  Device device = GetParam();
+  const std::vector<dim_t> row_sizes = {4, 8, 12, 3, 64};
+  const dim_t rows = 5;
+  StorageView ids({6}, std::vector<int32_t>{4, 0, 0, 3, 1, 2}, device);
+
+  std::vector<StorageView> data;
+  std::vector<StorageView> expected;
+  for (dim_t t = 0; t < 60; ++t) {
+    const dim_t row_size = row_sizes[t % row_sizes.size()];
+    std::vector<float> values(rows * row_size);
+    for (size_t i = 0; i < values.size(); ++i)
+      values[i] = t * 1000 + i;
+    data.emplace_back(Shape{rows, row_size}, values, device);
+    expected.emplace_back(device);
+    ops::Gather(0)(data.back(), ids, expected.back());
+  }
+
+  std::vector<StorageView*> pointers;
+  for (auto& value : data)
+    pointers.push_back(&value);
+  ops::Gather::batch(pointers, ids);
+
+  for (size_t t = 0; t < data.size(); ++t)
+    expect_storage_eq(data[t], expected[t]);
+}
+
 TEST_P(OpDeviceTest, GatherInDepthWith1DInput) {
   Device device = GetParam();
   StorageView data({2, 4}, std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8}, device);

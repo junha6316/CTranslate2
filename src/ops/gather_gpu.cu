@@ -1,5 +1,8 @@
 #include "ctranslate2/ops/gather.h"
 
+#include <algorithm>
+#include <vector>
+
 #include <thrust/gather.h>
 #include <thrust/iterator/counting_iterator.h>
 #include <thrust/iterator/transform_iterator.h>
@@ -87,6 +90,57 @@ namespace ctranslate2 {
 
       } else {
         throw std::invalid_argument("Gather only supports indexing the first non batch dimension");
+      }
+    }
+
+    constexpr int gather_batch_max_tensors = 32;
+
+    // Passed by value as a kernel parameter, so the pointers need no upload.
+    struct GatherRowsArgs {
+      const uint4* src[gather_batch_max_tensors];
+      uint4* dst[gather_batch_max_tensors];
+      cuda::index_t row_size[gather_batch_max_tensors];
+    };
+
+    // blockIdx.y selects the tensor, the x dimension strides over its output words.
+    __global__ void gather_rows_kernel(const GatherRowsArgs args,
+                                       const int32_t* indices,
+                                       const cuda::index_t num_indices) {
+      const uint4* src = args.src[blockIdx.y];
+      uint4* dst = args.dst[blockIdx.y];
+      const cuda::index_t row_size = args.row_size[blockIdx.y];
+      const cuda::index_t size = row_size * num_indices;
+      for (cuda::index_t i = blockIdx.x * blockDim.x + threadIdx.x;
+           i < size;
+           i += gridDim.x * blockDim.x) {
+        const cuda::index_t row = i / row_size;
+        dst[i] = src[static_cast<cuda::index_t>(indices[row]) * row_size + i - row * row_size];
+      }
+    }
+
+    void gather_rows_cuda(const std::vector<const void*>& src,
+                          const std::vector<void*>& dst,
+                          const std::vector<dim_t>& row_size,
+                          const int32_t* indices,
+                          const dim_t num_indices) {
+      // gather.cc bounds the tensor size with threads * max_blocks, keep them in sync.
+      constexpr dim_t threads = 256;
+      constexpr dim_t max_blocks = 1024;
+
+      for (size_t begin = 0; begin < src.size(); begin += gather_batch_max_tensors) {
+        const size_t end = std::min(src.size(), begin + gather_batch_max_tensors);
+        GatherRowsArgs args;
+        dim_t max_size = 0;
+        for (size_t t = begin; t < end; ++t) {
+          args.src[t - begin] = static_cast<const uint4*>(src[t]);
+          args.dst[t - begin] = static_cast<uint4*>(dst[t]);
+          args.row_size[t - begin] = row_size[t];
+          max_size = std::max(max_size, row_size[t] * num_indices);
+        }
+
+        const dim3 grid(std::min((max_size + threads - 1) / threads, max_blocks), end - begin);
+        gather_rows_kernel<<<grid, threads, 0, cuda::get_cuda_stream()>>>(
+          args, indices, num_indices);
       }
     }
 
