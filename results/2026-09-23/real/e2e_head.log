@@ -1,0 +1,9 @@
+head small float16 sequential: 1.98 s (102.5x realtime), 2180 chars
+head small float16 batched8: 0.61 s (335.5x realtime), 2171 chars
+head small int8_float16 sequential: 2.46 s (82.7x realtime), 2196 chars
+head small int8_float16 batched8: 0.69 s (294.4x realtime), 2168 chars
+head large-v3 float16 sequential: 15.04 s (13.5x realtime), 2368 chars
+head large-v3 float16 batched8: 2.21 s (91.8x realtime), 2132 chars
+head large-v3 int8_float16 sequential: 14.26 s (14.3x realtime), 2366 chars
+head large-v3 int8_float16 batched8: 2.32 s (87.6x realtime), 2142 chars
+wrote /opt/real/e2e_head.json

@@ -1,0 +1,9 @@
+up small float16 sequential: 3.46 s (58.8x realtime), 2180 chars
+up small float16 batched8: 0.63 s (320.3x realtime), 2171 chars
+up small int8_float16 sequential: 3.89 s (52.2x realtime), 2196 chars
+up small int8_float16 batched8: 0.70 s (288.5x realtime), 2168 chars
+up large-v3 float16 sequential: 18.95 s (10.7x realtime), 2356 chars
+up large-v3 float16 batched8: 2.30 s (88.2x realtime), 2132 chars
+up large-v3 int8_float16 sequential: 19.47 s (10.4x realtime), 2569 chars
+up large-v3 int8_float16 batched8: 2.38 s (85.5x realtime), 2142 chars
+wrote /opt/real/e2e_up.json
