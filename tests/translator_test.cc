@@ -1,6 +1,7 @@
 #include <ctranslate2/buffered_translation_wrapper.h>
 #include <ctranslate2/translator.h>
 #include <ctranslate2/decoding.h>
+#include <ctranslate2/layers/transformer.h>
 
 #include <algorithm>
 #include <unordered_set>
@@ -1003,4 +1004,114 @@ TEST(TranslatorTest, ScoringMaxInputLength) {
 
   EXPECT_EQ(result.tokens, (std::vector<std::string>{"a", "t", "z", "</s>"}));
   EXPECT_EQ(result.tokens_score.size(), options.max_input_length);
+}
+
+// TransformerDecoder::decode verifies the decoding step against the "self_length" state
+// entry, which records the exact number of steps written to the preallocated
+// self-attention caches. The regular translation paths never trip the guard, so these
+// tests drive the decoder directly with inconsistent steps.
+class TransformerDecoderTest : public ::testing::Test {
+protected:
+  TransformerDecoderTest()
+    : _model(models::Model::load(default_model_dir()))
+    , _encoder(*_model, "encoder")
+    , _decoder(*_model, "decoder") {
+  }
+
+  layers::DecoderState make_state(bool iterative_decoding = true) {
+    StorageView src_ids({1, 4}, std::vector<int32_t>{3, 4, 5, 6});
+    StorageView src_lengths({1}, int32_t(4));
+    StorageView memory(_encoder.output_type());
+    _encoder({src_ids}, &src_lengths, memory);
+    auto state = _decoder.initial_state(iterative_decoding);
+    state.emplace("memory", std::move(memory));
+    state.emplace("memory_lengths", std::move(src_lengths));
+    return state;
+  }
+
+  std::shared_ptr<const models::Model> _model;
+  layers::TransformerEncoder _encoder;
+  layers::TransformerDecoder _decoder;
+};
+
+TEST_F(TransformerDecoderTest, CacheLengthGuardStepByStep) {
+  auto state = make_state();
+  StorageView tok({1}, int32_t(1));
+  StorageView logits;
+
+  _decoder(0, tok, state, &logits);
+  _decoder(1, tok, state, &logits);
+  EXPECT_THROW(_decoder(3, tok, state, &logits), std::runtime_error);  // Off by +1.
+  EXPECT_THROW(_decoder(1, tok, state, &logits), std::runtime_error);  // Off by -1.
+  EXPECT_THROW(_decoder(0, tok, state, &logits), std::runtime_error);  // Reset counter.
+  // The guard threw before any cache write, so the state is still consistent.
+  _decoder(2, tok, state, &logits);
+
+  const auto& record = state.at("self_length");
+  EXPECT_EQ(record.dim(0), 1);
+  EXPECT_EQ(record.dim(1), 3);
+  EXPECT_EQ(record.dtype(), DataType::INT8);
+}
+
+TEST_F(TransformerDecoderTest, CacheLengthGuardBulkPrompt) {
+  auto state = make_state();
+  StorageView prompt({1, 3}, std::vector<int32_t>{1, 3, 4});
+  StorageView tok({1}, int32_t(1));
+  StorageView logits;
+
+  _decoder(0, prompt, state, &logits);
+  EXPECT_THROW(_decoder(2, tok, state, &logits), std::runtime_error);  // prompt_len - 1.
+  EXPECT_THROW(_decoder(4, tok, state, &logits), std::runtime_error);  // prompt_len + 1.
+  _decoder(3, tok, state, &logits);
+}
+
+TEST_F(TransformerDecoderTest, CacheLengthGuardFreshStateNonZeroStep) {
+  auto state = make_state();
+  StorageView tok({1}, int32_t(1));
+  StorageView logits;
+
+  // The block-level check in append_to_cache also rejects step 5 on an empty cache, so
+  // pin the message to make sure the step-level guard fired first.
+  try {
+    _decoder(5, tok, state, &logits);
+    FAIL() << "expected the cache length guard to throw";
+  } catch (const std::runtime_error& e) {
+    EXPECT_NE(std::string(e.what()).find("does not match the number of steps"),
+              std::string::npos)
+      << "unexpected message: " << e.what();
+  }
+}
+
+TEST_F(TransformerDecoderTest, CacheLengthSurvivesReplication) {
+  auto state = make_state();
+  StorageView tok({1}, int32_t(1));
+  StorageView logits;
+
+  _decoder(0, tok, state, &logits);
+  _decoder(1, tok, state, &logits);
+
+  // The name is qualified because TransformerDecoder::replicate_state(name) hides the
+  // base overload.
+  _decoder.layers::Decoder::replicate_state(state, /*beam_size=*/2);
+  _decoder.update_state(state, StorageView({2}, std::vector<int32_t>{1, 0}), /*beam_size=*/2);
+
+  StorageView tok2({2}, int32_t(1));
+  EXPECT_THROW(_decoder(1, tok2, state, &logits), std::runtime_error);
+  EXPECT_THROW(_decoder(3, tok2, state, &logits), std::runtime_error);
+  _decoder(2, tok2, state, &logits);
+
+  const auto& record = state.at("self_length");
+  EXPECT_EQ(record.dim(0), 2);
+  EXPECT_EQ(record.dim(1), 3);
+}
+
+TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
+  auto state = make_state(/*iterative_decoding=*/false);
+  StorageView target({1, 4}, std::vector<int32_t>{1, 3, 4, 5});
+  StorageView lengths({1}, int32_t(4));
+  StorageView logits;
+
+  // The full-sequence overload decodes with step -1 and no cache, so it is exempt.
+  _decoder(target, lengths, state, logits);
+  EXPECT_EQ(state.find("self_length"), state.end());
 }

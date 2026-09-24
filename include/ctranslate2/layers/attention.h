@@ -52,6 +52,8 @@ namespace ctranslate2 {
         return bool(_memory_kv);
       }
 
+      bool preallocates_cache() const override;
+
       void forward_merged(const StorageView& queries,
                           const StorageView* memory,
                           const StorageView* memory_lengths_mask,

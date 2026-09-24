@@ -207,10 +207,11 @@ namespace ctranslate2 {
       const dim_t length = offset + steps;
       dim_t capacity = cache.empty() ? 0 : cache.dim(2);
 
-      // "offset" is the number of steps already in the cache. It comes from the decoder
-      // step counter, which also drives the position encoder and the rotary embeddings, so
-      // a wrong value would already corrupt the positions. Check what can still be
-      // checked: the shape no longer carries the length, but the capacity is always
+      // "offset" is the number of steps already in the cache. The exact step-level
+      // verification happens in TransformerDecoder::decode against the "self_length"
+      // state entry; this block-granularity check remains as cheap defense in depth for
+      // any caller that reaches MultiHeadAttention without going through that decode.
+      // The shape no longer carries the length, but the capacity is always
       // round_up(length, kv_cache_block), so a correct offset falls in the last block.
       // That catches an offset that is off by a block or more, not one that is off by a
       // few steps.
@@ -417,6 +418,11 @@ namespace ctranslate2 {
       return _d_model;
     }
 
+    bool MultiHeadAttention::preallocates_cache() const {
+      // Encoder instances manage no decoder cache.
+      return _is_decoder && _self_attention && _sliding_window == 0 && !_merge_time_and_head_dims;
+    }
+
     void MultiHeadAttention::apply_k_norm(StorageView& keys_proj) const {
       if (_k_norm) {
         StorageView keys_normed(keys_proj.dtype(), keys_proj.device());
@@ -550,9 +556,7 @@ namespace ctranslate2 {
       // dimensions are stored with spare capacity and written in place. The other paths
       // keep rebuilding the cache: the sliding window assumes the cache starts at time 0,
       // and the merged layout is not [batch, heads, time, depth].
-      const bool preallocated_cache = (_self_attention
-                                       && _sliding_window == 0
-                                       && !_merge_time_and_head_dims);
+      const bool preallocated_cache = preallocates_cache();
       // Non-zero when the cache holds fewer steps than its time dimension allows.
       dim_t cached_keys_length = 0;
 

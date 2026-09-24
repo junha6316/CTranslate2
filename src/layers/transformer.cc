@@ -485,6 +485,21 @@ namespace ctranslate2 {
       return std::make_unique<Alibi>(use_positive_positions, scale_alibi);
     }
 
+    // Bookkeeping entry recording the exact number of time steps written to the
+    // preallocated self-attention caches (self_keys_i/self_values_i). Those tensors only
+    // carry their capacity (round_up(length, kv_cache_block)) in their shape, so the true
+    // length is recorded here instead. ONLY THE SHAPE of this entry is meaningful: it is
+    // [batch, cached_length, 16] with dtype INT8 and its contents are never read.
+    // - dim(0) tracks the batch x beam size like every other replicated state entry, so
+    //   beam reorder, batch reduction, replication, tiling and per-batch slicing apply to
+    //   it unchanged (they all operate on dim 0 only), and Decoder::batch_size stays
+    //   correct if this entry lands at state.begin().
+    // - dim(1) is the record: the number of valid steps in every self-attention cache.
+    // - the trailing 16 keeps each row a multiple of 16 bytes so the entry stays on the
+    //   fused one-kernel beam reorder path (ops::Gather::batch).
+    // The name must not start with "memory" so replicate_state() treats it like the caches.
+    static const char* kSelfCacheLengthState = "self_length";
+
     TransformerDecoder::TransformerDecoder(const models::Model& model, const std::string& scope)
       : Decoder(model.device())
       , _num_heads(model.get_attribute_with_default<int32_t>(scope + "/num_heads", 8))
@@ -539,7 +554,7 @@ namespace ctranslate2 {
       DecoderState state;
 
       if (iterative_decoding) {
-        const size_t state_size = _layers.size() * (_with_encoder_attention ? 4 : 2);
+        const size_t state_size = _layers.size() * (_with_encoder_attention ? 4 : 2) + 1;
         state.reserve(state_size);
 
         const DataType dtype = output_type();
@@ -553,6 +568,10 @@ namespace ctranslate2 {
             state.emplace("memory_values_" + i_str, StorageView(dtype, _device));
           }
         }
+
+        // The entry starts empty, which encodes a cached length of 0.
+        if (!_layers.empty() && _layers.front()->get_self_attention().preallocates_cache())
+          state.emplace(kSelfCacheLengthState, StorageView(DataType::INT8, _device));
       }
 
       return state;
@@ -630,6 +649,25 @@ namespace ctranslate2 {
       const DataType dtype = output_type();
       const Device device = ids.device();
       const bool is_sequence = ids.rank() > 1;
+
+      // The step must equal the number of steps already written to the preallocated
+      // self-attention caches. Their shape only bounds the length to a kv_cache_block
+      // window (see append_to_cache), so an off-by-a-few-steps counter would silently
+      // corrupt attention: on the iterative path there is no softmax mask and correctness
+      // rests on offset + steps being the exact cache length. The check runs before the
+      // position encoder and rotary embeddings, which consume the same counter.
+      const bool tracked_cache_length =
+          (step >= 0 && _layers.front()->get_self_attention().preallocates_cache());
+      if (tracked_cache_length) {
+        const auto it = state.find(kSelfCacheLengthState);
+        const dim_t cached_length =
+            (it == state.end() || it->second.empty()) ? 0 : it->second.dim(1);
+        if (step != cached_length)
+          throw std::runtime_error("Decoding step " + std::to_string(step)
+                                   + " does not match the number of steps already in the "
+                                   "self-attention cache (" + std::to_string(cached_length)
+                                   + ")");
+      }
 
       StorageView layer_in(dtype, device);
       StorageView layer_out(dtype, device);
@@ -820,6 +858,26 @@ namespace ctranslate2 {
       if (step == 0) {
         // The memory is no longer needed as its projections were cached in the first step.
         state.erase("memory");
+      }
+
+      if (tracked_cache_length) {
+        auto it = state.find(kSelfCacheLengthState);
+        if (it == state.end())  // State built outside initial_state: start tracking now.
+          it = state.emplace(kSelfCacheLengthState, StorageView(DataType::INT8, _device)).first;
+        StorageView& cache_length = it->second;
+        const dim_t new_length = step + max_time;
+        // Grow the buffer by blocks like the caches do, so the greedy path only touches
+        // metadata on most steps (StorageView::resize keeps the buffer when the byte size
+        // fits). No consumer ever reads past the current shape (gathers and tiles copy
+        // shape-defined bytes only), so zeroing the spare region is hygiene, not
+        // correctness; do it once per growth to leave no undefined bytes behind.
+        const dim_t needed_bytes = batch_size * new_length * 16;  // INT8: 1 byte/element
+        if (needed_bytes > cache_length.reserved_memory()) {
+          const dim_t rounded = (new_length + 31) / 32 * 32;
+          cache_length.resize({batch_size, rounded, 16});
+          cache_length.zero();
+        }
+        cache_length.resize({batch_size, new_length, 16});
       }
 
       if (attention && !alignment_heads.empty()) {

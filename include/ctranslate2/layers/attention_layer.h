@@ -45,6 +45,13 @@ namespace ctranslate2 {
         return _multi_query;
       }
 
+      // Whether the decoder self-attention cache managed by this layer is stored with
+      // spare time capacity and written in place at the step offset (see append_to_cache
+      // in attention.cc). Such caches do not carry their exact length in their shape.
+      virtual bool preallocates_cache() const {
+        return false;
+      }
+
       static StorageView prepare_length_mask(const StorageView& lengths,
                                              const dim_t num_heads,
                                              const dim_t num_queries,

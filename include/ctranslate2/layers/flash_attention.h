@@ -37,6 +37,15 @@ namespace ctranslate2 {
           : bool(_rotary_embeddings || _alibi);
       }
 
+      // The decoder cache grows by _offset_free_space and the kernel writes in place at
+      // the step offset, so its shape carries capacity, not length. A sliding window is
+      // excluded like in MultiHeadAttention: the cache is then slid and truncated to the
+      // window, so it no longer holds exactly one entry per decoded step. Encoder
+      // instances manage no decoder cache.
+      bool preallocates_cache() const override {
+        return _is_decoder && _sliding_window == 0;
+      }
+
     private:
       static void split_heads(StorageView& x,
                                dim_t num_heads,
