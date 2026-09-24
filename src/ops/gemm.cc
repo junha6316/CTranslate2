@@ -46,13 +46,15 @@ namespace ctranslate2 {
       if (bias.dtype() != a.dtype() || bias.size() != n)
         return false;
 
+      // Validate the residual against the expected output size before resizing c, so that
+      // a rejected epilogue leaves c untouched for the fallback path.
+      if (residual && (residual->dtype() != a.dtype() || residual->size() != m * n))
+        return false;
+
       Shape output_shape(a.shape());
       output_shape[output_shape.size() - 2] = a.dim(trans_a ? -1 : -2); // m
       output_shape[output_shape.size() - 1] = n;
       c.resize(std::move(output_shape));
-
-      if (residual && (residual->dtype() != a.dtype() || residual->size() != c.size()))
-        return false;
 
       return cuda::gemm_bias_lt<T>(trans_a, trans_b,
                                    m, n, k,
