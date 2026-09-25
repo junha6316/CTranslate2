@@ -192,7 +192,11 @@ namespace ctranslate2 {
       void set_alignment_heads(const dim_t layer, const dim_t num_heads_to_average);
       void set_alignment_heads(const std::vector<std::pair<dim_t, dim_t>>& alignment_heads);
 
-      std::unique_ptr<StorageView>
+      // Returns the device tensor selecting the alignment heads of this layer, or nullptr
+      // when the layer has none. The tensor is cached: its content only depends on the
+      // layer and the batch size, so it is rebuilt lazily per layer when the batch size
+      // changes instead of allocating and uploading on every decode step.
+      const StorageView*
       get_layer_alignment_heads(const dim_t layer, const dim_t batch_size) const;
 
       virtual bool return_normalized_attention() const {
@@ -229,6 +233,10 @@ namespace ctranslate2 {
       const bool _with_encoder_attention;
       std::vector<std::vector<dim_t>> _alignment_heads;
       bool _average_alignment_heads;
+      // Cache for get_layer_alignment_heads, keyed by the batch size (mutable for the
+      // same single-thread-per-replica reason as _workspace below).
+      mutable std::vector<StorageView> _alignment_heads_device;
+      mutable dim_t _alignment_heads_batch = -1;
       Dense _proj;
       const dim_t _sliding_window;
       const bool _tensor_parallel;

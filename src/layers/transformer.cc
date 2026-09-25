@@ -615,6 +615,7 @@ namespace ctranslate2 {
       _alignment_heads[layer] = std::move(range);
 
       _average_alignment_heads = true;
+      _alignment_heads_batch = -1;  // The cached device tensors describe the old heads.
     }
 
     void TransformerDecoder::set_alignment_heads(const std::vector<std::pair<dim_t, dim_t>>& alignment_heads) {
@@ -624,9 +625,10 @@ namespace ctranslate2 {
         _alignment_heads[layer].push_back(head);
 
       _average_alignment_heads = false;
+      _alignment_heads_batch = -1;  // The cached device tensors describe the old heads.
     }
 
-    std::unique_ptr<StorageView>
+    const StorageView*
     TransformerDecoder::get_layer_alignment_heads(const dim_t layer, const dim_t batch_size) const {
       if (_alignment_heads.empty())
         return nullptr;
@@ -637,12 +639,24 @@ namespace ctranslate2 {
       if (heads.empty())
         return nullptr;
 
-      std::vector<int32_t> indices;
-      indices.reserve(batch_size * num_heads);
-      for (dim_t i = 0; i < batch_size; ++i)
-        indices.insert(indices.end(), heads.begin(), heads.end());
+      // batch x beam is constant within a decode, so the tensors are built once per
+      // requested layer and reused by every following step instead of allocating and
+      // uploading batch_size x num_heads indices per layer per step.
+      if (batch_size != _alignment_heads_batch) {
+        _alignment_heads_device.assign(_layers.size(), StorageView());
+        _alignment_heads_batch = batch_size;
+      }
 
-      return std::make_unique<StorageView>(Shape{batch_size, num_heads}, indices, _device);
+      StorageView& cached = _alignment_heads_device[layer];
+      if (cached.empty()) {
+        std::vector<int32_t> indices;
+        indices.reserve(batch_size * num_heads);
+        for (dim_t i = 0; i < batch_size; ++i)
+          indices.insert(indices.end(), heads.begin(), heads.end());
+        cached = StorageView({batch_size, num_heads}, indices, _device);
+      }
+
+      return &cached;
     }
 
     void TransformerDecoder::operator()(dim_t step,
@@ -844,9 +858,12 @@ namespace ctranslate2 {
             }
           }
 
-          std::unique_ptr<StorageView> heads_to_select = get_layer_alignment_heads(l, batch_size);
+          // The selection is only consumed when attention weights are requested (see the
+          // layer_attention gather below), so skip the lookup entirely otherwise.
+          const StorageView* heads_to_select =
+              attention ? get_layer_alignment_heads(l, batch_size) : nullptr;
           std::unique_ptr<StorageView> layer_attention;
-          if (attention && heads_to_select)
+          if (heads_to_select)
             layer_attention = std::make_unique<StorageView>(dtype, device);
 
           dim_t offset = _sliding_window * i + step;

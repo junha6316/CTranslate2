@@ -1224,6 +1224,33 @@ TEST_F(TransformerDecoderTest, LayerSlotsPingPongAcrossSteps) {
   }
 }
 
+TEST_F(TransformerDecoderTest, AlignmentHeadsDeviceMemo) {
+  // No heads configured: no tensor is built at all.
+  EXPECT_EQ(_decoder.get_layer_alignment_heads(0, 2), nullptr);
+
+  _decoder.set_alignment_heads(/*layer=*/0, /*num_heads_to_average=*/2);
+  const StorageView* first = _decoder.get_layer_alignment_heads(0, 2);
+  ASSERT_NE(first, nullptr);
+  expect_storage_eq(*first, StorageView({2, 2}, std::vector<int32_t>{0, 1, 0, 1}));
+
+  // Same batch size: the cached tensor (and its buffer) is returned, not a rebuild.
+  const void* buffer = first->buffer();
+  const StorageView* again = _decoder.get_layer_alignment_heads(0, 2);
+  EXPECT_EQ(again, first);
+  EXPECT_EQ(again->buffer(), buffer);
+
+  // A batch size change rebuilds with the new content.
+  const StorageView* grown = _decoder.get_layer_alignment_heads(0, 3);
+  ASSERT_NE(grown, nullptr);
+  expect_storage_eq(*grown, StorageView({3, 2}, std::vector<int32_t>{0, 1, 0, 1, 0, 1}));
+
+  // Reconfiguring the heads invalidates the cache even at an unchanged batch size.
+  _decoder.set_alignment_heads(/*layer=*/0, /*num_heads_to_average=*/1);
+  const StorageView* reconfigured = _decoder.get_layer_alignment_heads(0, 3);
+  ASSERT_NE(reconfigured, nullptr);
+  expect_storage_eq(*reconfigured, StorageView({3, 1}, std::vector<int32_t>{0, 0, 0}));
+}
+
 TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
   auto state = make_state(/*iterative_decoding=*/false);
   StorageView target({1, 4}, std::vector<int32_t>{1, 3, 4, 5});
