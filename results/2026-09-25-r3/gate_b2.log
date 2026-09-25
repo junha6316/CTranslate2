@@ -1,0 +1,152 @@
++ source /home/ubuntu/venv/bin/activate
+++ deactivate nondestructive
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
+++ '[' -n '' ']'
+++ unset VIRTUAL_ENV
+++ unset VIRTUAL_ENV_PROMPT
+++ '[' '!' nondestructive = nondestructive ']'
+++ VIRTUAL_ENV=/home/ubuntu/venv
+++ export VIRTUAL_ENV
+++ _OLD_VIRTUAL_PATH=/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/ubuntu/venv/bin:/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ export PATH
+++ '[' -n '' ']'
+++ '[' -z '' ']'
+++ _OLD_VIRTUAL_PS1=
+++ PS1='(venv) '
+++ export PS1
+++ VIRTUAL_ENV_PROMPT='(venv) '
+++ export VIRTUAL_ENV_PROMPT
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
++ export CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install
++ LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ cd /opt/real/r4
++ echo '=== [0] alloc trace beam5 (hunt the 48/step) ==='
+=== [0] alloc trace beam5 (hunt the 48/step) ===
++ CT2_CUDA_ALLOC_DEBUG=1
++ CT2_CUDA_ALLOC_TRACE=1
++ python -
++ python -
+allocs in 2 steady steps: 96
+[(7680, 48), (23040, 24), (180000, 24)]
++ echo '=== [1] re-verify default tokens after decode refactor ==='
+=== [1] re-verify default tokens after decode refactor ===
++ python capture_tokens.py b2_default_tokens.json
+windows per model: {'small': 9, 'large-v3': 3}
++ cmp_json baseline_tokens.json b2_default_tokens.json DEFAULT_AFTER_REFACTOR
++ python - baseline_tokens.json b2_default_tokens.json DEFAULT_AFTER_REFACTOR
+DEFAULT_AFTER_REFACTOR IDS_IDENTICAL True
++ echo '=== [2] greedy tokens: default / pad / graphs ==='
+=== [2] greedy tokens: default / pad / graphs ===
++ python tokens_g.py g_default.json
+windows: 9
++ CT2_CUDA_PAD_KV=1
++ python tokens_g.py g_pad.json
+windows: 9
++ CT2_CUDA_GRAPHS=1
++ python tokens_g.py g_graphs.json
+windows: 9
++ cmp_json g_default.json g_pad.json GREEDY_PAD_VS_DEFAULT
++ python - g_default.json g_pad.json GREEDY_PAD_VS_DEFAULT
+GREEDY_PAD_VS_DEFAULT IDS_IDENTICAL False
++ cmp_json g_pad.json g_graphs.json GREEDY_GRAPHS_VS_PAD
++ python - g_pad.json g_graphs.json GREEDY_GRAPHS_VS_PAD
+GREEDY_GRAPHS_VS_PAD IDS_IDENTICAL True
++ grep -c 'CUDA graphs' graphs_dbg.log
+0
++ true
++ grep -m5 'CUDA graphs' graphs_dbg.log
++ true
++ echo '=== [3] graphs CHECK mode (greedy, 3 windows) ==='
+=== [3] graphs CHECK mode (greedy, 3 windows) ===
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_GRAPHS_CHECK=1
++ python -
+CHECK_RUN_DONE
++ grep -c 'logits mismatch' check_dbg.log
+0
++ echo NO_MISMATCH_LINES
+NO_MISMATCH_LINES
++ grep -m3 'CUDA graphs' check_dbg.log
++ true
++ echo '=== [4] beam5 graphs tokens ==='
+=== [4] beam5 graphs tokens ===
++ CT2_CUDA_GRAPHS=1
++ python capture_tokens.py b5_graphs.json
+windows per model: {'small': 9, 'large-v3': 3}
++ cmp_json pad_tokens.json b5_graphs.json BEAM5_GRAPHS_VS_PAD
++ python - pad_tokens.json b5_graphs.json BEAM5_GRAPHS_VS_PAD
+BEAM5_GRAPHS_VS_PAD IDS_IDENTICAL True
++ cmp_json baseline_tokens.json b5_graphs.json BEAM5_GRAPHS_VS_BASELINE
++ python - baseline_tokens.json b5_graphs.json BEAM5_GRAPHS_VS_BASELINE
+BEAM5_GRAPHS_VS_BASELINE IDS_IDENTICAL False
++ grep -m5 'CUDA graphs' graphs_b5_dbg.log
++ true
++ echo '=== [5] wall: graphs greedy+beam5 ==='
+=== [5] wall: graphs greedy+beam5 ===
++ CT2_CUDA_GRAPHS=1
++ python bench_b.py graphs graphs_wall.json
+{'label': 'graphs', 'beam': 1, 'median_ms': 152.52, 'iqr': [151.73, 152.63], 'ntok': 84}
+{'label': 'graphs', 'beam': 5, 'median_ms': 260.15, 'iqr': [259.32, 260.52], 'ntok': 84}
++ echo '=== [6] fault injection (greedy 2 windows each; tokens must match pad) ==='
+=== [6] fault injection (greedy 2 windows each; tokens must match pad) ===
++ for f in capture instantiate replay fingerprint alloc
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_GRAPHS_FAULT=capture
++ python - capture
+FAULT_OK capture
++ for f in capture instantiate replay fingerprint alloc
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_GRAPHS_FAULT=instantiate
++ python - instantiate
+FAULT_OK instantiate
++ for f in capture instantiate replay fingerprint alloc
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_GRAPHS_FAULT=replay
++ python - replay
+FAULT_OK replay
++ for f in capture instantiate replay fingerprint alloc
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_GRAPHS_FAULT=fingerprint
++ python - fingerprint
+FAULT_OK fingerprint
++ for f in capture instantiate replay fingerprint alloc
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_GRAPHS_FAULT=alloc
++ python - alloc
+FAULT_OK alloc
++ python -
+FAULT capture TOKENS_MATCH_PAD True
+FAULT instantiate TOKENS_MATCH_PAD True
+FAULT replay TOKENS_MATCH_PAD True
+FAULT fingerprint TOKENS_MATCH_PAD True
+FAULT alloc TOKENS_MATCH_PAD True
++ echo '=== [7] alloc/step with graphs (greedy) ==='
+=== [7] alloc/step with graphs (greedy) ===
++ CT2_CUDA_GRAPHS=1
++ CT2_CUDA_ALLOC_DEBUG=1
++ python -
++ python -
+GRAPHS_GREEDY steps: 77 avg allocs/step 0.00
++ echo '=== [8] nsys graphs profile (launch collapse) ==='
+=== [8] nsys graphs profile (launch collapse) ===
++ rm -f graphs_prof.nsys-rep graphs_prof.sqlite
++ CT2_CUDA_GRAPHS=1
++ /usr/local/bin/nsys profile -o graphs_prof --force-overwrite=true python /opt/real/prof_batch.py small 1
++ grep WALL
+WALL small n=1 2068.5 ms for 5 runs
++ /usr/local/bin/nsys stats --report cuda_api_sum --format csv graphs_prof.nsys-rep
++ grep -iE 'LaunchKernel|GraphLaunch|MallocAsync'
++ awk -F, '{print $3, $NF}'
+150552 cudaLaunchKernel
+71372 cuLaunchKernel
+41351 cudaMallocAsync
+182 cudaLaunchKernelExC
++ echo B2_BATCH_DONE
+B2_BATCH_DONE
+CHAIN_DONE

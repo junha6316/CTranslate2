@@ -1,0 +1,12 @@
+launches=130 n=3840 nodes=130 reps=300
+eager_us_median 330.1
+replay_us_median 144.4
+setparams25_us_median 153.7
+execupdate_us_median 231.5
+saving_per_step_us 185.7
+launches=300 n=3840 nodes=300 reps=300
+eager_us_median 774.9
+replay_us_median 325.2
+setparams25_us_median 334.5
+execupdate_us_median 533.4
+saving_per_step_us 449.7

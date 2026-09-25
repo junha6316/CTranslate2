@@ -1,0 +1,9 @@
+/opt/real/r4/stats_r3_cuda_api_sum.csv:55.1,888839984,164197,5413.3,4700.0,3960,18538745,78407.2,cudaLaunchKernel
+/opt/real/r4/stats_r3_cuda_api_sum.csv:1.2,20076086,2990,6714.4,1470.0,840,9930300,182606.4,cudaMallocAsync
+/opt/real/r4/stats_r3_cuda_api_sum.csv:0.3,4783445,2990,1599.8,1390.0,940,20160,921.1,cudaFreeAsync
+/opt/real/r4/stats_r3_cuda_api_sum.csv:0.1,1186686,182,6520.3,6165.5,5040,33400,2776.9,cudaLaunchKernelExC
+/opt/real/r4/stats_r3_graphs_cuda_api_sum.csv:9.2,162592313,18693,8698.0,4720.0,930,18333821,232736.8,cudaLaunchKernel
+/opt/real/r4/stats_r3_graphs_cuda_api_sum.csv:3.4,60501808,616,98217.2,95076.5,89941,216634,15763.7,cudaGraphLaunch
+/opt/real/r4/stats_r3_graphs_cuda_api_sum.csv:1.1,19762345,2317,8529.3,1490.0,920,10214025,213465.0,cudaMallocAsync
+/opt/real/r4/stats_r3_graphs_cuda_api_sum.csv:0.2,3513588,2317,1516.4,1360.0,940,19911,771.1,cudaFreeAsync
+/opt/real/r4/stats_r3_graphs_cuda_api_sum.csv:0.1,1184742,182,6509.6,5895.0,5220,32591,2972.1,cudaLaunchKernelExC

@@ -1,0 +1,1 @@
+[{"label": "stageA", "beam": 1, "median_ms": 164.1, "iqr": [163.83, 164.25], "ntok": 84}, {"label": "stageA", "beam": 5, "median_ms": 227.11, "iqr": [226.14, 233.8], "ntok": 84}]

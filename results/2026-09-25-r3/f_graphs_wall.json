@@ -1,0 +1,1 @@
+[{"label": "fixgraphs", "beam": 1, "median_ms": 151.92, "iqr": [151.63, 152.6], "ntok": 84}, {"label": "fixgraphs", "beam": 5, "median_ms": 234.28, "iqr": [233.47, 234.63], "ntok": 84}]

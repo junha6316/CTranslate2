@@ -1,0 +1,422 @@
+-- Compiler Id: GNU
+-- Compiler Version: 11.4.0
+-- Build spdlog: 1.10.0
+-- Build type: Release
+-- Compiling for multiple CPU ISA and enabling runtime dispatch
+-- Using OpenMP: /usr/lib/gcc/x86_64-linux-gnu/11/libgomp.so;/usr/lib/x86_64-linux-gnu/libpthread.a
+-- NVCC host compiler: /usr/bin/c++
+-- NVCC compilation flags: -std=c++17;-Xcompiler=-fopenmp;-gencode;arch=compute_86,code=sm_86;--expt-relaxed-constexpr;--expt-extended-lambda
+-- Found cuDNN include directory: /usr/local/cuda-12.8/include
+-- Found cuDNN libraries: /usr/local/cuda-12.8/lib/libcudnn.so
+-- Found cuBLASLt library: /usr/local/cuda-12.8/lib64/libcublasLt.so
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ubuntu/w/r3/build
+Consolidate compiler generated dependencies of target ruy_profiler_instrumentation
+Consolidate compiler generated dependencies of target clog
+Consolidate compiler generated dependencies of target ruy_system_aligned_alloc
+Consolidate compiler generated dependencies of target ruy_denormal
+Consolidate compiler generated dependencies of target utils
+Consolidate compiler generated dependencies of target ruy_have_built_path_for_avx512
+Consolidate compiler generated dependencies of target ruy_wait
+Consolidate compiler generated dependencies of target ruy_apply_multiplier
+[  1%] Built target ruy_profiler_instrumentation
+[  1%] Built target clog
+[  1%] Built target ruy_system_aligned_alloc
+[  2%] Built target utils
+[  3%] Built target ruy_wait
+[  4%] Built target ruy_apply_multiplier
+[  5%] Built target ruy_denormal
+[  5%] Built target ruy_have_built_path_for_avx512
+Consolidate compiler generated dependencies of target ruy_have_built_path_for_avx2_fma
+Consolidate compiler generated dependencies of target ruy_have_built_path_for_avx
+Consolidate compiler generated dependencies of target cpu_features
+Consolidate compiler generated dependencies of target ruy_prepacked_cache
+Consolidate compiler generated dependencies of target ruy_allocator
+Consolidate compiler generated dependencies of target gtest
+Consolidate compiler generated dependencies of target ruy_block_map
+Consolidate compiler generated dependencies of target ruy_blocking_counter
+[  6%] Built target ruy_have_built_path_for_avx2_fma
+[  6%] Built target ruy_have_built_path_for_avx
+[  8%] Built target ruy_prepacked_cache
+[ 11%] Built target cpu_features
+[ 11%] Built target ruy_allocator
+[ 11%] Built target ruy_block_map
+[ 12%] Built target ruy_blocking_counter
+[ 13%] Built target gtest
+Consolidate compiler generated dependencies of target ruy_thread_pool
+Consolidate compiler generated dependencies of target cpuinfo
+Consolidate compiler generated dependencies of target gtest_main
+[ 13%] Built target ruy_thread_pool
+[ 20%] Built target cpuinfo
+[ 20%] Built target gtest_main
+Consolidate compiler generated dependencies of target ruy_cpuinfo
+[ 22%] Built target ruy_cpuinfo
+Consolidate compiler generated dependencies of target ruy_tune
+[ 22%] Built target ruy_tune
+Consolidate compiler generated dependencies of target ruy_pack_arm
+Consolidate compiler generated dependencies of target ruy_kernel_avx512
+Consolidate compiler generated dependencies of target ruy_kernel_arm
+Consolidate compiler generated dependencies of target ruy_pack_avx512
+Consolidate compiler generated dependencies of target ruy_kernel_avx2_fma
+Consolidate compiler generated dependencies of target ruy_pack_avx2_fma
+Consolidate compiler generated dependencies of target ruy_kernel_avx
+Consolidate compiler generated dependencies of target ruy_pack_avx
+[ 25%] Built target ruy_kernel_arm
+[ 25%] Built target ruy_kernel_avx2_fma
+[ 25%] Built target ruy_pack_avx512
+[ 25%] Built target ruy_pack_arm
+[ 25%] Built target ruy_kernel_avx512
+[ 26%] Built target ruy_pack_avx2_fma
+[ 27%] Built target ruy_kernel_avx
+[ 27%] Built target ruy_pack_avx
+Consolidate compiler generated dependencies of target ruy_ctx
+[ 27%] Built target ruy_ctx
+Consolidate compiler generated dependencies of target ruy_prepare_packed_matrices
+Consolidate compiler generated dependencies of target ruy_context
+Consolidate compiler generated dependencies of target ruy_trmul
+[ 31%] Built target ruy_context
+[ 31%] Built target ruy_prepare_packed_matrices
+[ 31%] Built target ruy_trmul
+Consolidate compiler generated dependencies of target ruy_frontend
+Consolidate compiler generated dependencies of target ruy_context_get_ctx
+[ 32%] Built target ruy_frontend
+[ 32%] Built target ruy_context_get_ctx
+[ 33%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/awq/ctranslate2_generated_dequantize_gpu.cu.o
+[ 33%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/cuda/ctranslate2_generated_primitives.cu.o
+[ 34%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/awq/ctranslate2_generated_gemm_gpu.cu.o
+[ 34%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/awq/ctranslate2_generated_gemv_gpu.cu.o
+[ 34%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_alibi_add_gpu.cu.o
+[ 36%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_bias_add_gpu.cu.o
+[ 36%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_concat_split_slide_gpu.cu.o
+[ 36%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_conv1d_cudnn_gpu.cu.o
+/home/ubuntu/w/r3/src/ops/awq/gemm_gpu.cu(19): warning #177-D: variable "blockIdx_x" was declared but never referenced
+        int blockIdx_x = 0;
+            ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/home/ubuntu/w/r3/src/ops/awq/gemm_gpu.cu(33): warning #177-D: variable "ld_zero_flag" was declared but never referenced
+        bool ld_zero_flag = (threadIdx.y * 32 + threadIdx.x) * 8 < 128;
+             ^
+
+/home/ubuntu/w/r3/src/ops/awq/gemm_gpu.cu(246): warning #177-D: variable "scaling_factors_shared" was declared but never referenced
+        __attribute__((shared)) half scaling_factors_shared[64];
+                                     ^
+
+/home/ubuntu/w/r3/src/ops/awq/gemm_gpu.cu(247): warning #177-D: variable "zeros_shared" was declared but never referenced
+        __attribute__((shared)) half zeros_shared[64];
+                                     ^
+
+/home/ubuntu/w/r3/src/ops/awq/gemm_gpu.cu(251): warning #177-D: variable "blockIdx_x" was declared but never referenced
+        int blockIdx_x = 0;
+            ^
+
+/home/ubuntu/w/r3/src/ops/awq/gemm_gpu.cu(265): warning #177-D: variable "ld_zero_flag" was declared but never referenced
+        bool ld_zero_flag = (threadIdx.y * 32 + threadIdx.x) * 8 < 64;
+             ^
+
+/home/ubuntu/w/r3/src/ops/awq/gemv_gpu.cu(16): warning #177-D: variable "ZERO" was declared but never referenced
+        static constexpr uint32_t ZERO = 0x0;
+                                  ^
+          detected during instantiation of "void ctranslate2::ops::GemvAwq::compute_gemv2<D,In,Out>(const ctranslate2::StorageView &, const ctranslate2::StorageView &, const ctranslate2::StorageView &, const ctranslate2::StorageView &, ctranslate2::StorageView &) const [with D=ctranslate2::Device::CUDA, In=ctranslate2::float16_t, Out=int]" at line 546
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+[ 36%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_dequantize_gpu.cu.o
+[ 37%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_fill_ranges_gpu.cu.o
+[ 37%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_flash_attention_gpu.cu.o
+[ 38%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_gather_gpu.cu.o
+[ 38%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_gumbel_max_gpu.cu.o
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::relu_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:74:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+   38 |     void bias_add(const T* x, const T* b, T* y, dim_t numel, dim_t width, dim_t depth, Epilogue epilogue) {
+      |                                                                               ~~~~~~~~~^~~~~~~~
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::gelu_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:78:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::gelu_tanh_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:82:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::gelu_sigmoid_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:86:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::sigmoid_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:90:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::swish_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:94:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = float; T = float; Epilogue = ctranslate2::cuda::tanh_func<float>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:98:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = float]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:111:160:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::relu_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:74:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::gelu_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:78:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::gelu_tanh_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:82:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::gelu_sigmoid_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:86:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::sigmoid_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:90:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::swish_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:94:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __half; T = half_float::half; Epilogue = ctranslate2::cuda::tanh_func<__half>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:98:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = half_float::half]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:112:171:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::relu_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:74:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::gelu_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:78:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::gelu_tanh_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:82:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::gelu_sigmoid_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:86:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::sigmoid_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:90:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::swish_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:94:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu: In instantiation of ‘void ctranslate2::ops::bias_add(const T*, const T*, T*, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, Epilogue) [with DeviceT = __nv_bfloat16; T = ctranslate2::bfloat16_t; Epilogue = ctranslate2::cuda::tanh_func<__nv_bfloat16>; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:98:35:   required from ‘void ctranslate2::ops::BiasAdd::compute(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, const ctranslate2::StorageView*) const [with ctranslate2::Device D = ctranslate2::Device::CUDA; T = ctranslate2::bfloat16_t]’
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:113:165:   required from here
+/home/ubuntu/w/r3/src/ops/bias_add_gpu.cu:38:88: warning: unused parameter ‘epilogue’ [-Wunused-parameter]
+[ 38%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_layer_norm_gpu.cu.o
+[ 39%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_mean_gpu.cu.o
+/home/ubuntu/w/r3/src/ops/flash_attention_gpu.cu: In function ‘void ctranslate2::ops::set_params_splitkv(Flash_fwd_params&, int, int, int, int, int, int, int, cudaDeviceProp*)’:
+/home/ubuntu/w/r3/src/ops/flash_attention_gpu.cu:164:1: warning: unused parameter ‘head_size_rounded’ [-Wunused-parameter]
+  163 |                                    const int num_heads, const int head_size, const int max_seqlen_k, const int max_seqlen_q,
+      |                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  164 |                                    const int head_size_rounded,
+      | ^                
+[ 39%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_median_filter_gpu.cu.o
+[ 39%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_multinomial_gpu.cu.o
+[ 39%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_nccl_ops_gpu.cu.o
+[ 39%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_quantize_gpu.cu.o
+[ 40%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_rms_norm_gpu.cu.o
+[ 40%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_rotary_gpu.cu.o
+[ 40%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_softmax_gpu.cu.o
+[ 40%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_tile_gpu.cu.o
+[ 40%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_timestamp_gate_gpu.cu.o
+[ 40%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_topk_gpu.cu.o
+[ 41%] Building NVCC (Device) object CMakeFiles/ctranslate2.dir/src/ops/ctranslate2_generated_topp_mask_gpu.cu.o
+Consolidate compiler generated dependencies of target ctranslate2
+[ 43%] Building CXX object CMakeFiles/ctranslate2.dir/src/decoding.cc.o
+[ 43%] Building CXX object CMakeFiles/ctranslate2.dir/src/cpu/kernels.cc.o
+[ 43%] Building CXX object CMakeFiles/ctranslate2.dir/src/buffered_translation_wrapper.cc.o
+[ 44%] Building CXX object CMakeFiles/ctranslate2.dir/src/cpu/primitives.cc.o
+[ 44%] Building CXX object CMakeFiles/ctranslate2.dir/src/decoding_utils.cc.o
+[ 44%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/attention_layer.cc.o
+[ 44%] Building CXX object CMakeFiles/ctranslate2.dir/src/generator.cc.o
+[ 44%] Building CXX object CMakeFiles/ctranslate2.dir/src/encoder.cc.o
+[ 45%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/attention.cc.o
+[ 45%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/flash_attention.cc.o
+In file included from /home/ubuntu/w/r3/src/cpu/kernels.cc:19:
+/home/ubuntu/w/r3/src/cpu/vec.h: In instantiation of ‘static void ctranslate2::cpu::Vec<T, ISA>::convert_and_store(float, U*, ctranslate2::dim_t) [with U = unsigned char; T = float; ctranslate2::cpu::CpuIsa ISA = ctranslate2::cpu::CpuIsa::GENERIC; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/cpu/kernels.cc:598:37:   required from ‘float ctranslate2::cpu::quantize_s8_row(const float*, int8_t*, ctranslate2::dim_t, bool, const RoundFunc&) [with RoundFunc = float(float); int8_t = signed char; ctranslate2::dim_t = long int]’
+/home/ubuntu/w/r3/src/cpu/kernels.cc:634:38:   required from ‘void ctranslate2::cpu::quantize_s8_batch(const float*, int8_t*, float*, ctranslate2::dim_t, ctranslate2::dim_t, bool, const RoundFunc&) [with RoundFunc = float(float); int8_t = signed char; ctranslate2::dim_t = long int]’
+/home/ubuntu/w/r3/src/cpu/kernels.cc:648:26:   required from here
+/home/ubuntu/w/r3/src/cpu/vec.h:148:65: warning: unused parameter ‘count’ [-Wunused-parameter]
+  148 |       static inline void convert_and_store(float v, U* a, dim_t count) {
+      |                                                           ~~~~~~^~~~~
+/home/ubuntu/w/r3/src/cpu/vec.h: In instantiation of ‘static void ctranslate2::cpu::Vec<T, ISA>::convert_and_store(float, U*, ctranslate2::dim_t) [with U = signed char; T = float; ctranslate2::cpu::CpuIsa ISA = ctranslate2::cpu::CpuIsa::GENERIC; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/cpu/kernels.cc:609:37:   required from ‘float ctranslate2::cpu::quantize_s8_row(const float*, int8_t*, ctranslate2::dim_t, bool, const RoundFunc&) [with RoundFunc = float(float); int8_t = signed char; ctranslate2::dim_t = long int]’
+/home/ubuntu/w/r3/src/cpu/kernels.cc:634:38:   required from ‘void ctranslate2::cpu::quantize_s8_batch(const float*, int8_t*, float*, ctranslate2::dim_t, ctranslate2::dim_t, bool, const RoundFunc&) [with RoundFunc = float(float); int8_t = signed char; ctranslate2::dim_t = long int]’
+/home/ubuntu/w/r3/src/cpu/kernels.cc:648:26:   required from here
+/home/ubuntu/w/r3/src/cpu/vec.h:148:65: warning: unused parameter ‘count’ [-Wunused-parameter]
+[ 45%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/common.cc.o
+[ 46%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/transformer.cc.o
+[ 46%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/decoder.cc.o
+/home/ubuntu/w/r3/src/layers/transformer.cc: In lambda function:
+/home/ubuntu/w/r3/src/layers/transformer.cc:1095:24: warning: unused variable ‘device’ [-Wunused-variable]
+ 1095 |             const auto device = outputs->device();
+      |                        ^~~~~~
+[ 46%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/wav2vec2.cc.o
+/home/ubuntu/w/r3/src/layers/attention.cc: In member function ‘void ctranslate2::layers::MultiHeadAttention::process_cross_attention(const ctranslate2::StorageView&, const ctranslate2::StorageView&, ctranslate2::StorageView&, ctranslate2::StorageView&, ctranslate2::StorageView&, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, const ctranslate2::Padder*, const ctranslate2::Padder*, ctranslate2::dim_t&) const’:
+/home/ubuntu/w/r3/src/layers/attention.cc:483:28: warning: unused parameter ‘queries’ [-Wunused-parameter]
+  483 |         const StorageView& queries,
+      |         ~~~~~~~~~~~~~~~~~~~^~~~~~~
+[ 46%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/wav2vec2bert.cc.o
+[ 47%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/whisper.cc.o
+[ 47%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/language_model.cc.o
+/home/ubuntu/w/r3/src/cpu/primitives.cc: In static member function ‘static void ctranslate2::primitives<D>::gemm(bool, bool, bool, bool, ctranslate2::dim_t, ctranslate2::dim_t, ctranslate2::dim_t, float, const In*, ctranslate2::dim_t, const In*, ctranslate2::dim_t, float, Out*, ctranslate2::dim_t, const Out*) [with In = signed char; Out = int; ctranslate2::Device D = ctranslate2::Device::CPU; ctranslate2::dim_t = long int]’:
+/home/ubuntu/w/r3/src/cpu/primitives.cc:939:53: warning: unused parameter ‘a_shift_compensation’ [-Wunused-parameter]
+  939 |                                      const int32_t* a_shift_compensation) {
+      |                                      ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+[ 48%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/model.cc.o
+[ 48%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/model_factory.cc.o
+[ 48%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/sequence_to_sequence.cc.o
+[ 50%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/transformer.cc.o
+[ 50%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/wav2vec2.cc.o
+[ 50%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/wav2vec2bert.cc.o
+[ 51%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/whisper.cc.o
+[ 51%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/activation.cc.o
+[ 51%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/add.cc.o
+[ 52%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/alibi_add.cc.o
+[ 52%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/alibi_add_cpu.cc.o
+[ 52%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/bias_add.cc.o
+[ 52%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/bias_add_cpu.cc.o
+[ 53%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/concat.cc.o
+[ 53%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/concat_split_slide_cpu.cc.o
+[ 53%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/conv1d.cc.o
+[ 54%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/conv1d_cpu.cc.o
+[ 54%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/cos.cc.o
+[ 54%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/dequantize.cc.o
+[ 55%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/dequantize_cpu.cc.o
+[ 55%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/flash_attention.cc.o
+[ 55%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/flash_attention_cpu.cc.o
+[ 55%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/gather.cc.o
+[ 56%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/gather_cpu.cc.o
+[ 56%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/gemm.cc.o
+[ 56%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/gelu.cc.o
+[ 58%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/gumbel_max.cc.o
+[ 58%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/gumbel_max_cpu.cc.o
+[ 58%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/layer_norm.cc.o
+[ 58%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/layer_norm_cpu.cc.o
+[ 59%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/log.cc.o
+[ 59%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/matmul.cc.o
+[ 59%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/mean.cc.o
+In file included from /home/ubuntu/w/r3/src/ops/gemm.cc:1:
+/home/ubuntu/w/r3/include/ctranslate2/ops/gemm.h: In constructor ‘ctranslate2::ops::Gemm::Gemm(float, float, bool, bool, bool, bool, const ctranslate2::ops::ActivationType*)’:
+/home/ubuntu/w/r3/include/ctranslate2/ops/gemm.h:54:12: warning: ‘ctranslate2::ops::Gemm::_b_is_packed’ will be initialized after [-Wreorder]
+   54 |       bool _b_is_packed;
+      |            ^~~~~~~~~~~~
+/home/ubuntu/w/r3/include/ctranslate2/ops/gemm.h:46:29: warning:   ‘const ctranslate2::ops::ActivationType* ctranslate2::ops::Gemm::_activation_type’ [-Wreorder]
+   46 |       const ActivationType* _activation_type;
+      |                             ^~~~~~~~~~~~~~~~
+/home/ubuntu/w/r3/src/ops/gemm.cc:88:5: warning:   when initialized here [-Wreorder]
+   88 |     Gemm::Gemm(float alpha,
+      |     ^~~~
+[ 60%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/mean_cpu.cc.o
+[ 60%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/median_filter.cc.o
+[ 60%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/median_filter_cpu.cc.o
+[ 61%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/min_max.cc.o
+[ 61%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/mul.cc.o
+[ 61%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/multinomial.cc.o
+[ 61%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/multinomial_cpu.cc.o
+[ 62%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/quantize.cc.o
+[ 62%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/quantize_cpu.cc.o
+[ 62%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/relu.cc.o
+[ 63%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/rms_norm.cc.o
+[ 63%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/rms_norm_cpu.cc.o
+[ 63%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/rotary.cc.o
+[ 63%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/rotary_cpu.cc.o
+[ 65%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/sin.cc.o
+[ 65%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/softmax.cc.o
+[ 65%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/softmax_cpu.cc.o
+[ 66%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/split.cc.o
+[ 66%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/slide.cc.o
+[ 66%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/sub.cc.o
+[ 67%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/sigmoid.cc.o
+[ 67%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/swish.cc.o
+[ 67%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/tanh.cc.o
+[ 67%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/tile.cc.o
+[ 68%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/tile_cpu.cc.o
+[ 68%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/fill_ranges.cc.o
+[ 68%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/fill_ranges_cpu.cc.o
+[ 69%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/timestamp_gate.cc.o
+[ 69%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/timestamp_gate_cpu.cc.o
+[ 69%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/topk.cc.o
+[ 70%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/topk_cpu.cc.o
+[ 70%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/topp_mask.cc.o
+[ 70%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/topp_mask_cpu.cc.o
+[ 70%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/transpose.cc.o
+[ 72%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/nccl_ops.cc.o
+[ 72%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/nccl_ops_cpu.cc.o
+[ 72%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/awq/dequantize.cc.o
+[ 73%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/awq/dequantize_cpu.cc.o
+[ 73%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/awq/gemm.cc.o
+[ 73%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/awq/gemm_cpu.cc.o
+[ 73%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/awq/gemv.cc.o
+[ 74%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/awq/gemv_cpu.cc.o
+[ 74%] Building CXX object CMakeFiles/ctranslate2.dir/src/ops/sum.cc.o
+[ 74%] Building CXX object CMakeFiles/ctranslate2.dir/src/padder.cc.o
+[ 74%] Building CXX object CMakeFiles/ctranslate2.dir/src/sampling.cc.o
+[ 75%] Building CXX object CMakeFiles/ctranslate2.dir/src/scoring.cc.o
+[ 75%] Building CXX object CMakeFiles/ctranslate2.dir/src/storage_view.cc.o
+[ 75%] Building CXX object CMakeFiles/ctranslate2.dir/src/translator.cc.o
+[ 75%] Building CXX object CMakeFiles/ctranslate2.dir/kernels_avx.cc.o
+[ 75%] Building CXX object CMakeFiles/ctranslate2.dir/kernels_avx2.cc.o
+[ 76%] Building CXX object CMakeFiles/ctranslate2.dir/kernels_avx512.cc.o
+[ 76%] Building CXX object CMakeFiles/ctranslate2.dir/src/cuda/allocator.cc.o
+[ 76%] Building CXX object CMakeFiles/ctranslate2.dir/src/cuda/graph_runner.cc.o
+/home/ubuntu/w/r3/src/models/model.cc: In function ‘ctranslate2::models::VARIABLE_TYPE ctranslate2::models::classify_variable(const string&)’:
+/home/ubuntu/w/r3/src/models/model.cc:494:13: warning: this statement may fall through [-Wimplicit-fallthrough=]
+  494 |             if (parameterName == "weight")
+      |             ^~
+/home/ubuntu/w/r3/src/models/model.cc:496:11: note: here
+  496 |           default:
+      |           ^~~~~~~
+/home/ubuntu/w/r3/src/models/model.cc:518:13: warning: this statement may fall through [-Wimplicit-fallthrough=]
+  518 |             if (parameterName == "weight")
+      |             ^~
+/home/ubuntu/w/r3/src/models/model.cc:520:11: note: here
+  520 |           default:
+      |           ^~~~~~~
+/home/ubuntu/w/r3/src/models/model.cc:543:13: warning: this statement may fall through [-Wimplicit-fallthrough=]
+  543 |             if (parameterName == "weight")
+      |             ^~
+/home/ubuntu/w/r3/src/models/model.cc:545:11: note: here
+  545 |           default:
+      |           ^~~~~~~
+/home/ubuntu/w/r3/src/models/model.cc: In static member function ‘static std::shared_ptr<const ctranslate2::models::Model> ctranslate2::models::Model::load(ctranslate2::models::ModelReader&, ctranslate2::Device, int, ctranslate2::ComputeType, bool, bool)’:
+/home/ubuntu/w/r3/src/models/model.cc:763:91: warning: ‘current_index’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  763 |             if (static_cast<int>(outputs.size()) > current_index && !outputs[current_index].empty())
+      |                                                                                           ^
+/home/ubuntu/w/r3/src/models/model.cc:742:92: warning: ‘world_size’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  742 |                 dim_t dim_per_kqv_per_partition = SAFE_DIVIDE(variable.dim(outer_dim) / 2, world_size);
+      |                                                                                            ^~~~~~~~~~
+[ 77%] Linking CXX shared library libctranslate2.so
+[ 96%] Built target ctranslate2
+Consolidate compiler generated dependencies of target benchmark_ops
+[ 96%] Building CXX object tests/CMakeFiles/benchmark_ops.dir/benchmark_ops.cc.o
+Consolidate compiler generated dependencies of target ctranslate2_test
+[ 96%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/attention_test.cc.o
+[ 97%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/decoding_test.cc.o
+[ 97%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/layers_test.cc.o
+[ 97%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/model_test.cc.o
+[ 98%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/ops_test.cc.o
+[ 98%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/primitives_test.cc.o
+[ 98%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/translator_test.cc.o
+/home/ubuntu/w/r3/tests/ops_test.cc: In member function ‘virtual void OpDeviceTest_GatherBatchWithShadows_Test::TestBody()’:
+/home/ubuntu/w/r3/tests/ops_test.cc:500:6: warning: suggest explicit braces to avoid ambiguous ‘else’ [-Wdangling-else]
+  500 |   if (device == Device::CUDA)  // The CPU fallback leaves the shadow vector untouched.
+      |      ^
+[ 98%] Linking CXX executable benchmark_ops
+[ 98%] Built target benchmark_ops
+[ 98%] Linking CXX executable ctranslate2_test
+[100%] Built target ctranslate2_test
+BUILD_OK

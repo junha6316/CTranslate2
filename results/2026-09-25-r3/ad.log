@@ -1,0 +1,12 @@
+CT2_ALLOC_DEBUG greedy step=0 allocs=12 frees=1
+CT2_ALLOC_DEBUG greedy step=1 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=2 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=3 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=4 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=5 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=0 allocs=10 frees=1
+CT2_ALLOC_DEBUG greedy step=1 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=2 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=3 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=4 allocs=0 frees=0
+CT2_ALLOC_DEBUG greedy step=5 allocs=0 frees=0

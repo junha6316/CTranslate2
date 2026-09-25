@@ -1,0 +1,1 @@
+[{"label": "graphs", "beam": 1, "median_ms": 152.52, "iqr": [151.73, 152.63], "ntok": 84}, {"label": "graphs", "beam": 5, "median_ms": 260.15, "iqr": [259.32, 260.52], "ntok": 84}]

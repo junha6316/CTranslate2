@@ -1,0 +1,206 @@
+
+=== r3 vs r2base (median ms, negative = r3 faster) ===
+large-v3  float16       ts=0 b1 n=1:     296.3 ->     292.2   -1.39%
+large-v3  float16       ts=0 b1 n=4:    1170.0 ->    1162.6   -0.63%
+large-v3  float16       ts=0 b1 n=8:    1835.7 ->    1834.7   -0.05%
+large-v3  float16       ts=0 b5 n=1:     334.0 ->     339.4   +1.63%
+large-v3  float16       ts=0 b5 n=4:    1325.6 ->    1295.1   -2.30%
+large-v3  float16       ts=0 b5 n=8:    2124.6 ->    2089.2   -1.66%
+large-v3  float16       ts=1 b1 n=1:     201.2 ->     202.0   +0.39%
+large-v3  float16       ts=1 b1 n=4:    1206.6 ->    1205.8   -0.06%
+large-v3  float16       ts=1 b1 n=8:    1915.0 ->    1915.9   +0.04%
+large-v3  float16       ts=1 b5 n=1:     416.9 ->     405.4   -2.76%
+large-v3  float16       ts=1 b5 n=4:    1408.6 ->    1383.8   -1.76%
+large-v3  float16       ts=1 b5 n=8:    2291.9 ->    2252.5   -1.72%
+large-v3  int8_float16  ts=0 b1 n=1:     305.1 ->     302.4   -0.88%
+large-v3  int8_float16  ts=0 b1 n=4:    1169.8 ->    1166.7   -0.26%
+large-v3  int8_float16  ts=0 b1 n=8:    1841.5 ->    1842.7   +0.06%
+large-v3  int8_float16  ts=0 b5 n=1:     335.2 ->     338.0   +0.84%
+large-v3  int8_float16  ts=0 b5 n=4:    1435.3 ->    1418.1   -1.20%
+large-v3  int8_float16  ts=0 b5 n=8:    2232.8 ->    2210.2   -1.01%
+large-v3  int8_float16  ts=1 b1 n=1:     206.3 ->     206.1   -0.11%
+large-v3  int8_float16  ts=1 b1 n=4:    1207.1 ->    1209.9   +0.23%
+large-v3  int8_float16  ts=1 b1 n=8:    1927.6 ->    1931.2   +0.19%
+large-v3  int8_float16  ts=1 b5 n=1:     465.1 ->     455.9   -1.98%
+large-v3  int8_float16  ts=1 b5 n=4:    1497.6 ->    1478.7   -1.26%
+large-v3  int8_float16  ts=1 b5 n=8:    2414.8 ->    2384.7   -1.24%
+small     float16       ts=0 b1 n=1:      35.3 ->      36.0   +2.15%
+small     float16       ts=0 b1 n=4:     270.0 ->     269.1   -0.31%
+small     float16       ts=0 b1 n=8:     413.1 ->     412.6   -0.11%
+small     float16       ts=0 b5 n=1:      63.9 ->      61.1   -4.47%
+small     float16       ts=0 b5 n=4:     304.5 ->     294.6   -3.26%
+small     float16       ts=0 b5 n=8:     439.9 ->     431.5   -1.91%
+small     float16       ts=1 b1 n=1:     164.6 ->     163.6   -0.61%
+small     float16       ts=1 b1 n=4:     291.9 ->     291.0   -0.29%
+small     float16       ts=1 b1 n=8:     456.2 ->     455.6   -0.13%
+small     float16       ts=1 b5 n=1:     234.0 ->     215.3   -8.00%
+small     float16       ts=1 b5 n=4:     374.1 ->     366.5   -2.03%
+small     float16       ts=1 b5 n=8:     577.0 ->     566.6   -1.80%
+small     int8_float16  ts=0 b1 n=1:      42.3 ->      41.7   -1.37%
+small     int8_float16  ts=0 b1 n=4:     339.6 ->     333.1   -1.91%
+small     int8_float16  ts=0 b1 n=8:     449.4 ->     447.9   -0.33%
+small     int8_float16  ts=0 b5 n=1:      79.8 ->      79.5   -0.43%
+small     int8_float16  ts=0 b5 n=4:     383.5 ->     367.7   -4.12%
+small     int8_float16  ts=0 b5 n=8:     524.4 ->     515.9   -1.64%
+small     int8_float16  ts=1 b1 n=1:     248.7 ->     245.5   -1.29%
+small     int8_float16  ts=1 b1 n=4:     387.0 ->     387.2   +0.04%
+small     int8_float16  ts=1 b1 n=8:     523.5 ->     522.4   -0.21%
+small     int8_float16  ts=1 b5 n=1:     289.8 ->     273.6   -5.58%
+small     int8_float16  ts=1 b5 n=4:     482.2 ->     467.0   -3.16%
+small     int8_float16  ts=1 b5 n=8:     678.1 ->     664.4   -2.02%
+tokens identical across all configs: True
+
+=== r3_flash vs r2base_flash (median ms, negative = r3_flash faster) ===
+large-v3  float16       ts=0 b1 n=1:     255.4 ->     253.3   -0.82%
+large-v3  float16       ts=0 b1 n=4:     992.9 ->     987.1   -0.58%
+large-v3  float16       ts=0 b1 n=8:    1472.9 ->    1467.3   -0.38%
+large-v3  float16       ts=0 b5 n=1:     359.7 ->     427.7  +18.90%
+large-v3  float16       ts=0 b5 n=4:    1698.2 ->    1683.9   -0.84%
+large-v3  float16       ts=0 b5 n=8:    2915.5 ->    2803.0   -3.86%
+large-v3  float16       ts=1 b1 n=1:     153.6 ->     152.3   -0.82%
+large-v3  float16       ts=1 b1 n=4:    1034.8 ->    1032.3   -0.23%
+large-v3  float16       ts=1 b1 n=8:    1562.0 ->    1558.3   -0.24%
+large-v3  float16       ts=1 b5 n=1:     464.4 ->     442.9   -4.63%
+large-v3  float16       ts=1 b5 n=4:    1817.3 ->    1751.0   -3.65%
+large-v3  float16       ts=1 b5 n=8:    3167.8 ->    3045.9   -3.85%
+large-v3  int8_float16  ts=0 b1 n=1:     260.0 ->     258.6   -0.56%
+large-v3  int8_float16  ts=0 b1 n=4:     987.7 ->     979.0   -0.89%
+large-v3  int8_float16  ts=0 b1 n=8:    1473.4 ->    1468.1   -0.35%
+large-v3  int8_float16  ts=0 b5 n=1:     357.5 ->     425.1  +18.89%
+large-v3  int8_float16  ts=0 b5 n=4:    1804.9 ->    1787.4   -0.97%
+large-v3  int8_float16  ts=0 b5 n=8:    3013.2 ->    2893.1   -3.99%
+large-v3  int8_float16  ts=1 b1 n=1:     154.9 ->     153.7   -0.83%
+large-v3  int8_float16  ts=1 b1 n=4:    1028.8 ->    1024.5   -0.42%
+large-v3  int8_float16  ts=1 b1 n=8:    1563.8 ->    1559.6   -0.27%
+large-v3  int8_float16  ts=1 b5 n=1:     459.6 ->     438.4   -4.61%
+large-v3  int8_float16  ts=1 b5 n=4:    1925.0 ->    1857.5   -3.51%
+large-v3  int8_float16  ts=1 b5 n=8:    3290.0 ->    3164.3   -3.82%
+small     float16       ts=0 b1 n=1:      23.8 ->      23.7   -0.29%
+small     float16       ts=0 b1 n=4:     235.7 ->     232.9   -1.18%
+small     float16       ts=0 b1 n=8:     333.8 ->     329.9   -1.17%
+small     float16       ts=0 b5 n=1:      61.8 ->      75.2  +21.75%
+small     float16       ts=0 b5 n=4:     356.9 ->     348.4   -2.39%
+small     float16       ts=0 b5 n=8:     528.2 ->     497.5   -5.82%
+small     float16       ts=1 b1 n=1:     166.9 ->     166.0   -0.55%
+small     float16       ts=1 b1 n=4:     259.9 ->     258.8   -0.40%
+small     float16       ts=1 b1 n=8:     381.2 ->     380.3   -0.24%
+small     float16       ts=1 b5 n=1:     258.2 ->     247.7   -4.07%
+small     float16       ts=1 b5 n=4:     499.4 ->     475.3   -4.82%
+small     float16       ts=1 b5 n=8:     811.0 ->     783.7   -3.37%
+small     int8_float16  ts=0 b1 n=1:      29.8 ->      29.1   -2.55%
+small     int8_float16  ts=0 b1 n=4:     279.6 ->     276.2   -1.18%
+small     int8_float16  ts=0 b1 n=8:     369.2 ->     369.0   -0.04%
+small     int8_float16  ts=0 b5 n=1:      80.9 ->      94.1  +16.37%
+small     int8_float16  ts=0 b5 n=4:     473.9 ->     467.1   -1.44%
+small     int8_float16  ts=0 b5 n=8:     630.5 ->     597.8   -5.18%
+small     int8_float16  ts=1 b1 n=1:     228.9 ->     226.9   -0.86%
+small     int8_float16  ts=1 b1 n=4:     332.5 ->     330.4   -0.62%
+small     int8_float16  ts=1 b1 n=8:     418.8 ->     418.0   -0.19%
+small     int8_float16  ts=1 b5 n=1:     269.9 ->     259.2   -3.93%
+small     int8_float16  ts=1 b5 n=4:     589.6 ->     569.7   -3.37%
+small     int8_float16  ts=1 b5 n=8:     915.5 ->     883.5   -3.50%
+tokens identical across all configs: True
+
+=== r3-graphs vs r3-eager (median ms, negative = r3-graphs faster) ===
+large-v3  float16       ts=0 b1 n=1:     292.2 ->     289.9   -0.79%
+large-v3  float16       ts=0 b1 n=4:    1162.6 ->    1195.0   +2.79%
+large-v3  float16       ts=0 b1 n=8:    1834.7 ->    1916.7   +4.47%
+large-v3  float16       ts=0 b5 n=1:     339.4 ->     453.8  +33.71%  TOK-DIFF
+large-v3  float16       ts=0 b5 n=4:    1295.1 ->    1887.5  +45.74%
+large-v3  float16       ts=0 b5 n=8:    2089.2 ->    3269.6  +56.50%
+large-v3  float16       ts=1 b1 n=1:     202.0 ->     203.0   +0.48%
+large-v3  float16       ts=1 b1 n=4:    1205.8 ->    1249.3   +3.60%
+large-v3  float16       ts=1 b1 n=8:    1915.9 ->    2014.1   +5.13%
+large-v3  float16       ts=1 b5 n=1:     405.4 ->     468.1  +15.45%
+large-v3  float16       ts=1 b5 n=4:    1383.8 ->    1953.9  +41.20%  TOK-DIFF
+large-v3  float16       ts=1 b5 n=8:    2252.5 ->    3515.3  +56.06%
+large-v3  int8_float16  ts=0 b1 n=1:     302.4 ->     309.0   +2.18%
+large-v3  int8_float16  ts=0 b1 n=4:    1166.7 ->    1219.8   +4.55%
+large-v3  int8_float16  ts=0 b1 n=8:    1842.7 ->    1942.2   +5.40%  TOK-DIFF
+large-v3  int8_float16  ts=0 b5 n=1:     338.0 ->     467.1  +38.20%
+large-v3  int8_float16  ts=0 b5 n=4:    1418.1 ->    2017.9  +42.29%  TOK-DIFF
+large-v3  int8_float16  ts=0 b5 n=8:    2210.2 ->    3400.3  +53.84%
+large-v3  int8_float16  ts=1 b1 n=1:     206.1 ->     210.0   +1.91%
+large-v3  int8_float16  ts=1 b1 n=4:    1209.9 ->    1257.1   +3.91%  TOK-DIFF
+large-v3  int8_float16  ts=1 b1 n=8:    1931.2 ->    2031.7   +5.20%  TOK-DIFF
+large-v3  int8_float16  ts=1 b5 n=1:     455.9 ->     549.4  +20.52%
+large-v3  int8_float16  ts=1 b5 n=4:    1478.7 ->    2094.7  +41.66%  TOK-DIFF
+large-v3  int8_float16  ts=1 b5 n=8:    2384.7 ->    3691.2  +54.79%  TOK-DIFF
+small     float16       ts=0 b1 n=1:      36.0 ->      36.0   -0.08%
+small     float16       ts=0 b1 n=4:     269.1 ->     277.3   +3.04%
+small     float16       ts=0 b1 n=8:     412.6 ->     429.2   +4.02%
+small     float16       ts=0 b5 n=1:      61.1 ->      81.9  +34.12%
+small     float16       ts=0 b5 n=4:     294.6 ->     388.3  +31.80%
+small     float16       ts=0 b5 n=8:     431.5 ->     594.6  +37.80%
+small     float16       ts=1 b1 n=1:     163.6 ->     151.7   -7.23%
+small     float16       ts=1 b1 n=4:     291.0 ->     283.6   -2.55%
+small     float16       ts=1 b1 n=8:     455.6 ->     462.0   +1.40%
+small     float16       ts=1 b5 n=1:     215.3 ->     234.3   +8.83%
+small     float16       ts=1 b5 n=4:     366.5 ->     507.7  +38.54%
+small     float16       ts=1 b5 n=8:     566.6 ->     871.3  +53.78%
+small     int8_float16  ts=0 b1 n=1:      41.7 ->      42.8   +2.54%
+small     int8_float16  ts=0 b1 n=4:     333.1 ->     335.6   +0.76%  TOK-DIFF
+small     int8_float16  ts=0 b1 n=8:     447.9 ->     476.5   +6.39%  TOK-DIFF
+small     int8_float16  ts=0 b5 n=1:      79.5 ->      93.7  +17.82%
+small     int8_float16  ts=0 b5 n=4:     367.7 ->     439.8  +19.58%  TOK-DIFF
+small     int8_float16  ts=0 b5 n=8:     515.9 ->     687.7  +33.32%
+small     int8_float16  ts=1 b1 n=1:     245.5 ->     246.0   +0.20%
+small     int8_float16  ts=1 b1 n=4:     387.2 ->     389.4   +0.58%  TOK-DIFF
+small     int8_float16  ts=1 b1 n=8:     522.4 ->     544.0   +4.14%  TOK-DIFF
+small     int8_float16  ts=1 b5 n=1:     273.6 ->     276.0   +0.87%  TOK-DIFF
+small     int8_float16  ts=1 b5 n=4:     467.0 ->     632.6  +35.47%  TOK-DIFF
+small     int8_float16  ts=1 b5 n=8:     664.4 ->     993.6  +49.56%  TOK-DIFF
+tokens identical across all configs: False
+
+=== r3-graphs-flash vs r3-eager-flash (median ms, negative = r3-graphs-flash faster) ===
+large-v3  float16       ts=0 b1 n=1:     253.3 ->     254.8   +0.58%
+large-v3  float16       ts=0 b1 n=4:     987.1 ->     990.8   +0.37%
+large-v3  float16       ts=0 b1 n=8:    1467.3 ->    1470.1   +0.19%
+large-v3  float16       ts=0 b5 n=1:     427.7 ->     428.0   +0.08%
+large-v3  float16       ts=0 b5 n=4:    1683.9 ->    1683.6   -0.02%
+large-v3  float16       ts=0 b5 n=8:    2803.0 ->    2797.6   -0.19%
+large-v3  float16       ts=1 b1 n=1:     152.3 ->     152.5   +0.11%
+large-v3  float16       ts=1 b1 n=4:    1032.3 ->    1033.6   +0.12%
+large-v3  float16       ts=1 b1 n=8:    1558.3 ->    1559.7   +0.09%
+large-v3  float16       ts=1 b5 n=1:     442.9 ->     443.8   +0.19%
+large-v3  float16       ts=1 b5 n=4:    1751.0 ->    1753.3   +0.13%
+large-v3  float16       ts=1 b5 n=8:    3045.9 ->    3045.4   -0.02%
+large-v3  int8_float16  ts=0 b1 n=1:     258.6 ->     259.4   +0.32%
+large-v3  int8_float16  ts=0 b1 n=4:     979.0 ->     986.0   +0.72%
+large-v3  int8_float16  ts=0 b1 n=8:    1468.1 ->    1471.2   +0.21%
+large-v3  int8_float16  ts=0 b5 n=1:     425.1 ->     426.4   +0.31%
+large-v3  int8_float16  ts=0 b5 n=4:    1787.4 ->    1790.0   +0.15%
+large-v3  int8_float16  ts=0 b5 n=8:    2893.1 ->    2891.3   -0.06%
+large-v3  int8_float16  ts=1 b1 n=1:     153.7 ->     154.0   +0.25%
+large-v3  int8_float16  ts=1 b1 n=4:    1024.5 ->    1026.6   +0.20%
+large-v3  int8_float16  ts=1 b1 n=8:    1559.6 ->    1563.2   +0.23%
+large-v3  int8_float16  ts=1 b5 n=1:     438.4 ->     438.7   +0.05%
+large-v3  int8_float16  ts=1 b5 n=4:    1857.5 ->    1858.0   +0.03%
+large-v3  int8_float16  ts=1 b5 n=8:    3164.3 ->    3166.0   +0.05%
+small     float16       ts=0 b1 n=1:      23.7 ->      23.8   +0.30%
+small     float16       ts=0 b1 n=4:     232.9 ->     233.8   +0.39%
+small     float16       ts=0 b1 n=8:     329.9 ->     332.2   +0.71%
+small     float16       ts=0 b5 n=1:      75.2 ->      78.0   +3.71%
+small     float16       ts=0 b5 n=4:     348.4 ->     348.9   +0.16%
+small     float16       ts=0 b5 n=8:     497.5 ->     496.1   -0.29%
+small     float16       ts=1 b1 n=1:     166.0 ->     166.4   +0.25%
+small     float16       ts=1 b1 n=4:     258.8 ->     258.0   -0.31%
+small     float16       ts=1 b1 n=8:     380.3 ->     380.4   +0.01%
+small     float16       ts=1 b5 n=1:     247.7 ->     246.7   -0.39%
+small     float16       ts=1 b5 n=4:     475.3 ->     482.6   +1.53%
+small     float16       ts=1 b5 n=8:     783.7 ->     784.0   +0.04%
+small     int8_float16  ts=0 b1 n=1:      29.1 ->      29.1   +0.03%
+small     int8_float16  ts=0 b1 n=4:     276.2 ->     274.9   -0.48%
+small     int8_float16  ts=0 b1 n=8:     369.0 ->     368.0   -0.27%
+small     int8_float16  ts=0 b5 n=1:      94.1 ->      95.0   +0.97%
+small     int8_float16  ts=0 b5 n=4:     467.1 ->     467.3   +0.04%
+small     int8_float16  ts=0 b5 n=8:     597.8 ->     598.4   +0.10%
+small     int8_float16  ts=1 b1 n=1:     226.9 ->     230.1   +1.39%
+small     int8_float16  ts=1 b1 n=4:     330.4 ->     333.3   +0.88%
+small     int8_float16  ts=1 b1 n=8:     418.0 ->     419.5   +0.37%
+small     int8_float16  ts=1 b5 n=1:     259.2 ->     259.0   -0.08%
+small     int8_float16  ts=1 b5 n=4:     569.7 ->     569.2   -0.09%
+small     int8_float16  ts=1 b5 n=8:     883.5 ->     883.9   +0.05%
+tokens identical across all configs: True
+
+SUMMARY {"r3_vs_r2base": true, "r3_vs_r2base_flash": true, "graphs_vs_eager": false, "graphs_vs_eager_flash": true}

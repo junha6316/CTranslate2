@@ -1,0 +1,183 @@
++ cd /opt/real/r4
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ sleep 20
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ sleep 20
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ sleep 20
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ sleep 20
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ sleep 20
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ sleep 20
++ grep -qE 'BUILD_OK|Error [12]' build5.log
++ grep -q BUILD_OK build5.log
++ source /home/ubuntu/venv/bin/activate
+++ deactivate nondestructive
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
+++ '[' -n '' ']'
+++ unset VIRTUAL_ENV
+++ unset VIRTUAL_ENV_PROMPT
+++ '[' '!' nondestructive = nondestructive ']'
+++ VIRTUAL_ENV=/home/ubuntu/venv
+++ export VIRTUAL_ENV
+++ _OLD_VIRTUAL_PATH=/usr/local/cuda-12.8/bin:/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/ubuntu/venv/bin:/usr/local/cuda-12.8/bin:/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ export PATH
+++ '[' -n '' ']'
+++ '[' -z '' ']'
+++ _OLD_VIRTUAL_PS1=
+++ PS1='(venv) '
+++ export PS1
+++ VIRTUAL_ENV_PROMPT='(venv) '
+++ export VIRTUAL_ENV_PROMPT
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
++ export CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install
++ LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ echo '=== [F1] default tokens after scratch fix ==='
+=== [F1] default tokens after scratch fix ===
++ python capture_tokens.py f_default_tokens.json
+windows per model: {'small': 9, 'large-v3': 3}
++ cmp_json baseline_tokens.json f_default_tokens.json DEFAULT_AFTER_SCRATCH
++ python - baseline_tokens.json f_default_tokens.json DEFAULT_AFTER_SCRATCH
+DEFAULT_AFTER_SCRATCH IDS_IDENTICAL True
++ echo '=== [F2] beam5 alloc/step after fix ==='
+=== [F2] beam5 alloc/step after fix ===
++ CT2_CUDA_ALLOC_DEBUG=1
++ python -
++ python -
+BEAM5_AFTER_FIX steps: 84 avg allocs/step 0.86
++ echo '=== [F3] pairs total (Stage A default, after fix) ==='
+=== [F3] pairs total (Stage A default, after fix) ===
++ bash pairs.sh f_prof
+WALL small n=1 1734.0 ms for 5 runs
+19876655 cudaMallocAsync
+4772673 cudaFreeAsync
++ /usr/local/bin/nsys stats --report cuda_api_sum --format csv f_prof.nsys-rep
++ grep -iE 'MallocAsync|FreeAsync'
++ awk -F, '{print "PAIRS", $3, $NF}'
+PAIRS 2990 cudaMallocAsync
+PAIRS 2990 cudaFreeAsync
++ echo '=== [F4] beam5 graphs tokens + nsys ==='
+=== [F4] beam5 graphs tokens + nsys ===
++ CT2_CUDA_GRAPHS=1
++ python capture_tokens.py f_b5_graphs.json
+windows per model: {'small': 9, 'large-v3': 3}
++ cmp_json pad_tokens.json f_b5_graphs.json BEAM5_GRAPHS_VS_PAD_AFTER_FIX
++ python - pad_tokens.json f_b5_graphs.json BEAM5_GRAPHS_VS_PAD_AFTER_FIX
+BEAM5_GRAPHS_VS_PAD_AFTER_FIX IDS_IDENTICAL True
++ rm -f g5_prof.nsys-rep g5_prof.sqlite
++ CT2_CUDA_GRAPHS=1
++ /usr/local/bin/nsys profile -o g5_prof --force-overwrite=true python /opt/real/prof_batch.py small 1
++ grep WALL
+WALL small n=1 1215.6 ms for 5 runs
++ /usr/local/bin/nsys stats --report cuda_api_sum --format csv g5_prof.nsys-rep
++ grep -iE 'cudaLaunchKernel,|GraphLaunch|MallocAsync'
++ awk -F, '{print "G5", $3, $NF}'
+G5 616 cudaGraphLaunch
+G5 2317 cudaMallocAsync
++ echo '=== [F5] walls ==='
+=== [F5] walls ===
++ python bench_b.py fixdefault f_default_wall.json
+{'label': 'fixdefault', 'beam': 1, 'median_ms': 163.21, 'iqr': [163.14, 163.3], 'ntok': 84}
+{'label': 'fixdefault', 'beam': 5, 'median_ms': 215.22, 'iqr': [214.8, 215.8], 'ntok': 84}
++ CT2_CUDA_GRAPHS=1
++ python bench_b.py fixgraphs f_graphs_wall.json
+{'label': 'fixgraphs', 'beam': 1, 'median_ms': 151.92, 'iqr': [151.63, 152.6], 'ntok': 84}
+{'label': 'fixgraphs', 'beam': 5, 'median_ms': 234.28, 'iqr': [233.47, 234.63], 'ntok': 84}
++ CT2_CUDA_PAD_KV=1
++ python bench_b.py fixpad f_pad_wall.json
+{'label': 'fixpad', 'beam': 1, 'median_ms': 167.6, 'iqr': [167.38, 167.99], 'ntok': 84}
+{'label': 'fixpad', 'beam': 5, 'median_ms': 255.27, 'iqr': [254.48, 255.88], 'ntok': 84}
++ echo '=== [F6] greedy graphs nsys (launch collapse evidence) ==='
+=== [F6] greedy graphs nsys (launch collapse evidence) ===
++ rm -f g1_prof.nsys-rep g1_prof.sqlite
++ CT2_CUDA_GRAPHS=1
++ /usr/local/bin/nsys profile -o g1_prof --force-overwrite=true python /opt/real/r4/prof_greedy.py
++ grep -i WALL
+WALL greedy 820.8 ms for 5 runs
++ /usr/local/bin/nsys stats --report cuda_api_sum --format csv g1_prof.nsys-rep
++ grep -iE 'cudaLaunchKernel,|GraphLaunch|MallocAsync'
++ awk -F, '{print "G1", $3, $NF}'
+G1 574 cudaGraphLaunch
+G1 2085 cudaMallocAsync
++ rm -f g1e_prof.nsys-rep g1e_prof.sqlite
++ /usr/local/bin/nsys profile -o g1e_prof --force-overwrite=true python /opt/real/r4/prof_greedy.py
++ grep -i WALL
+WALL greedy 1304.2 ms for 5 runs
++ /usr/local/bin/nsys stats --report cuda_api_sum --format csv g1e_prof.nsys-rep
++ grep -iE 'cudaLaunchKernel,|GraphLaunch|MallocAsync'
++ awk -F, '{print "G1E", $3, $NF}'
+G1E 2426 cudaMallocAsync
++ echo '=== [F7] B3 batch ==='
+=== [F7] B3 batch ===
++ bash /opt/real/r4/gate_b3.sh
++ source /home/ubuntu/venv/bin/activate
+++ deactivate nondestructive
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
+++ '[' -n '' ']'
+++ unset VIRTUAL_ENV
+++ unset VIRTUAL_ENV_PROMPT
+++ '[' '!' nondestructive = nondestructive ']'
+++ VIRTUAL_ENV=/home/ubuntu/venv
+++ export VIRTUAL_ENV
+++ _OLD_VIRTUAL_PATH=/home/ubuntu/venv/bin:/usr/local/cuda-12.8/bin:/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/ubuntu/venv/bin:/home/ubuntu/venv/bin:/usr/local/cuda-12.8/bin:/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ export PATH
+++ '[' -n '' ']'
+++ '[' -z '' ']'
+++ _OLD_VIRTUAL_PS1=
+++ PS1='(venv) '
+++ export PS1
+++ VIRTUAL_ENV_PROMPT='(venv) '
+++ export VIRTUAL_ENV_PROMPT
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
++ export CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install
++ LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ cd /opt/real/r4
++ echo '=== [B3-1] batch-2 mid-decode shrink: graphs vs eager ==='
+=== [B3-1] batch-2 mid-decode shrink: graphs vs eager ===
++ for env_cfg in "" "CT2_CUDA_GRAPHS=1"
++ env python - off
+SHRINK_RUN eager ok
++ for env_cfg in "" "CT2_CUDA_GRAPHS=1"
++ env CT2_CUDA_GRAPHS=1 python - CT2_CUDA_GRAPHS=1
+SHRINK_RUN graphs ok
++ python -
+SHRINK_TOKENS_IDENTICAL True
++ echo '=== [B3-2] word timestamps (align) falls back cleanly ==='
+=== [B3-2] word timestamps (align) falls back cleanly ===
++ for env_cfg in "" "CT2_CUDA_GRAPHS=1"
++ env python - off
+ALIGN_RUN off ok
++ for env_cfg in "" "CT2_CUDA_GRAPHS=1"
++ env CT2_CUDA_GRAPHS=1 python - CT2_CUDA_GRAPHS=1
+ALIGN_RUN graphs ok
++ python -
+ALIGN_IDENTICAL True
++ echo '=== [B3-3] flag-off wall (byte-identity + perf noise check) ==='
+=== [B3-3] flag-off wall (byte-identity + perf noise check) ===
++ python bench_b.py b2off b2off_wall.json
+{'label': 'b2off', 'beam': 1, 'median_ms': 163.66, 'iqr': [163.27, 164.22], 'ntok': 84}
+{'label': 'b2off', 'beam': 5, 'median_ms': 216.64, 'iqr': [214.84, 217.18], 'ntok': 84}
++ echo '=== [B3-4] pad-mode greedy wall (for the record) ==='
+=== [B3-4] pad-mode greedy wall (for the record) ===
++ CT2_CUDA_PAD_KV=1
++ python bench_b.py pad2 pad2_wall.json
+{'label': 'pad2', 'beam': 1, 'median_ms': 167.0, 'iqr': [167.0, 168.0], 'ntok': 84}
+{'label': 'pad2', 'beam': 5, 'median_ms': 255.18, 'iqr': [254.32, 255.65], 'ntok': 84}
++ echo B3_BATCH_DONE
+B3_BATCH_DONE
++ echo FINAL_DONE
+FINAL_DONE

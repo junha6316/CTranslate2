@@ -1,0 +1,5 @@
+{'label': 'tip', 'beam': 1, 'median_ms': 236.12, 'iqr': [222.76, 354.17], 'ntok': 84}
+{'label': 'tip', 'beam': 5, 'median_ms': 426.57, 'iqr': [364.39, 435.67], 'ntok': 84}
+WALL small n=1 3570.9 ms for 5 runs
+192592999 cudaMallocAsync
+146766330 cudaFreeAsync

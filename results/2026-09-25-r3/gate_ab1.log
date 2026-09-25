@@ -1,0 +1,84 @@
++ source /home/ubuntu/venv/bin/activate
+++ deactivate nondestructive
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
+++ '[' -n '' ']'
+++ unset VIRTUAL_ENV
+++ unset VIRTUAL_ENV_PROMPT
+++ '[' '!' nondestructive = nondestructive ']'
+++ VIRTUAL_ENV=/home/ubuntu/venv
+++ export VIRTUAL_ENV
+++ _OLD_VIRTUAL_PATH=/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/ubuntu/venv/bin:/usr/local/cuda-13.2/bin:/usr/local/cuda-13.2/include:/usr/local/cuda-12.9/bin:/usr/local/cuda-12.9/include:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ export PATH
+++ '[' -n '' ']'
+++ '[' -z '' ']'
+++ _OLD_VIRTUAL_PS1=
+++ PS1='(venv) '
+++ export PS1
+++ VIRTUAL_ENV_PROMPT='(venv) '
+++ export VIRTUAL_ENV_PROMPT
+++ '[' -n /usr/bin/bash -o -n '' ']'
+++ hash -r
++ export CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ CTRANSLATE2_ROOT=/home/ubuntu/w/r3/install
++ LD_LIBRARY_PATH=/home/ubuntu/w/r3/install/lib:/usr/local/cuda-12.8/lib64
++ cd /opt/real/r4
++ echo '=== [1] tokens default flags (Stage A) ==='
+=== [1] tokens default flags (Stage A) ===
++ python capture_tokens.py stageA_tokens.json
+windows per model: {'small': 9, 'large-v3': 3}
++ python -
+TOKENS_DEFAULT_IDENTICAL True
++ echo '=== [2] tokens CT2_CUDA_PREALLOC_KV=1 (A6) ==='
+=== [2] tokens CT2_CUDA_PREALLOC_KV=1 (A6) ===
++ CT2_CUDA_PREALLOC_KV=1
++ python capture_tokens.py a6_tokens.json
+windows per model: {'small': 9, 'large-v3': 3}
++ python -
+TOKENS_A6_IDENTICAL True
++ echo '=== [3] tokens CT2_CUDA_PAD_KV=1 (B1) ==='
+=== [3] tokens CT2_CUDA_PAD_KV=1 (B1) ===
++ CT2_CUDA_PAD_KV=1
++ python capture_tokens.py pad_tokens.json
+windows per model: {'small': 9, 'large-v3': 3}
++ python -
+TOKENS_PAD_IDENTICAL False
+small windows differing: 6 / 9
+large-v3 windows differing: 3 / 3
++ echo '=== [4] pairs (Stage A default) ==='
+=== [4] pairs (Stage A default) ===
++ bash pairs.sh stageA_prof
+WALL small n=1 1902.6 ms for 5 runs
+77087124 cudaMallocAsync
+60490133 cudaFreeAsync
++ echo '=== [5] per-step alloc debug (steady state, beam5) ==='
+=== [5] per-step alloc debug (steady state, beam5) ===
++ CT2_CUDA_ALLOC_DEBUG=1
++ python -
++ python -
+ALLOC_DEBUG steps(second decode, step>=8): 84 allocs: 4104 frees: 4104
+ALLOC_DEBUG per-step avg allocs 48.857
+ALLOC_DEBUG nonzero steps sample: [(8, 48, 48), (9, 48, 48), (10, 48, 48), (11, 48, 48), (12, 48, 48), (13, 48, 48), (14, 48, 48), (15, 48, 48), (16, 48, 48), (17, 48, 48)]
++ echo '=== [6] wall Stage A default ==='
+=== [6] wall Stage A default ===
++ python bench_b.py stageA stageA_wall.json
+{'label': 'stageA', 'beam': 1, 'median_ms': 164.1, 'iqr': [163.83, 164.25], 'ntok': 84}
+{'label': 'stageA', 'beam': 5, 'median_ms': 227.11, 'iqr': [226.14, 233.8], 'ntok': 84}
++ echo '=== [7] wall PAD_KV ==='
+=== [7] wall PAD_KV ===
++ CT2_CUDA_PAD_KV=1
++ python bench_b.py pad pad_wall.json
+{'label': 'pad', 'beam': 1, 'median_ms': 167.56, 'iqr': [166.86, 167.93], 'ntok': 84}
+{'label': 'pad', 'beam': 5, 'median_ms': 259.0, 'iqr': [258.81, 259.5], 'ntok': 84}
++ echo '=== [8] pairs with PAD_KV ==='
+=== [8] pairs with PAD_KV ===
++ CT2_CUDA_PAD_KV=1
++ bash pairs.sh pad_prof
+WALL small n=1 2040.9 ms for 5 runs
+90133502 cudaMallocAsync
+80576329 cudaFreeAsync
++ echo ALL_GATES_DONE
+ALL_GATES_DONE
