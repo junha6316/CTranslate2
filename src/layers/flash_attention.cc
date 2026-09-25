@@ -38,7 +38,8 @@ namespace ctranslate2 {
                                              const Padder* values_padder,
                                              bool return_normalized_attention,
                                              StorageView* position_bias,
-                                             dim_t offset) const {
+                                             dim_t offset,
+                                             DecodeWorkspace* workspace) const {
       PROFILE("MultiHeadAttention");
       // The dense FlashAttention kernel does not consume encoder length masks,
       // relative position biases, or Q/K/V normalization. Keep those semantics
@@ -50,17 +51,31 @@ namespace ctranslate2 {
         (*_encoder_fallback)(queries, values, values_lengths, output,
                             cached_keys, cached_values, attention,
                             queries_padder, values_padder,
-                            return_normalized_attention, position_bias, offset);
+                            return_normalized_attention, position_bias, offset,
+                            workspace);
         return;
       }
 
       const Device device = queries.device();
       const DataType dtype = queries.dtype();
 
-      StorageView fused_proj(dtype, device);
-      StorageView queries_proj(dtype, device);
-      StorageView keys_proj(dtype, device);
-      StorageView values_proj(dtype, device);
+      // The projection temporaries come from the decode workspace when one is passed,
+      // like in MultiHeadAttention. The move of the projections into the cache on the
+      // first decode step is a swap (StorageView move-assignment), so a slot handing its
+      // buffer to the cache receives a valid buffer back and re-allocates at most once on
+      // its next use.
+      StorageView local_fused(dtype, device);
+      StorageView local_queries(dtype, device);
+      StorageView local_keys(dtype, device);
+      StorageView local_values(dtype, device);
+      StorageView& fused_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->fused_proj, dtype, device) : local_fused;
+      StorageView& queries_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->queries_proj, dtype, device) : local_queries;
+      StorageView& keys_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->keys_proj, dtype, device) : local_keys;
+      StorageView& values_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->values_proj, dtype, device) : local_values;
 
       const StorageView* q = &queries;
       if (_layer_norm && _pre_norm) {
@@ -103,7 +118,13 @@ namespace ctranslate2 {
           auto shape = cached_keys->shape();
           shape[_cache_time_dim] = _offset_free_space;
           StorageView empty_storage(std::move(shape), dtype, device);
-          StorageView& tmp = fused_proj;  // Reuse storage.
+          // Without a workspace, reuse the dead fused projection as scratch. With one,
+          // use a local instead: the moves below would otherwise park a cache-sized
+          // buffer in the fused_proj slot for the rest of the decode. This growth branch
+          // only runs when the cache runs out of spare capacity, so the extra local
+          // allocation is off the per-step path.
+          StorageView local_tmp(dtype, device);
+          StorageView& tmp = workspace ? local_tmp : fused_proj;
           tmp = std::move(*cached_keys);
           concat_op({&tmp, &empty_storage}, *cached_keys);
           tmp = std::move(*cached_values);
@@ -120,9 +141,20 @@ namespace ctranslate2 {
         }
       }
 
+      // On the first step the projections were just moved into the cache, so attention
+      // reads the cache instead. The cache views must be fresh locals: shallow_copy
+      // releases the destination's owned buffer, so pointing the workspace-backed
+      // projections at the cache would drop their allocation and alias them to the cache
+      // across steps.
+      StorageView keys_view(dtype, device);
+      StorageView values_view(dtype, device);
+      StorageView* attn_keys = &keys_proj;
+      StorageView* attn_values = &values_proj;
       if (cached_keys && offset == 0) {
-        keys_proj.shallow_copy(*cached_keys);
-        values_proj.shallow_copy(*cached_values);
+        keys_view.shallow_copy(*cached_keys);
+        values_view.shallow_copy(*cached_values);
+        attn_keys = &keys_view;
+        attn_values = &values_view;
       }
 
       StorageView* rotary_cos = nullptr;
@@ -134,10 +166,12 @@ namespace ctranslate2 {
         rotary_interleaved = _rotary_embeddings->get_interleave();
       }
 
-      // init output
-      StorageView context(dtype, device);
+      // init output. The fused projection is dead past this point, so reuse it for the
+      // attention context like MultiHeadAttention does; with a workspace this keeps the
+      // context allocation across steps too.
+      StorageView& context = fused_proj;  // Reuse storage.
       ops::FlashAttention fl_attn_ops(_queries_scale, _sliding_window, _is_decoder);
-      fl_attn_ops(queries_proj, keys_proj, values_proj, context, cached_keys, cached_values, attention,
+      fl_attn_ops(queries_proj, *attn_keys, *attn_values, context, cached_keys, cached_values, attention,
                   return_normalized_attention, rotary_cos, rotary_sin, rotary_interleaved, nullptr/*alibli*/, offset);
 
       if (prefilling && cached_keys && cached_keys->shape()[_cache_time_dim] > _sliding_window) {

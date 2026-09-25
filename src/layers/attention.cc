@@ -266,7 +266,8 @@ namespace ctranslate2 {
                                       dim_t beam_size = 1,
                                       Alibi* alibi = nullptr,
                                       StorageView* position_bias = nullptr,
-                                      dim_t cached_keys_length = 0) {
+                                      dim_t cached_keys_length = 0,
+                                      StorageView* attn_workspace = nullptr) {
       PROFILE("dot_product_attention");
 
       // The keys and values tensors may be a cache with spare capacity, in which case only
@@ -340,7 +341,15 @@ namespace ctranslate2 {
       if (alibi)
         alibi->apply(output, queries_scale);
 
-      StorageView attn(values.dtype(), values.device());
+      // The softmax weights buffer comes from the decode workspace when one is passed so
+      // that its allocation survives across decoding steps. When save_attention below
+      // steals it (or the output it was swapped with), the emptied slot simply
+      // re-allocates on the next step, which only happens while attention weights are
+      // requested.
+      StorageView local_attn(values.dtype(), values.device());
+      StorageView& attn = attn_workspace
+        ? DecodeWorkspace::prepare(*attn_workspace, values.dtype(), values.device())
+        : local_attn;
       if (attention && !return_normalized_attention) {
         ops::SoftMax()(output, values_lengths, attn);
         save_attention(*attention, std::move(output), beam_size);
@@ -503,6 +512,8 @@ namespace ctranslate2 {
         }
 
         if (cached_keys != nullptr) {
+          // A swap: the cache takes the projected data and a workspace-backed slot takes
+          // the cache's empty buffer. This only runs on the first decode step.
           *cached_keys = std::move(keys_proj);
           *cached_values = std::move(values_proj);
         }
@@ -531,14 +542,28 @@ namespace ctranslate2 {
                                         const Padder* values_padder,
                                         bool return_normalized_attention,
                                         StorageView* position_bias,
-                                        dim_t offset) const {
+                                        dim_t offset,
+                                        DecodeWorkspace* workspace) const {
       PROFILE("MultiHeadAttention");
       const Device device = queries.device();
       const DataType dtype = queries.dtype();
-      StorageView fused_proj(dtype, device);
-      StorageView queries_proj(dtype, device);
-      StorageView keys_proj(dtype, device);
-      StorageView values_proj(dtype, device);
+      // The projection temporaries come from the decode workspace when one is passed.
+      // Every consumer resizes or overwrites a slot before reading it, so no data has to
+      // survive from a previous step. The moves into the cache below are swaps
+      // (StorageView move-assignment), so a slot handing its buffer to the cache receives
+      // a valid buffer back and never dangles.
+      StorageView local_fused(dtype, device);
+      StorageView local_queries(dtype, device);
+      StorageView local_keys(dtype, device);
+      StorageView local_values(dtype, device);
+      StorageView& fused_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->fused_proj, dtype, device) : local_fused;
+      StorageView& queries_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->queries_proj, dtype, device) : local_queries;
+      StorageView& keys_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->keys_proj, dtype, device) : local_keys;
+      StorageView& values_proj = workspace
+        ? DecodeWorkspace::prepare(workspace->values_proj, dtype, device) : local_values;
 
       const StorageView* q = &queries;
       if (_layer_norm && _pre_norm) {
@@ -628,9 +653,15 @@ namespace ctranslate2 {
             append_to_cache(*cached_values, values_proj, offset);
             cached_keys_length = offset + keys_proj.dim(_cache_time_dim);
           } else if (cached_keys->empty()) {
+            // A swap: the cache takes the projected data and a workspace-backed slot
+            // takes the cache's empty buffer, costing it one re-allocation on its next
+            // use. This runs once per decode.
             *cached_keys = std::move(keys_proj);
             *cached_values = std::move(values_proj);
           } else {
+            // The moves below swap buffers between the cache and the fused_proj slot,
+            // which preserves semantics; churn on this path is unchanged since the cache
+            // is rebuilt at every step anyway.
             const ops::Concat concat_op(_cache_time_dim);
             StorageView& tmp = fused_proj;  // Reuse storage.
             tmp = std::move(*cached_keys);
@@ -650,15 +681,25 @@ namespace ctranslate2 {
         }
       }
 
+      // Attention reads the cache when there is one. The cache views must be fresh
+      // locals: shallow_copy releases the destination's owned buffer, so pointing the
+      // workspace-backed projections at the cache would free their allocation every step
+      // and reintroduce the churn the workspace exists to remove.
+      StorageView keys_view(dtype, device);
+      StorageView values_view(dtype, device);
+      const StorageView* attn_keys = &keys_proj;
+      const StorageView* attn_values = &values_proj;
       if (cached_keys) {
-        keys_proj.shallow_copy(*cached_keys);
-        values_proj.shallow_copy(*cached_values);
+        keys_view.shallow_copy(*cached_keys);
+        values_view.shallow_copy(*cached_values);
+        attn_keys = &keys_view;
+        attn_values = &values_view;
       }
 
       StorageView& context = fused_proj;  // Reuse storage.
       dot_product_attention(queries_proj,
-                            keys_proj,
-                            values_proj,
+                            *attn_keys,
+                            *attn_values,
                             values_lengths,
                             _relative_position_keys,
                             _relative_asymmetric_position_keys,
@@ -676,7 +717,8 @@ namespace ctranslate2 {
                             beam_size,
                             _alibi,
                             position_bias,
-                            cached_keys_length);
+                            cached_keys_length,
+                            workspace ? &workspace->attn : nullptr);
 
       if (prefilling && cached_keys && cached_keys->shape()[2] > _sliding_window) {
         // set only last sliding_window tokens to cached_keys and cached_values after computing attention

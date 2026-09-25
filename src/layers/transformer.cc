@@ -18,7 +18,9 @@ namespace ctranslate2 {
       , _tensor_parallel(model.tensor_parallel()) {
     }
 
-    void FeedForwardNetwork::operator()(const StorageView& input, StorageView& output) const {
+    void FeedForwardNetwork::operator()(const StorageView& input,
+                                        StorageView& output,
+                                        DecodeWorkspace* workspace) const {
       const StorageView* x = &input;
       if (_layer_norm && _pre_norm) {
         (*_layer_norm)(input, output);
@@ -28,10 +30,16 @@ namespace ctranslate2 {
       const Device device = input.device();
       const DataType dtype = input.dtype();
 
-      StorageView inner(dtype, device);
+      // The inner activations come from the decode workspace when one is passed so their
+      // allocation survives across decoding steps.
+      StorageView local_inner(dtype, device);
+      StorageView& inner = workspace
+        ? DecodeWorkspace::prepare(workspace->ffn_inner, dtype, device) : local_inner;
       _ff1(*x, inner);
       if (_ff1_noact) {
-        StorageView linear(dtype, device);
+        StorageView local_linear(dtype, device);
+        StorageView& linear = workspace
+          ? DecodeWorkspace::prepare(workspace->ffn_linear, dtype, device) : local_linear;
         (*_ff1_noact)(*x, linear);
         ops::Mul()(linear, inner, inner);
       }
@@ -207,7 +215,8 @@ namespace ctranslate2 {
                                              const Padder* memory_padder,
                                              bool return_normalized_attention,
                                              StorageView* position_bias,
-                                             dim_t offset) const {
+                                             dim_t offset,
+                                             DecodeWorkspace* workspace) const {
       PROFILE("TransformerDecoderLayer");
 
       const DataType dtype = input.dtype();
@@ -245,7 +254,8 @@ namespace ctranslate2 {
                              input_padder,
                              true,
                              position_bias,
-                             offset);
+                             offset,
+                             workspace);
         }
         (*_post_attention_layer_norm)(context, output);
         ops::Add()(output, input, output);
@@ -270,7 +280,10 @@ namespace ctranslate2 {
                                   attention,
                                   input_padder,
                                   memory_padder,
-                                  return_normalized_attention);
+                                  return_normalized_attention,
+                                  nullptr,
+                                  0,
+                                  workspace);
 
             if (_external_post_encoder_attention_layer_norm) {
                 (*_external_post_encoder_attention_layer_norm)(context, context);
@@ -282,7 +295,7 @@ namespace ctranslate2 {
         (*_pre_feedforward_layer_norm)(context, output);
         hidden = std::move(output);
 
-        _ff(hidden, output);
+        _ff(hidden, output, workspace);
 
         hidden = std::move(output);
         (*_post_feedforward_layer_norm)(hidden, output);
@@ -319,12 +332,13 @@ namespace ctranslate2 {
                         input_padder,
                         true,
                         position_bias,
-                        offset);
+                        offset,
+                        workspace);
 
         if (_post_attention_layer_norm)
           (*_post_attention_layer_norm)(input, hidden);
 
-        _ff(hidden, output);
+        _ff(hidden, output, workspace);
 
         ops::Add()(output, input, output);
         ops::Add()(output, attn, output);
@@ -343,9 +357,15 @@ namespace ctranslate2 {
                       input_padder,
                       true,
                       position_bias,
-                      offset);
+                      offset,
+                      workspace);
 
-      StorageView context(dtype, device);
+      // The cross-attention output comes from the decode workspace when one is passed.
+      // The move below when there is no encoder attention is a swap, so both the slot and
+      // the caller's output keep a valid buffer of stable capacity.
+      StorageView local_context(dtype, device);
+      StorageView& context = workspace
+        ? DecodeWorkspace::prepare(workspace->cross_context, dtype, device) : local_context;
       if (_encoder_attention) {
         (*_encoder_attention)(output,
                               *memory,
@@ -356,13 +376,16 @@ namespace ctranslate2 {
                               attention,
                               input_padder,
                               memory_padder,
-                              return_normalized_attention);
+                              return_normalized_attention,
+                              nullptr,
+                              0,
+                              workspace);
       }
       else {
         context = std::move(output);
       }
 
-      _ff(context, output);
+      _ff(context, output, workspace);
     }
 
 
@@ -844,7 +867,8 @@ namespace ctranslate2 {
                         memory_padder.get(),
                         return_normalized_attention(),
                         &position_bias,
-                        offset);
+                        offset,
+                        &_workspace);
           *layer_in_chunk = std::move(layer_out);
 
           if (layer_attention) {

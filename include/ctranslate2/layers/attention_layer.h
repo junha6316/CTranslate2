@@ -12,6 +12,33 @@ namespace ctranslate2 {
     class RotaryEmbeddings;
     class Alibi;
 
+    // Persistent temporaries for iterative decoding. A decoder owns one instance and
+    // threads it down to its layers so the projection, attention and feed-forward buffers
+    // created inside every decode step keep their allocation across steps: their shapes
+    // are constant within a decode (the QK^T buffer aside), so StorageView::reserve keeps
+    // the buffer and every step after the first becomes resize-only instead of paying one
+    // allocate/free pair per temporary per layer per step.
+    struct DecodeWorkspace {
+      StorageView fused_proj;
+      StorageView queries_proj;
+      StorageView keys_proj;
+      StorageView values_proj;
+      StorageView attn;
+      StorageView cross_context;
+      StorageView ffn_inner;
+      StorageView ffn_linear;
+
+      // Returns the slot ready to stand in for a local StorageView(dtype, device). The
+      // reassignment normally runs once, before the slot's first allocation; a later
+      // dtype or device change (e.g. a replica reloaded differently) drops the buffer and
+      // the slot re-allocates on its next use.
+      static StorageView& prepare(StorageView& s, DataType dtype, Device device) {
+        if (s.dtype() != dtype || s.device() != device)
+          s = StorageView(dtype, device);
+        return s;
+      }
+    };
+
     class AttentionLayer : public Layer
     {
     public:
@@ -37,7 +64,8 @@ namespace ctranslate2 {
                       const Padder* values_padder = nullptr,
                       bool return_normalized_attention = true,
                       StorageView* position_bias = nullptr,
-                      dim_t offset = 0) const = 0;
+                      dim_t offset = 0,
+                      DecodeWorkspace* workspace = nullptr) const = 0;
 
       virtual bool has_positional_embeddings() const = 0;
 

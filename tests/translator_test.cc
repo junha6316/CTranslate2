@@ -145,6 +145,69 @@ TEST_P(SearchVariantTest, LongDecodingKeepsCachedAttentionExact) {
   EXPECT_EQ(output, expected);
 }
 
+// The decoder reuses its layer temporaries across decoding steps and across translate
+// calls (see DecodeWorkspace). The following tests target the reuse hazards: data or
+// capacities left in a buffer by a previous call must never leak into a later one.
+
+static void expect_same_results(const std::vector<TranslationResult>& a,
+                                const std::vector<TranslationResult>& b) {
+  ASSERT_EQ(a.size(), b.size());
+  for (size_t i = 0; i < a.size(); ++i) {
+    EXPECT_EQ(a[i].hypotheses, b[i].hypotheses);
+    EXPECT_EQ(a[i].scores, b[i].scores);
+    EXPECT_EQ(a[i].attention, b[i].attention);
+  }
+}
+
+// Translating the same batch twice with one instance must be deterministic: the second
+// call runs entirely on reused buffers, so any stale data surviving in them shows up as
+// a diverging output. Attention is requested to also exercise the path where
+// save_attention steals a workspace-backed buffer.
+TEST_P(SearchVariantTest, StatefulDecodeBufferReuse) {
+  Translator translator = default_translator();
+  TranslationOptions options;
+  options.beam_size = GetParam();
+  options.return_scores = true;
+  const std::vector<std::vector<std::string>> inputs = {
+    {"آ", "ت", "ز", "م", "و", "ن"},
+    {"آ", "ز", "ا"}
+  };
+  for (const bool return_attention : {false, true}) {
+    options.return_attention = return_attention;
+    const auto first = translator.translate_batch(inputs, options);
+    const auto second = translator.translate_batch(inputs, options);
+    expect_same_results(first, second);
+  }
+}
+
+// A sequence of calls whose batch size grows and shrinks, each compared against a fresh
+// instance. The reused buffers keep the capacity of the largest batch seen, so a resize
+// that reads stale bytes past the logical shape would diverge from the fresh instance.
+TEST_P(SearchVariantTest, DecodeBufferCapacityChurn) {
+  Translator reused = default_translator();
+  TranslationOptions options;
+  options.beam_size = GetParam();
+  options.num_hypotheses = GetParam();
+  options.return_scores = true;
+  options.return_attention = true;
+  const std::vector<std::vector<std::vector<std::string>>> batches = {
+    {{"آ", "ت", "ز", "م", "و", "ن"}, {"آ", "ز", "ا"}, {"آ", "ت", "ز"}},
+    {{"آ", "ز", "ا"}},
+    // Mixed lengths so that some sentences finish early and the batch shrinks while
+    // decoding is still running on reused buffers.
+    {{"آ", "ت", "ز", "م", "و", "ن"},
+     {"آ", "ز", "ا"},
+     {"آ", "ت", "ز", "م", "و", "ن"},
+     {"م", "و", "ن"},
+     {"آ", "ت"}}
+  };
+  for (const auto& batch : batches) {
+    Translator fresh = default_translator();
+    expect_same_results(reused.translate_batch(batch, options),
+                        fresh.translate_batch(batch, options));
+  }
+}
+
 TEST_P(SearchVariantTest, SetMaxInputLength) {
   Translator translator = default_translator();
   TranslationOptions options;

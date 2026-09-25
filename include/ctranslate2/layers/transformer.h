@@ -18,7 +18,9 @@ namespace ctranslate2 {
                          const bool pre_norm = true,
                          const ops::ActivationType activation_type = ops::ActivationType::ReLU);
 
-      void operator()(const StorageView& input, StorageView& output) const;
+      void operator()(const StorageView& input,
+                      StorageView& output,
+                      DecodeWorkspace* workspace = nullptr) const;
 
       DataType output_type() const override {
         return _ff2.output_type();
@@ -100,7 +102,8 @@ namespace ctranslate2 {
                       const Padder* memory_padder = nullptr,
                       bool return_normalized_attention = true,
                       StorageView* position_bias = nullptr,
-                      dim_t offset = 0) const;
+                      dim_t offset = 0,
+                      DecodeWorkspace* workspace = nullptr) const;
 
       DataType output_type() const override {
         return _ff.output_type();
@@ -230,6 +233,10 @@ namespace ctranslate2 {
       const dim_t _sliding_window;
       const bool _tensor_parallel;
       const float _final_logit_softcapping;
+      // Layer temporaries reused across decode steps. A plain member is safe for the
+      // same reason decode() and operator() are non-const: each model replica is only
+      // ever run by one thread at a time (update_output_layer already relies on this).
+      DecodeWorkspace _workspace;
     };
 
   }

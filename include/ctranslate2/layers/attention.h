@@ -42,7 +42,8 @@ namespace ctranslate2 {
                       const Padder* values_padder = nullptr,
                       bool return_normalized_attention = true,
                       StorageView* position_bias = nullptr,
-                      dim_t offset = 0) const override;
+                      dim_t offset = 0,
+                      DecodeWorkspace* workspace = nullptr) const override;
 
       virtual bool has_positional_embeddings() const override {
             return _relative_position_keys || _relative_attention_bias || _rotary_embeddings || _alibi;
