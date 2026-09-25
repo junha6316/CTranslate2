@@ -1168,6 +1168,62 @@ TEST_F(TransformerDecoderTest, CacheLengthSurvivesReplication) {
   EXPECT_EQ(record.dim(1), 3);
 }
 
+TEST_F(TransformerDecoderTest, LayerSlotsPingPongAcrossSteps) {
+  // The iterative decode path binds the two layer activations to workspace slots. After
+  // the first step both slots must hold an allocation and the {layer_in, layer_out} buffer
+  // pair must be stable across steps (each layer swaps them, so only the pairing order
+  // may flip), while the logits stay identical to a fresh decoder instance.
+  struct TestDecoder : layers::TransformerDecoder {
+    using layers::TransformerDecoder::TransformerDecoder;
+    const layers::DecodeWorkspace& workspace() const {
+      return _workspace;
+    }
+  };
+
+  TestDecoder decoder(*_model, "decoder");
+  layers::TransformerDecoder reference(*_model, "decoder");
+
+  auto run = [&](layers::TransformerDecoder& dec,
+                 std::vector<StorageView>& logits_per_step,
+                 const TestDecoder* watch) {
+    auto state = make_state();
+    StorageView tok({1}, int32_t(1));
+    const void* slot_a = nullptr;
+    const void* slot_b = nullptr;
+    for (dim_t step = 0; step < 5; ++step) {
+      StorageView logits;
+      dec(step, tok, state, &logits);
+      logits_per_step.emplace_back(std::move(logits));
+      if (watch) {
+        const void* in_buffer = watch->workspace().layer_in.buffer();
+        const void* out_buffer = watch->workspace().layer_out.buffer();
+        EXPECT_NE(in_buffer, nullptr) << "step " << step;
+        EXPECT_NE(out_buffer, nullptr) << "step " << step;
+        if (step == 0) {
+          slot_a = in_buffer;
+          slot_b = out_buffer;
+        } else {
+          EXPECT_TRUE((in_buffer == slot_a && out_buffer == slot_b)
+                      || (in_buffer == slot_b && out_buffer == slot_a))
+            << "step " << step << " does not reuse the two step-0 buffers";
+        }
+      }
+    }
+  };
+
+  std::vector<StorageView> logits_first;
+  std::vector<StorageView> logits_second;
+  std::vector<StorageView> logits_reference;
+  run(decoder, logits_first, &decoder);
+  run(decoder, logits_second, &decoder);  // Reused instance: slots survive decodes.
+  run(reference, logits_reference, nullptr);
+
+  for (size_t i = 0; i < logits_reference.size(); ++i) {
+    expect_storage_eq(logits_first[i], logits_reference[i]);
+    expect_storage_eq(logits_second[i], logits_reference[i]);
+  }
+}
+
 TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
   auto state = make_state(/*iterative_decoding=*/false);
   StorageView target({1, 4}, std::vector<int32_t>{1, 3, 4, 5});

@@ -692,8 +692,23 @@ namespace ctranslate2 {
                                    + ")");
       }
 
-      StorageView layer_in(dtype, device);
-      StorageView layer_out(dtype, device);
+      // On the iterative path the two layer activations come from the decode workspace so
+      // their buffers survive across steps; every move-assignment between them below is a
+      // swap (StorageView move-assignment), keeping a deterministic two-slot ping-pong.
+      // The chunking vector is bypassed on that path because
+      // layer_ins.push_back(std::move(layer_in)) move-CONSTRUCTS into the vector: the
+      // workspace buffer would transit through a function-local vector and die with it.
+      // The !return_logits path keeps locals since *outputs = std::move(layer_in) at the
+      // end would steal a slot; the sequence and sliding-window paths are unchanged.
+      const bool reuse_layer_slots = step >= 0 && _sliding_window == 0 && return_logits;
+      StorageView local_layer_in(dtype, device);
+      StorageView local_layer_out(dtype, device);
+      StorageView& layer_in = reuse_layer_slots
+        ? DecodeWorkspace::prepare(_workspace.layer_in, dtype, device)
+        : local_layer_in;
+      StorageView& layer_out = reuse_layer_slots
+        ? DecodeWorkspace::prepare(_workspace.layer_out, dtype, device)
+        : local_layer_out;
 
       _embeddings(ids, layer_in);
       if (_start_from_zero_embedding)
@@ -794,22 +809,25 @@ namespace ctranslate2 {
 
       std::vector<StorageView> layer_ins;
 
-      while (true) {
-        dim_t prompt_size = layer_in.dim(1);
-        if (_sliding_window == 0 || prompt_size <= _sliding_window || _use_flash_attention) {
-          layer_ins.push_back(std::move(layer_in));
-          break;
-        }
-        if (layer_in.dim(1) > _sliding_window) {
-          StorageView tmp(dtype, device);
-          const ops::Split split_op(1, {_sliding_window, prompt_size - _sliding_window});
-          split_op(layer_in, tmp, layer_in);
-          layer_ins.push_back(std::move(tmp));
+      if (!reuse_layer_slots) {
+        while (true) {
+          dim_t prompt_size = layer_in.dim(1);
+          if (_sliding_window == 0 || prompt_size <= _sliding_window || _use_flash_attention) {
+            layer_ins.push_back(std::move(layer_in));
+            break;
+          }
+          if (layer_in.dim(1) > _sliding_window) {
+            StorageView tmp(dtype, device);
+            const ops::Split split_op(1, {_sliding_window, prompt_size - _sliding_window});
+            split_op(layer_in, tmp, layer_in);
+            layer_ins.push_back(std::move(tmp));
+          }
         }
       }
 
-      for (size_t i = 0; i < layer_ins.size(); ++i) {
-        StorageView* layer_in_chunk = &layer_ins[i];
+      const size_t num_chunks = reuse_layer_slots ? 1 : layer_ins.size();
+      for (size_t i = 0; i < num_chunks; ++i) {
+        StorageView* layer_in_chunk = reuse_layer_slots ? &layer_in : &layer_ins[i];
         for (size_t l = 0; l < _layers.size(); ++l) {
           StorageView* cached_self_attn_keys = nullptr;
           StorageView* cached_self_attn_values = nullptr;
@@ -876,7 +894,8 @@ namespace ctranslate2 {
             ops::Gather(1, 1)(*layer_attention, *heads_to_select, alignment_heads.back());
           }
         }
-        layer_in = std::move(*layer_in_chunk);
+        if (!reuse_layer_slots)  // On the fast path the chunk already is layer_in.
+          layer_in = std::move(*layer_in_chunk);
       }
 
       if (step == 0) {

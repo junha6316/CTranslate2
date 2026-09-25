@@ -27,6 +27,11 @@ namespace ctranslate2 {
       StorageView cross_context;
       StorageView ffn_inner;
       StorageView ffn_linear;
+      // The decoder's two layer activations: on the iterative decode path they ping-pong
+      // between these two slots (every move-assignment between them is a swap), so both
+      // buffers survive across layers and steps in a deterministic two-slot choreography.
+      StorageView layer_in;
+      StorageView layer_out;
 
       // Returns the slot ready to stand in for a local StorageView(dtype, device). The
       // reassignment normally runs once, before the slot's first allocation; a later
