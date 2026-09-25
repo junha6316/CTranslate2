@@ -628,6 +628,12 @@ namespace ctranslate2 {
       _alignment_heads_batch = -1;  // The cached device tensors describe the old heads.
     }
 
+    void TransformerDecoder::set_cache_reserve_steps(dim_t steps) {
+      _cache_reserve_steps = steps;
+      for (const auto& layer : _layers)
+        layer->get_self_attention().set_cache_reserve_steps(steps);
+    }
+
     const StorageView*
     TransformerDecoder::get_layer_alignment_heads(const dim_t layer, const dim_t batch_size) const {
       if (_alignment_heads.empty())
@@ -933,7 +939,10 @@ namespace ctranslate2 {
         // correctness; do it once per growth to leave no undefined bytes behind.
         const dim_t needed_bytes = batch_size * new_length * 16;  // INT8: 1 byte/element
         if (needed_bytes > cache_length.reserved_memory()) {
-          const dim_t rounded = (new_length + 31) / 32 * 32;
+          // Mirror the caches' opt-in reserve so this entry also stops growing
+          // mid-decode; dim(0) stays batch x beam and the rows stay 16 bytes, the
+          // invariants that keep it on the fused one-kernel beam reorder path.
+          const dim_t rounded = (std::max(new_length, _cache_reserve_steps) + 31) / 32 * 32;
           cache_length.resize({batch_size, rounded, 16});
           cache_length.zero();
         }

@@ -1251,6 +1251,57 @@ TEST_F(TransformerDecoderTest, AlignmentHeadsDeviceMemo) {
   expect_storage_eq(*reconfigured, StorageView({3, 1}, std::vector<int32_t>{0, 0, 0}));
 }
 
+TEST_F(TransformerDecoderTest, CacheReservePreallocatesUpFront) {
+  // Reserve above one kv_cache_block (32): the cache must be sized once at step 0, the
+  // mid-capacity offsets of later steps must pass the relaxed block guard, and the
+  // logits must stay identical to an unreserved decoder at every step.
+  layers::TransformerDecoder reference(*_model, "decoder");
+  _decoder.set_cache_reserve_steps(40);
+
+  auto state = make_state();
+  auto ref_state = make_state();
+  StorageView tok({1}, int32_t(1));
+
+  for (dim_t step = 0; step < 6; ++step) {
+    StorageView logits;
+    StorageView ref_logits;
+    _decoder(step, tok, state, &logits);
+    reference(step, tok, ref_state, &ref_logits);
+    expect_storage_eq(logits, ref_logits);
+  }
+
+  // round_up(40, 32) = 64 from the first append; unreserved stays at one block.
+  EXPECT_EQ(state.at("self_keys_0").dim(2), 64);
+  EXPECT_EQ(ref_state.at("self_keys_0").dim(2), 32);
+  // The self_length record mirrors the reserve.
+  EXPECT_GE(state.at("self_length").reserved_memory(), dim_t(40 * 16));
+
+  // The step-exactness guard is untouched by the relaxation.
+  StorageView logits;
+  EXPECT_THROW(_decoder(8, tok, state, &logits), std::runtime_error);
+}
+
+TEST_F(TransformerDecoderTest, CacheReserveGrowthFallback) {
+  // Decoding past the reserve must fall back to block growth and stay correct.
+  layers::TransformerDecoder reference(*_model, "decoder");
+  _decoder.set_cache_reserve_steps(40);
+
+  auto state = make_state();
+  auto ref_state = make_state();
+  StorageView tok({1}, int32_t(1));
+
+  for (dim_t step = 0; step < 70; ++step) {
+    StorageView logits;
+    StorageView ref_logits;
+    _decoder(step, tok, state, &logits);
+    reference(step, tok, ref_state, &ref_logits);
+    expect_storage_eq(logits, ref_logits);
+  }
+
+  EXPECT_EQ(state.at("self_keys_0").dim(2), 96);  // 64 exceeded at step 64 -> one block more.
+  EXPECT_EQ(state.at("self_length").dim(1), 70);
+}
+
 TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
   auto state = make_state(/*iterative_decoding=*/false);
   StorageView target({1, 4}, std::vector<int32_t>{1, 3, 4, 5});

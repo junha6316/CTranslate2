@@ -197,8 +197,12 @@ namespace ctranslate2 {
     }
 
     // Writes x [batch, heads, steps, depth] into cache [batch, heads, capacity, depth] at
-    // time "offset", growing the capacity when the new steps do not fit.
-    static void append_to_cache(StorageView& cache, const StorageView& x, dim_t offset) {
+    // time "offset", growing the capacity when the new steps do not fit. A positive
+    // reserve_steps sizes any growth for at least that many steps, so a cache growing
+    // from empty is allocated once for the whole decode; the block-by-block growth stays
+    // reachable as a fallback if the reserve is ever exceeded.
+    static void append_to_cache(StorageView& cache, const StorageView& x, dim_t offset,
+                                dim_t reserve_steps = 0) {
       const dim_t batch = x.dim(0);
       const dim_t heads = x.dim(1);
       const dim_t steps = x.dim(2);
@@ -211,14 +215,17 @@ namespace ctranslate2 {
       // verification happens in TransformerDecoder::decode against the "self_length"
       // state entry; this block-granularity check remains as cheap defense in depth for
       // any caller that reaches MultiHeadAttention without going through that decode.
-      // The shape no longer carries the length, but the capacity is always
-      // round_up(length, kv_cache_block), so a correct offset falls in the last block.
-      // That catches an offset that is off by a block or more, not one that is off by a
-      // few steps.
-      if (offset < 0 || offset > capacity
-          || (capacity > 0
-              && (offset <= capacity - kv_cache_block
-                  || cache.dim(0) != batch || cache.dim(1) != heads || cache.dim(3) != depth)))
+      // Without a reserve the capacity is always round_up(length, kv_cache_block), so a
+      // correct offset falls in the last block; that catches an offset that is off by a
+      // block or more, not one that is off by a few steps. With a reserve the capacity is
+      // intentionally larger, so only the shape match and offset <= capacity remain here
+      // and the decode-side check is the real guard.
+      const bool shape_mismatch = capacity > 0 && (cache.dim(0) != batch
+                                                   || cache.dim(1) != heads
+                                                   || cache.dim(3) != depth);
+      const bool outside_last_block = capacity > 0 && reserve_steps <= 0
+                                      && offset <= capacity - kv_cache_block;
+      if (offset < 0 || offset > capacity || shape_mismatch || outside_last_block)
         throw std::runtime_error("Self-attention cache of shape "
                                  + (capacity == 0 ? std::string("(empty)")
                                     : std::to_string(cache.dim(0)) + "x"
@@ -229,8 +236,8 @@ namespace ctranslate2 {
                                  + " step(s) at offset " + std::to_string(offset));
 
       if (capacity < length) {
-        const dim_t new_capacity = ((length + kv_cache_block - 1) / kv_cache_block
-                                    * kv_cache_block);
+        const dim_t new_capacity = ((std::max(length, reserve_steps) + kv_cache_block - 1)
+                                    / kv_cache_block * kv_cache_block);
         // This has to build a new tensor. Resizing the cache in place would keep the
         // existing buffer whenever it is large enough (StorageView::reserve), and every
         // row would then sit at the wrong offset for the new time pitch.
@@ -649,8 +656,8 @@ namespace ctranslate2 {
 
         if (cached_keys != nullptr) {
           if (preallocated_cache) {
-            append_to_cache(*cached_keys, keys_proj, offset);
-            append_to_cache(*cached_values, values_proj, offset);
+            append_to_cache(*cached_keys, keys_proj, offset, _cache_reserve);
+            append_to_cache(*cached_values, values_proj, offset, _cache_reserve);
             cached_keys_length = offset + keys_proj.dim(_cache_time_dim);
           } else if (cached_keys->empty()) {
             // A swap: the cache takes the projected data and a workspace-backed slot

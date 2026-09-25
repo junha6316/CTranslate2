@@ -85,6 +85,19 @@ namespace ctranslate2 {
         return false;
       }
 
+      // Opt-in: when non-zero, a self-attention cache growing from empty is sized for
+      // this many steps up front, so the block-by-block growth copies disappear and the
+      // cache address stays fixed for the whole decode (a CUDA-graph capture
+      // prerequisite). const with a mutable member because decoders only hold const layer
+      // references and each model replica runs single-threaded.
+      void set_cache_reserve_steps(dim_t steps) const {
+        _cache_reserve = steps;
+      }
+
+      dim_t cache_reserve_steps() const {
+        return _cache_reserve;
+      }
+
       static StorageView prepare_length_mask(const StorageView& lengths,
                                              const dim_t num_heads,
                                              const dim_t num_queries,
@@ -107,6 +120,7 @@ namespace ctranslate2 {
       const bool _multi_query;
       const dim_t _num_heads_kv;
       const dim_t _sliding_window;
+      mutable dim_t _cache_reserve = 0;
     };
 
     enum class RotaryScalingType {
