@@ -468,6 +468,43 @@ TEST_P(OpDeviceTest, GatherBatch) {
     expect_storage_eq(data[t], expected[t]);
 }
 
+TEST_P(OpDeviceTest, GatherBatchWithShadows) {
+  // The 3-argument overload must gather exactly like the 2-argument one. On CPU the
+  // shadows are ignored (fallback path); on CUDA the second round reuses the buffers
+  // swapped out by the first round, so run two rounds with different indices.
+  Device device = GetParam();
+  const std::vector<dim_t> row_sizes = {4, 8, 3, 64};
+  const dim_t rows = 5;
+  StorageView ids1({6}, std::vector<int32_t>{4, 0, 0, 3, 1, 2}, device);
+  StorageView ids2({6}, std::vector<int32_t>{1, 1, 2, 0, 5, 3}, device);
+
+  std::vector<StorageView> data;
+  std::vector<StorageView> expected;
+  for (dim_t t = 0; t < 8; ++t) {
+    const dim_t row_size = row_sizes[t % row_sizes.size()];
+    std::vector<float> values(rows * row_size);
+    for (size_t i = 0; i < values.size(); ++i)
+      values[i] = t * 1000 + i;
+    data.emplace_back(Shape{rows, row_size}, values, device);
+    StorageView after_first(device);
+    ops::Gather(0)(data.back(), ids1, after_first);
+    expected.emplace_back(device);
+    ops::Gather(0)(after_first, ids2, expected.back());
+  }
+
+  std::vector<StorageView*> pointers;
+  for (auto& value : data)
+    pointers.push_back(&value);
+  std::vector<StorageView> shadows;
+  ops::Gather::batch(pointers, ids1, &shadows);
+  if (device == Device::CUDA)  // The CPU fallback leaves the shadow vector untouched.
+    EXPECT_EQ(shadows.size(), data.size());
+  ops::Gather::batch(pointers, ids2, &shadows);
+
+  for (size_t t = 0; t < data.size(); ++t)
+    expect_storage_eq(data[t], expected[t]);
+}
+
 TEST_P(OpDeviceTest, GatherInDepthWith1DInput) {
   Device device = GetParam();
   StorageView data({2, 4}, std::vector<float>{1, 2, 3, 4, 5, 6, 7, 8}, device);

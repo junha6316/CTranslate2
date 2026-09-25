@@ -96,6 +96,14 @@ namespace ctranslate2 {
       std::vector<size_t> _to_original_word_id;
       std::unordered_map<size_t, size_t> _to_output_word_id;
       dim_t _vocabulary_size = 0;
+      // Shadow buffers for the fused beam-reorder gather (ops::Gather::batch): entry i
+      // pairs with the i-th replicated state entry by position in the batch call. No
+      // explicit invalidation is needed: the gather resets a shadow on dtype mismatch and
+      // resizes it on shape change, and a mispairing after a state-map order change is
+      // correctness-benign — the pairing only affects buffer reuse, the gathered data
+      // always comes from the live cache with fresh indices. Mutable because
+      // update_state is const while the shadows are a pure allocation cache.
+      mutable std::vector<StorageView> _reorder_shadows;
     };
 
 

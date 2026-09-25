@@ -60,7 +60,7 @@ namespace ctranslate2 {
         else if (alive_batches)
           ops::Gather()(value, *alive_batches);
       }
-      ops::Gather::batch(replicated, indices);
+      ops::Gather::batch(replicated, indices, &_reorder_shadows);
     }
 
     void Decoder::replicate_state(DecoderState& state, const dim_t beam_size) const {

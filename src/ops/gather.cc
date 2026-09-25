@@ -99,18 +99,31 @@ namespace ctranslate2 {
     }
 
     void Gather::batch(const std::vector<StorageView*>& data, const StorageView& input) {
+      batch(data, input, nullptr);
+    }
+
+    void Gather::batch(const std::vector<StorageView*>& data,
+                       const StorageView& input,
+                       std::vector<StorageView>* shadows) {
+#ifndef CT2_WITH_CUDA
+      (void)shadows;  // Only the fused CUDA path below uses the shadows.
+#endif
 #ifdef CT2_WITH_CUDA
       if (input.device() == Device::CUDA) {
         PROFILE("GatherBatch");
         constexpr dim_t word_size = 16;  // sizeof (uint4)
         std::vector<StorageView*> gathered;
+        std::vector<StorageView*> gathered_out;
         std::vector<StorageView> outputs;
         std::vector<const void*> src;
         std::vector<void*> dst;
         std::vector<dim_t> row_size;
         outputs.reserve(data.size());  // dst holds pointers into these buffers
+        if (shadows && shadows->size() != data.size())
+          shadows->resize(data.size());
 
-        for (StorageView* value : data) {
+        for (size_t n = 0; n < data.size(); ++n) {
+          StorageView* value = data[n];
           if (value->device() != Device::CUDA || value->empty()) {
             Gather()(*value, input);
             continue;
@@ -125,19 +138,40 @@ namespace ctranslate2 {
             continue;
           }
 
-          outputs.emplace_back(compute_output_shape(*value, input, 0),
-                               value->dtype(),
-                               Device::CUDA);
+          StorageView* out;
+          if (shadows) {
+            StorageView& s = (*shadows)[n];
+            // Same reset rule as DecodeWorkspace::prepare: a dtype or device change drops
+            // the buffer and the shadow re-allocates below.
+            if (s.dtype() != value->dtype() || s.device() != Device::CUDA)
+              s = StorageView(value->dtype(), Device::CUDA);
+            // Reserve the source's reserved byte capacity, not the exact output bytes:
+            // the source buffers are block-rounded (see append_to_cache and the
+            // self_length entry), while the gathered rows of the self_length entry grow
+            // every step — an exact-fit shadow would re-allocate on each of those steps.
+            s.reserve((value->reserved_memory() + s.item_size() - 1) / s.item_size());
+            s.resize(compute_output_shape(*value, input, 0));
+            out = &s;
+          } else {
+            outputs.emplace_back(compute_output_shape(*value, input, 0),
+                                 value->dtype(),
+                                 Device::CUDA);
+            out = &outputs.back();
+          }
           gathered.push_back(value);
+          gathered_out.push_back(out);
           src.push_back(value->buffer());
-          dst.push_back(outputs.back().buffer());
+          dst.push_back(out->buffer());
           row_size.push_back(row_bytes / word_size);
         }
 
         if (!gathered.empty() && input.size() > 0)
           gather_rows_cuda(src, dst, row_size, input.data<int32_t>(), input.size());
+        // A swap (move-assignment already is one, storage_view.cc): the data tensor takes
+        // the gather output and the old buffer lands in the output slot — with shadows
+        // that buffer is exactly what the next step reuses.
         for (size_t i = 0; i < gathered.size(); ++i)
-          *gathered[i] = std::move(outputs[i]);
+          std::swap(*gathered[i], *gathered_out[i]);
         return;
       }
 #endif
