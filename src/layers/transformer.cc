@@ -2,6 +2,26 @@
 
 #include <cmath>
 
+#include "dispatch.h"
+#include "env.h"
+
+#ifdef CT2_WITH_CUDA
+#  include <cstring>
+
+#  include <spdlog/spdlog.h>
+
+#  include "ctranslate2/allocator.h"
+#  include "cuda/graph_runner.h"
+#else
+namespace ctranslate2 {
+  namespace cuda {
+    // CPU builds never create a graph runner; this stub only completes the
+    // unique_ptr member type.
+    class DecoderGraphRunner {};
+  }
+}
+#endif
+
 namespace ctranslate2 {
   namespace layers {
 
@@ -573,6 +593,8 @@ namespace ctranslate2 {
       }
     }
 
+    TransformerDecoder::~TransformerDecoder() = default;
+
     DecoderState TransformerDecoder::initial_state(bool iterative_decoding) const {
       DecoderState state;
 
@@ -632,6 +654,13 @@ namespace ctranslate2 {
       _cache_reserve_steps = steps;
       for (const auto& layer : _layers)
         layer->get_self_attention().set_cache_reserve_steps(steps);
+#ifdef CT2_WITH_CUDA
+      // The opted-in models call this once per generate(): a reliable decode boundary
+      // for the graph runner (a step-number heuristic alone can collide across
+      // decodes, replaying stale executables against recycled allocations).
+      if (_graph_runner)
+        _graph_runner->note_new_decode();
+#endif
     }
 
     const StorageView*
@@ -730,6 +759,162 @@ namespace ctranslate2 {
         ? DecodeWorkspace::prepare(_workspace.layer_out, dtype, device)
         : local_layer_out;
 
+      // Padded KV mode (opt-in, see DecodeWorkspace::padded_kv): on the single-token
+      // iterative path with preallocated caches, attention consumes the caches at full
+      // capacity with a device-side lengths row masking the spare tail, so every shape
+      // in the forward is decode-constant. Refused when a mask, attention weights,
+      // tensor parallelism or per-batch memory lengths are in play; the per-layer
+      // feature gates (relative positions, alibi, ...) are checked in attention.cc.
+      // This runs before the forward so that under CUDA graphs the refresh kernels
+      // stay outside the captured region.
+      _workspace.padded_kv = false;
+      _workspace.graph_indirect = false;
+      _workspace.padded_kv_fallback = false;
+      if (step >= 0 && !is_sequence && !lengths && !attention && tracked_cache_length
+          && _cache_reserve_steps > 0 && device == Device::CUDA
+          && !_tensor_parallel && state.find("memory_lengths") == state.end()) {
+        static const bool padded_kv_env = read_bool_from_env("CT2_CUDA_PAD_KV")
+                                          || read_bool_from_env("CT2_CUDA_GRAPHS");
+        if (padded_kv_env) {
+          StorageView& self_lengths = _workspace.self_lengths;
+          if (self_lengths.dtype() != DataType::INT32 || self_lengths.device() != device)
+            self_lengths = StorageView(DataType::INT32, device);
+          const dim_t rows = ids.dim(0) * _num_heads;
+          self_lengths.resize({rows});
+          // One tiny fill per step, outside any captured region: a replayed graph
+          // reads the refreshed contents through the baked pointer.
+          DEVICE_DISPATCH(device, primitives<D>::fill(self_lengths.data<int32_t>(),
+                                                      int32_t(step + 1), rows));
+          _workspace.padded_kv = true;
+        }
+      }
+
+      // Bookkeeping entry update shared by the eager forward and the graph replay
+      // path (see kSelfCacheLengthState above the constructor).
+      const auto update_length_record = [&](dim_t record_batch, dim_t record_steps) {
+        if (!tracked_cache_length)
+          return;
+        auto it = state.find(kSelfCacheLengthState);
+        if (it == state.end())  // State built outside initial_state: start tracking now.
+          it = state.emplace(kSelfCacheLengthState, StorageView(DataType::INT8, _device)).first;
+        StorageView& cache_length = it->second;
+        const dim_t new_length = step + record_steps;
+        // Grow the buffer by blocks like the caches do, so the greedy path only touches
+        // metadata on most steps (StorageView::resize keeps the buffer when the byte size
+        // fits). No consumer ever reads past the current shape (gathers and tiles copy
+        // shape-defined bytes only), so zeroing the spare region is hygiene, not
+        // correctness; do it once per growth to leave no undefined bytes behind.
+        const dim_t needed_bytes = record_batch * new_length * 16;  // INT8: 1 byte/element
+        if (needed_bytes > cache_length.reserved_memory()) {
+          // Mirror the caches' opt-in reserve so this entry also stops growing
+          // mid-decode; dim(0) stays batch x beam and the rows stay 16 bytes, the
+          // invariants that keep it on the fused one-kernel beam reorder path.
+          const dim_t rounded = (std::max(new_length, _cache_reserve_steps) + 31) / 32 * 32;
+          cache_length.resize({record_batch, rounded, 16});
+          cache_length.zero();
+        }
+        cache_length.resize({record_batch, new_length, 16});
+      };
+
+#ifdef CT2_WITH_CUDA
+      // CUDA graphs (opt-in): decide what this step does before any device work.
+      auto graph_action = cuda::DecoderGraphRunner::Action::Eager;
+      const bool graph_step = _workspace.padded_kv && outputs && return_logits
+                              && reuse_layer_slots && !_use_flash_attention
+                              && cuda::DecoderGraphRunner::env_enabled();
+      if (graph_step) {
+        if (!_graph_runner)
+          _graph_runner = std::make_unique<cuda::DecoderGraphRunner>();
+        bool eligible = _graph_runner->device_supported();
+        const StorageView* encodings = nullptr;
+        if (eligible) {
+          // Host-side guards that a replay would bypass (a replay skips the eager
+          // forward entirely, so append_to_cache's bounds throw / growth fallback and
+          // add_position's bounds throw / table growth never run). They must hold
+          // BEFORE begin_step: at the first step past the cache reserve the pre-step
+          // fingerprint still matches (the capacity only changes on the eager growth,
+          // one step later), so a Replay would run the captured copy_2d_indirect one
+          // step past the cache allocation; likewise a position past the table would
+          // be read out of bounds on the device. A failed guard makes the step
+          // ineligible: the eager forward then either grows the cache (reserve
+          // overflow) or throws the same clean error as eager decoding, and replays
+          // are disabled for the rest of the decode.
+          const auto cache_it = state.find("self_keys_0");
+          const dim_t cache_capacity =
+              (cache_it != state.end() && cache_it->second.rank() == 4)
+              ? cache_it->second.dim(2)
+              : 0;
+          if (_position_encoder)
+            encodings = &_position_encoder->ensure_position_encoding(step + 1);
+          if (step + 1 > cache_capacity
+              || (encodings && step + 1 > encodings->dim(0))) {
+            spdlog::debug("CUDA graphs: step {} does not fit the captured shapes"
+                          " (cache capacity {}, position table {}), going eager",
+                          step, cache_capacity,
+                          encodings ? encodings->dim(0) : dim_t(-1));
+            _graph_runner->note_ineligible(step);
+            eligible = false;
+          }
+        }
+        if (eligible) {
+          // Seed the device step record consumed by the indirect kernels
+          // ({position index, cache offset}, both equal to the step here).
+          StorageView& step_state = _workspace.step_state;
+          if (step_state.dtype() != DataType::INT32 || step_state.device() != device)
+            step_state = StorageView(DataType::INT32, device);
+          step_state.resize({2});
+          DEVICE_DISPATCH(device, primitives<D>::fill(step_state.data<int32_t>(),
+                                                      int32_t(step), dim_t(2)));
+          _workspace.graph_indirect = true;
+
+          // Pointer fingerprint: critical entries first (rotated between steps by
+          // eager code even while replays run), then the workspace slots (frozen once
+          // replays start, so they only feed the warmup stability detection).
+          std::vector<std::uintptr_t> fingerprint;
+          fingerprint.reserve(state.size() * 3 + 18);
+          for (const auto& [name, value] : state) {
+            fingerprint.push_back(reinterpret_cast<std::uintptr_t>(value.buffer()));
+            fingerprint.push_back(std::uintptr_t(value.rank() > 0 ? value.dim(0) : 0));
+            // The KV caches' time capacity (dim 2): both allocators deterministically
+            // recycle freed blocks, so a later decode can get the same buffer back
+            // with a different capacity, and the captured GEMM/softmax leading
+            // dimensions would silently disagree with the new layout.
+            fingerprint.push_back(std::uintptr_t(value.rank() > 2 ? value.dim(2) : 0));
+          }
+          fingerprint.push_back(reinterpret_cast<std::uintptr_t>(ids.buffer()));
+          fingerprint.push_back(std::uintptr_t(ids.dim(0)));
+          fingerprint.push_back(reinterpret_cast<std::uintptr_t>(outputs->buffer()));
+          fingerprint.push_back(reinterpret_cast<std::uintptr_t>(_workspace.self_lengths.buffer()));
+          fingerprint.push_back(reinterpret_cast<std::uintptr_t>(_workspace.step_state.buffer()));
+          if (encodings) {
+            // The captured add_position kernel bakes the table address: a lazy growth
+            // (sinusoidal encoder) reallocates it and must disable the replays.
+            fingerprint.push_back(reinterpret_cast<std::uintptr_t>(encodings->buffer()));
+            fingerprint.push_back(std::uintptr_t(encodings->dim(0)));
+          }
+          const std::size_t num_critical = fingerprint.size();
+          for (const StorageView* slot : {&_workspace.fused_proj, &_workspace.queries_proj,
+                                          &_workspace.keys_proj, &_workspace.values_proj,
+                                          &_workspace.attn, &_workspace.cross_context,
+                                          &_workspace.ffn_inner, &_workspace.ffn_linear,
+                                          &_workspace.layer_in, &_workspace.layer_out})
+            fingerprint.push_back(reinterpret_cast<std::uintptr_t>(slot->buffer()));
+
+          graph_action = _graph_runner->begin_step(step, std::move(fingerprint), num_critical);
+        }
+      } else if (_graph_runner) {
+        if (is_sequence || step <= 0)
+          // A prompt/prefix forward (whisper's forward_prompt is a step-0 sequence
+          // call) or any step-0/scoring call is a decode boundary: drop the previous
+          // decode's executables so a step-number collision between decodes can never
+          // replay them against recycled allocations.
+          _graph_runner->note_new_decode();
+        else
+          _graph_runner->note_ineligible(step);
+      }
+#endif
+
+      const auto run_forward = [&]() {
       _embeddings(ids, layer_in);
       if (_start_from_zero_embedding)
         zero_first_timestep(layer_in, step);
@@ -742,7 +927,9 @@ namespace ctranslate2 {
       if (layer_in.rank() == 2)
         layer_in.expand_dims(1);
       if (_position_encoder)
-        (*_position_encoder)(layer_in, std::max(step, dim_t(0)));
+        _position_encoder->add_position(layer_in, std::max(step, dim_t(0)),
+                                        _workspace.graph_indirect
+                                        ? &_workspace.step_state : nullptr);
       if (_layernorm_embedding)
         (*_layernorm_embedding)(layer_in, layer_in);
 
@@ -926,28 +1113,7 @@ namespace ctranslate2 {
         state.erase("memory");
       }
 
-      if (tracked_cache_length) {
-        auto it = state.find(kSelfCacheLengthState);
-        if (it == state.end())  // State built outside initial_state: start tracking now.
-          it = state.emplace(kSelfCacheLengthState, StorageView(DataType::INT8, _device)).first;
-        StorageView& cache_length = it->second;
-        const dim_t new_length = step + max_time;
-        // Grow the buffer by blocks like the caches do, so the greedy path only touches
-        // metadata on most steps (StorageView::resize keeps the buffer when the byte size
-        // fits). No consumer ever reads past the current shape (gathers and tiles copy
-        // shape-defined bytes only), so zeroing the spare region is hygiene, not
-        // correctness; do it once per growth to leave no undefined bytes behind.
-        const dim_t needed_bytes = batch_size * new_length * 16;  // INT8: 1 byte/element
-        if (needed_bytes > cache_length.reserved_memory()) {
-          // Mirror the caches' opt-in reserve so this entry also stops growing
-          // mid-decode; dim(0) stays batch x beam and the rows stay 16 bytes, the
-          // invariants that keep it on the fused one-kernel beam reorder path.
-          const dim_t rounded = (std::max(new_length, _cache_reserve_steps) + 31) / 32 * 32;
-          cache_length.resize({batch_size, rounded, 16});
-          cache_length.zero();
-        }
-        cache_length.resize({batch_size, new_length, 16});
-      }
+      update_length_record(batch_size, max_time);
 
       if (attention && !alignment_heads.empty()) {
         if (_average_alignment_heads) {
@@ -996,6 +1162,76 @@ namespace ctranslate2 {
         else if (input_padder)
           input_padder->add_padding(*outputs);
       }
+      };  // run_forward
+
+#ifdef CT2_WITH_CUDA
+      if (graph_action == cuda::DecoderGraphRunner::Action::Replay) {
+        // Host bookkeeping the graph cannot do, then launch the captured executable.
+        // Any failure falls back to the eager forward for a correct step.
+        update_length_record(ids.dim(0), 1);
+        outputs->resize(Shape(_workspace.graph_logits_shape));
+        if (cuda::DecoderGraphRunner::check_enabled()) {
+          if (_graph_runner->replay()) {
+            // Debug bring-up: replay AND eager on the same inputs, compare logits.
+            const StorageView replayed = outputs->to(Device::CPU);
+            run_forward();
+            const StorageView eager = outputs->to(Device::CPU);
+            const bool equal =
+              replayed.shape() == eager.shape()
+              && memcmp(replayed.buffer(), eager.buffer(),
+                        replayed.size() * replayed.item_size()) == 0;
+            if (!equal) {
+              spdlog::warn("CUDA graphs check: step {} logits mismatch", step);
+              _graph_runner->disable_for_decode("check mode mismatch");
+            }
+          } else {
+            run_forward();
+          }
+        } else if (!_graph_runner->replay()) {
+          run_forward();
+        }
+        return;
+      }
+      if (graph_action == cuda::DecoderGraphRunner::Action::Capture) {
+        bool captured = false;
+        if (_graph_runner->begin_capture()) {
+          try {
+            if (cuda::DecoderGraphRunner::injected_fault() == "alloc")
+              // Fault injection: a real allocation inside the capture window, which
+              // must throw through the allocator assert-hook and abort the capture.
+              get_allocator<Device::CUDA>().allocate(256);
+            run_forward();
+            if (_workspace.padded_kv_fallback)
+              // A layer consumed the cache at its exact length: the recorded forward
+              // is not shape-constant across steps and must not be instantiated.
+              throw std::runtime_error("a layer fell back from the padded KV path");
+            captured = _graph_runner->end_capture_and_launch();
+          } catch (const std::exception& e) {
+            // Typically the allocator assert-hook (allocation inside the capture).
+            _graph_runner->abort_capture(e.what());
+          }
+        }
+        if (captured) {
+          _workspace.graph_logits_shape = outputs->shape();
+        } else {
+          // Nothing ran on the device during the aborted capture: rerun eagerly.
+          run_forward();
+        }
+        return;
+      }
+#endif
+
+      run_forward();
+
+#ifdef CT2_WITH_CUDA
+      // A layer that could not take the shape-constant padded-KV path (relative
+      // positions/bias, alibi, or a self_lengths/cache layout mismatch) makes the
+      // whole decode ineligible for capture: its QK/AV shapes grow every step behind
+      // a possibly-stable pointer fingerprint, so a captured graph would silently
+      // attend over a stale, shorter key window.
+      if (_graph_runner && _workspace.padded_kv_fallback)
+        _graph_runner->disable_for_decode("a layer fell back from the padded KV path");
+#endif
     }
 
   }

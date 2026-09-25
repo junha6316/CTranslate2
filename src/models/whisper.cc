@@ -257,6 +257,7 @@ namespace ctranslate2 {
       // default because it fronts the full cache memory (~55-82MB for whisper-small
       // beam5, ~370-655MB for large-v3 beam5, depending on max_length).
       static const bool prealloc_kv = read_bool_from_env("CT2_CUDA_PREALLOC_KV")
+                                      || read_bool_from_env("CT2_CUDA_PAD_KV")
                                       || read_bool_from_env("CT2_CUDA_GRAPHS");
       if (prealloc_kv)
         _decoder->set_cache_reserve_steps(options.max_length);

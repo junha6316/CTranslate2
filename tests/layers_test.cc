@@ -233,6 +233,19 @@ TEST(LayerTest, PadderIgnore) {
   expect_storage_eq(x, original);
 }
 
+TEST(LayerTest, PositionEncoderIndirectOffset) {
+  // add_position with a device-side index must match the host-index overload.
+  layers::SinusoidalPositionEncoder position_encoder(4);
+  const dim_t index = 5;
+  StorageView direct({2, 1, 4}, std::vector<float>{0.1f, -2.3f, 0.5f, 1.2f,
+                                                   -0.4f, 0.7f, -1.1f, 0.3f});
+  StorageView indirect(direct);
+  const StorageView index_view({1}, std::vector<int32_t>{int32_t(index)});
+  position_encoder(direct, index);
+  position_encoder.add_position(indirect, index, &index_view);
+  expect_storage_eq(indirect, direct);
+}
+
 TEST(LayerTest, PositionEncoderNoSharedState) {
   // Test case for issue: http://forum.opennmt.net/t/ctranslate2-c-api-returns-strange-results-when-initializing-2-models/3208
   layers::SinusoidalPositionEncoder position_encoder_1(4);

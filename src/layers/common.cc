@@ -149,6 +149,12 @@ namespace ctranslate2 {
 
 
     void PositionEncoder::operator()(StorageView& input, dim_t index) {
+      add_position(input, index, nullptr);
+    }
+
+    void PositionEncoder::add_position(StorageView& input,
+                                       dim_t index,
+                                       const StorageView* index_device) {
       const dim_t time = input.dim(1);
       const dim_t depth = input.dim(-1);
       const dim_t max_time = time + index;
@@ -166,11 +172,21 @@ namespace ctranslate2 {
                                     + ", but the input has depth "
                                     + std::to_string(depth));
 
-      DEVICE_AND_TYPE_DISPATCH(input.device(), input.dtype(),
-                               primitives<D>::add_batch_broadcast(encodings.data<T>() + index * depth,
-                                                                  input.data<T>(),
-                                                                  time * depth,
-                                                                  input.size()));
+      if (index_device) {
+        DEVICE_AND_TYPE_DISPATCH(input.device(), input.dtype(),
+                                 primitives<D>::add_batch_broadcast_indirect(
+                                   encodings.data<T>(),
+                                   index_device->data<int32_t>(),
+                                   depth,
+                                   input.data<T>(),
+                                   input.size()));
+      } else {
+        DEVICE_AND_TYPE_DISPATCH(input.device(), input.dtype(),
+                                 primitives<D>::add_batch_broadcast(encodings.data<T>() + index * depth,
+                                                                    input.data<T>(),
+                                                                    time * depth,
+                                                                    input.size()));
+      }
     }
 
     void PositionEncoder::operator()(const StorageView& input, StorageView& output, dim_t index) {

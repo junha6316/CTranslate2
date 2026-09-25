@@ -5,6 +5,54 @@
 class PrimitiveTest : public ::testing::TestWithParam<Device> {
 };
 
+TEST_P(PrimitiveTest, IndirectVariants) {
+  // The device-indirect variants (offset read from a tensor at kernel time, used
+  // under CUDA graphs) must match their host-offset counterparts exactly.
+  const Device device = GetParam();
+  const dim_t depth = 8;
+  const dim_t rows = 3;
+  const dim_t capacity = 6;
+  const int32_t offset = 2;
+  const StorageView offset_view({1}, std::vector<int32_t>{offset}, device);
+
+  // copy_2d_indirect against copy_2d shifted by offset * depth.
+  std::vector<float> src_values(rows * depth);
+  for (size_t i = 0; i < src_values.size(); ++i)
+    src_values[i] = float(i) + 1;
+  const StorageView src({rows, 1, depth}, src_values, device);
+  StorageView dst_direct({rows, capacity, depth}, 0.f, device);
+  StorageView dst_indirect({rows, capacity, depth}, 0.f, device);
+  DEVICE_DISPATCH(device,
+                  primitives<D>::copy_2d(src.data<float>(), depth,
+                                         dst_direct.data<float>() + offset * depth,
+                                         capacity * depth, depth, rows));
+  DEVICE_DISPATCH(device,
+                  primitives<D>::copy_2d_indirect(src.data<float>(), depth,
+                                                  dst_indirect.data<float>(),
+                                                  capacity * depth, depth, rows,
+                                                  offset_view.data<int32_t>(), depth));
+  expect_storage_eq(dst_indirect, dst_direct);
+
+  // add_batch_broadcast_indirect against add_batch_broadcast at base + offset * depth.
+  std::vector<float> base_values(5 * depth);
+  for (size_t i = 0; i < base_values.size(); ++i)
+    base_values[i] = float(i) * 0.5f;
+  const StorageView base({5, depth}, base_values, device);
+  StorageView y_direct({rows, depth}, 1.f, device);
+  StorageView y_indirect({rows, depth}, 1.f, device);
+  DEVICE_DISPATCH(device,
+                  primitives<D>::add_batch_broadcast(base.data<float>() + offset * depth,
+                                                     y_direct.data<float>(),
+                                                     depth, rows * depth));
+  DEVICE_DISPATCH(device,
+                  primitives<D>::add_batch_broadcast_indirect(base.data<float>(),
+                                                              offset_view.data<int32_t>(),
+                                                              depth,
+                                                              y_indirect.data<float>(),
+                                                              rows * depth));
+  expect_storage_eq(y_indirect, y_direct);
+}
+
 TEST_P(PrimitiveTest, StridedFill) {
   const Device device = GetParam();
   StorageView x({3, 2}, float(0), device);

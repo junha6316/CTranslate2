@@ -233,6 +233,7 @@ set(SOURCES
 )
 set(CUDA_SOURCES
   src/cuda/allocator.cc
+  src/cuda/graph_runner.cc
   src/cuda/primitives.cu
   src/cuda/random.cu
   src/cuda/utils.cc

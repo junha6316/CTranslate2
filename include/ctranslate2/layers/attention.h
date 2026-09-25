@@ -79,18 +79,24 @@ namespace ctranslate2 {
                                 StorageView* cached_values,
                                 const Padder* queries_padder,
                                 const Padder* values_padder,
-                                dim_t& beam_size) const;
+                                dim_t& beam_size,
+                                StorageView* transpose_scratch = nullptr) const;
 
     private:
+      // transpose_scratch (a DecodeWorkspace slot on the decoding path) backs the
+      // head transpose so its buffer ping-pongs with x instead of being replaced by
+      // an exact-fit local on every step (the move-assignment below is a swap).
       static void split_heads(StorageView& x,
                                dim_t num_heads,
                                const Padder* padder = nullptr,
-                               dim_t beam_size = 1);
+                               dim_t beam_size = 1,
+                               StorageView* transpose_scratch = nullptr);
 
       static void combine_heads(StorageView& x,
                                  dim_t num_heads,
                                  const Padder* padder = nullptr,
-                                 dim_t beam_size = 1);
+                                 dim_t beam_size = 1,
+                                 StorageView* transpose_scratch = nullptr);
 
       void apply_k_norm(StorageView& keys_proj) const;
       void apply_v_norm(StorageView& values_proj) const;

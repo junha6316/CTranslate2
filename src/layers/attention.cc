@@ -201,8 +201,13 @@ namespace ctranslate2 {
     // reserve_steps sizes any growth for at least that many steps, so a cache growing
     // from empty is allocated once for the whole decode; the block-by-block growth stays
     // reachable as a fallback if the reserve is ever exceeded.
+    // When device_offset is non-null the final in-place write reads its destination
+    // time offset from the device (it must hold the same value as "offset"); the host
+    // "offset" still drives the guards and the growth decision. This keeps the write
+    // valid inside a captured CUDA graph replayed at later steps.
     static void append_to_cache(StorageView& cache, const StorageView& x, dim_t offset,
-                                dim_t reserve_steps = 0) {
+                                dim_t reserve_steps = 0,
+                                const int32_t* device_offset = nullptr) {
       const dim_t batch = x.dim(0);
       const dim_t heads = x.dim(1);
       const dim_t steps = x.dim(2);
@@ -250,7 +255,16 @@ namespace ctranslate2 {
         capacity = new_capacity;
       }
 
-      copy_cache_steps(x, steps, cache, capacity, rows, steps, depth, offset);
+      if (device_offset) {
+        DEVICE_AND_TYPE_DISPATCH(
+          x.device(), x.dtype(),
+          (primitives<D>::copy_2d_indirect(x.data<T>(), steps * depth,
+                                           cache.data<T>(), capacity * depth,
+                                           steps * depth, rows,
+                                           device_offset, depth)));
+      } else {
+        copy_cache_steps(x, steps, cache, capacity, rows, steps, depth, offset);
+      }
     }
 
     static void dot_product_attention(const StorageView& queries,
@@ -476,7 +490,8 @@ namespace ctranslate2 {
         StorageView* cached_values,
         const Padder* queries_padder,
         const Padder* values_padder,
-        dim_t& beam_size) const {
+        dim_t& beam_size,
+        StorageView* transpose_scratch) const {
 
       queries_proj = std::move(fused_proj);
 
@@ -535,7 +550,7 @@ namespace ctranslate2 {
       if (queries_proj.dim(1) == 1 && cached_keys)
         beam_size = queries_proj.dim(0) / cached_keys->dim(0);
 
-      split_heads(queries_proj, _num_heads, queries_padder, beam_size);
+      split_heads(queries_proj, _num_heads, queries_padder, beam_size, transpose_scratch);
     }
 
     void MultiHeadAttention::operator()(const StorageView& queries,
@@ -596,7 +611,8 @@ namespace ctranslate2 {
 
         process_cross_attention(queries, values, fused_proj, queries_proj, keys_proj,
                                 values_proj, cached_keys, cached_values,
-                                queries_padder, values_padder, beam_size);
+                                queries_padder, values_padder, beam_size,
+                                workspace ? &workspace->head_transpose : nullptr);
       } else {
 
         if (_num_heads_kv < _num_heads) {// MQA or GQA: queries stay in merged time/head format
@@ -656,9 +672,35 @@ namespace ctranslate2 {
 
         if (cached_keys != nullptr) {
           if (preallocated_cache) {
-            append_to_cache(*cached_keys, keys_proj, offset, _cache_reserve);
-            append_to_cache(*cached_values, values_proj, offset, _cache_reserve);
+            const int32_t* device_offset =
+              (workspace && workspace->graph_indirect && workspace->step_state.size() == 2)
+              ? workspace->step_state.data<int32_t>() + 1
+              : nullptr;
+            append_to_cache(*cached_keys, keys_proj, offset, _cache_reserve, device_offset);
+            append_to_cache(*cached_values, values_proj, offset, _cache_reserve, device_offset);
             cached_keys_length = offset + keys_proj.dim(_cache_time_dim);
+            // Padded KV mode: consume the cache at its full capacity so the GEMM and
+            // softmax shapes stay constant across the decode; workspace->self_lengths
+            // (refreshed by the decoder every step) masks the spare tail inside the
+            // softmax. Model features that inject content past the exact length
+            // (relative positions/bias, alibi) keep the exact-length path.
+            if (workspace && workspace->padded_kv) {
+              if (!values_lengths && !attention
+                  && queries_proj.dim(2) == 1
+                  && !_relative_attention_bias && !_relative_position_keys
+                  && !_relative_asymmetric_position_keys && !_relative_position_values
+                  && !_alibi
+                  && workspace->self_lengths.size()
+                     == cached_keys->dim(0) * cached_keys->dim(1)) {
+                cached_keys_length = cached_keys->dim(2);
+                values_lengths = &workspace->self_lengths;
+              } else {
+                // Report the exact-length fallback: this forward's QK/AV shapes grow
+                // with the step, so the decoder-level CUDA-graph gate must neither
+                // capture it nor keep replaying a previously captured graph.
+                workspace->padded_kv_fallback = true;
+              }
+            }
           } else if (cached_keys->empty()) {
             // A swap: the cache takes the projected data and a workspace-backed slot
             // takes the cache's empty buffer, costing it one re-allocation on its next
@@ -742,7 +784,8 @@ namespace ctranslate2 {
         if (queries_padder)
           queries_padder->remove_padding(context);
       } else {
-        combine_heads(context, _num_heads, queries_padder, beam_size);
+        combine_heads(context, _num_heads, queries_padder, beam_size,
+                      workspace ? &workspace->head_transpose : nullptr);
       }
       _linear.back()(context, output, _layer_norm ? &queries : nullptr);
 
@@ -941,7 +984,8 @@ namespace ctranslate2 {
     void MultiHeadAttention::split_heads(StorageView& x,
                      dim_t num_heads,
                      const Padder* padder,
-                     dim_t beam_size) {
+                     dim_t beam_size,
+                     StorageView* transpose_scratch) {
       if (padder)
         padder->add_padding(x);
 
@@ -957,25 +1001,32 @@ namespace ctranslate2 {
         x.reshape({batch_size, num_heads, 1, head_dim});
       } else {
         x.reshape({batch_size, time, num_heads, head_dim});
-        StorageView y(x.device(), x.dtype());
+        StorageView local(x.device(), x.dtype());
+        StorageView& y = transpose_scratch
+          ? DecodeWorkspace::prepare(*transpose_scratch, x.dtype(), x.device())
+          : local;
         transpose_op(x, y);
-        x = std::move(y);
+        x = std::move(y);  // With a scratch this is a swap: both buffers survive.
       }
     }
 
     void MultiHeadAttention::combine_heads(StorageView& x,
                                          dim_t num_heads,
                                          const Padder* padder,
-                                         dim_t beam_size) {
+                                         dim_t beam_size,
+                                         StorageView* transpose_scratch) {
       // x has shape [batch_size, num_heads, time, head_dim]
       const dim_t batch_size = x.dim(0);
       const dim_t time = x.dim(2);
       const dim_t depth = x.dim(3) * num_heads;
 
       if (time > 1) {
-        StorageView y(x.device(), x.dtype());
+        StorageView local(x.device(), x.dtype());
+        StorageView& y = transpose_scratch
+          ? DecodeWorkspace::prepare(*transpose_scratch, x.dtype(), x.device())
+          : local;
         transpose_op(x, y);
-        x = std::move(y);
+        x = std::move(y);  // With a scratch this is a swap: both buffers survive.
       }
 
       x.reshape({batch_size, time, depth});

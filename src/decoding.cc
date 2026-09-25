@@ -2,13 +2,58 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <cstdio>
 #include <memory>
 #include <numeric>
 
 #include "ctranslate2/ops/ops.h"
 #include "dispatch.h"
+#include "env.h"
+
+#ifdef CT2_WITH_CUDA
+#  include "cuda/alloc_stats.h"
+#endif
 
 namespace ctranslate2 {
+
+  // Debug tool for the decode-loop steady-state allocation assertion: with
+  // CT2_CUDA_ALLOC_DEBUG=1 every decoding step logs the number of CUDA allocator
+  // allocate/free calls it made.
+  class AllocDebugScope {
+  public:
+    static bool enabled() {
+      static const bool value = read_bool_from_env("CT2_CUDA_ALLOC_DEBUG");
+      return value;
+    }
+
+    AllocDebugScope(const char* tag, dim_t step)
+      : _tag(tag)
+      , _step(step) {
+#ifdef CT2_WITH_CUDA
+      if (enabled()) {
+        _allocations = cuda::allocation_count();
+        _frees = cuda::free_count();
+      }
+#endif
+    }
+
+    ~AllocDebugScope() {
+#ifdef CT2_WITH_CUDA
+      if (enabled())
+        fprintf(stderr, "CT2_ALLOC_DEBUG %s step=%ld allocs=%llu frees=%llu\n",
+                _tag, (long)_step,
+                (unsigned long long)(cuda::allocation_count() - _allocations),
+                (unsigned long long)(cuda::free_count() - _frees));
+#endif
+    }
+
+  private:
+    const char* _tag;
+    dim_t _step;
+    std::uint64_t _allocations = 0;
+    std::uint64_t _frees = 0;
+  };
 
   static const ops::Gather gather;
 
@@ -499,6 +544,7 @@ namespace ctranslate2 {
                                         use_hard_prefix ? prefix_ids : nullptr);
 
     for (dim_t step = 0; step < max_step; ++step) {
+      const AllocDebugScope alloc_debug("beam", step);
       const bool is_expanded = (!expand_after_first_step || step > 0);
 
       // Compute log probs for the current step.
@@ -859,6 +905,7 @@ namespace ctranslate2 {
     const dim_t max_step = get_max_step(max_length, return_prefix, prefix_ids);
 
     for (dim_t step = 0; step < max_step; ++step) {
+      const AllocDebugScope alloc_debug("greedy", step);
       convert_to_original_word_ids(decoder, sample_from);
       decoder(start_step + step,
               to_device_staged(sample_from, sample_from_device),

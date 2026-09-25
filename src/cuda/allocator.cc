@@ -1,9 +1,16 @@
 #include "ctranslate2/allocator.h"
 
+#include <atomic>
 #include <memory>
 #include <mutex>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+#include <cstdio>
 
 #include "ctranslate2/utils.h"
+#include "cuda/alloc_stats.h"
 #include "cuda/utils.h"
 #include "env.h"
 
@@ -29,6 +36,81 @@
 
 namespace ctranslate2 {
   namespace cuda {
+
+    static std::atomic<std::uint64_t> g_allocation_count{0};
+    static std::atomic<std::uint64_t> g_free_count{0};
+    static std::atomic<std::uint64_t> g_capture_violations{0};
+    static thread_local bool t_capture_active = false;
+
+    // Frees requested while a capture was active on their thread: performing them
+    // would record graph nodes, so they are parked here and drained on the next
+    // allocator entry outside a capture.
+    static std::mutex g_deferred_frees_mutex;
+    static std::vector<std::pair<void*, int>> g_deferred_frees;
+
+    std::uint64_t allocation_count() {
+      return g_allocation_count.load(std::memory_order_relaxed);
+    }
+
+    std::uint64_t free_count() {
+      return g_free_count.load(std::memory_order_relaxed);
+    }
+
+    void set_capture_active(bool active) {
+      t_capture_active = active;
+    }
+
+    bool capture_active() {
+      return t_capture_active;
+    }
+
+    std::uint64_t capture_violation_count() {
+      return g_capture_violations.load(std::memory_order_relaxed);
+    }
+
+    static void count_allocation_or_abort_capture(size_t size) {
+      if (t_capture_active)
+        // Thrown before any CUDA call so nothing is recorded in the capture; the
+        // graph runner catches this, ends the capture and reruns the step eagerly.
+        throw std::runtime_error("ct2_graph_capture_allocation");
+      g_allocation_count.fetch_add(1, std::memory_order_relaxed);
+      // Debug: print every allocation size so a steady-state decode step's remaining
+      // allocations can be attributed to their sites.
+      static const bool trace = read_bool_from_env("CT2_CUDA_ALLOC_TRACE");
+      if (trace)
+        fprintf(stderr, "CT2_ALLOC size=%zu\n", size);
+    }
+
+    // Returns true when the caller should perform the free now. Returns false when
+    // the free was deferred because a capture is active on this thread.
+    template <typename FreeFn>
+    static bool count_free_or_defer(void* ptr, int device_index, const FreeFn&) {
+      if (t_capture_active) {
+        g_capture_violations.fetch_add(1, std::memory_order_relaxed);
+        const std::lock_guard<std::mutex> lock(g_deferred_frees_mutex);
+        g_deferred_frees.emplace_back(ptr, device_index);
+        return false;
+      }
+      g_free_count.fetch_add(1, std::memory_order_relaxed);
+      return true;
+    }
+
+    template <typename FreeFn>
+    static void drain_deferred_frees(const FreeFn& do_free) {
+      if (t_capture_active)
+        return;
+      std::vector<std::pair<void*, int>> pending;
+      {
+        const std::lock_guard<std::mutex> lock(g_deferred_frees_mutex);
+        if (g_deferred_frees.empty())
+          return;
+        pending.swap(g_deferred_frees);
+      }
+      for (const auto& [ptr, device_index] : pending) {
+        g_free_count.fetch_add(1, std::memory_order_relaxed);
+        do_free(ptr, device_index);
+      }
+    }
 
     // See https://nvlabs.github.io/cub/structcub_1_1_caching_device_allocator.html.
     class CubCachingAllocator : public Allocator {
@@ -59,12 +141,18 @@ namespace ctranslate2 {
       }
 
       void* allocate(size_t size, int device_index) override {
+        count_allocation_or_abort_capture(size);
+        drain_deferred_frees([this](void* p, int device) { _allocator->DeviceFree(device, p); });
         void* ptr = nullptr;
         CUDA_CHECK(_allocator->DeviceAllocate(device_index, &ptr, size, cuda::get_cuda_stream()));
         return ptr;
       }
 
       void free(void* ptr, int device_index) override {
+        const auto do_free = [this](void* p, int device) { _allocator->DeviceFree(device, p); };
+        if (!count_free_or_defer(ptr, device_index, do_free))
+          return;
+        drain_deferred_frees(do_free);
         _allocator->DeviceFree(device_index, ptr);
       }
 
@@ -78,8 +166,27 @@ namespace ctranslate2 {
 
     class CudaAsyncAllocator : public Allocator {
     public:
+      static void free_on_stream(void* ptr, int device_index) {
+#if CT2_USE_ASYNC_ALLOC
+        int prev_device_index = -1;
+        if (device_index >= 0) {
+          CUDA_CHECK(cudaGetDevice(&prev_device_index));
+          CUDA_CHECK(cudaSetDevice(device_index));
+        }
+        CUDA_CHECK(cudaFreeAsync(ptr, get_cuda_stream()));
+        if (prev_device_index >= 0) {
+          CUDA_CHECK(cudaSetDevice(prev_device_index));
+        }
+#else
+        (void)ptr;
+        (void)device_index;
+#endif
+      }
+
       void* allocate(size_t size, int device_index) override {
 #if CT2_USE_ASYNC_ALLOC
+        count_allocation_or_abort_capture(size);
+        drain_deferred_frees(free_on_stream);
         int prev_device_index = -1;
         if (device_index >= 0) {
           CUDA_CHECK(cudaGetDevice(&prev_device_index));
@@ -103,17 +210,10 @@ namespace ctranslate2 {
 
       void free(void* ptr, int device_index) override {
 #if CT2_USE_ASYNC_ALLOC
-        int prev_device_index = -1;
-        if (device_index >= 0) {
-          CUDA_CHECK(cudaGetDevice(&prev_device_index));
-          CUDA_CHECK(cudaSetDevice(device_index));
-        }
-
-        CUDA_CHECK(cudaFreeAsync(ptr, get_cuda_stream()));
-
-        if (prev_device_index >= 0) {
-          CUDA_CHECK(cudaSetDevice(prev_device_index));
-        }
+        if (!count_free_or_defer(ptr, device_index, free_on_stream))
+          return;
+        drain_deferred_frees(free_on_stream);
+        free_on_stream(ptr, device_index);
 #else
         (void)ptr;
         (void)device_index;

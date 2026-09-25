@@ -28,6 +28,14 @@ namespace ctranslate2 {
     static void copy_2d(const T* src, dim_t src_pitch,
                         T* dst, dim_t dst_pitch,
                         dim_t width, dim_t height);
+    // Same, but every destination row additionally starts at (*dst_offset) * depth
+    // elements, with dst_offset read on the device. This makes the copy usable inside
+    // a captured CUDA graph where the time offset must not be baked into the launch.
+    template <typename T>
+    static void copy_2d_indirect(const T* src, dim_t src_pitch,
+                                 T* dst, dim_t dst_pitch,
+                                 dim_t width, dim_t height,
+                                 const int32_t* dst_offset, dim_t depth);
     template <typename U, typename V>
     static void convert(const U* x, V* y, dim_t size);
 
@@ -70,6 +78,12 @@ namespace ctranslate2 {
     static void add_batch_broadcast(const T* x, T* y, dim_t x_size, dim_t y_size) {
       add_batch_broadcast(x, y, y, x_size, y_size);
     }
+
+    // y[i] += base[(*offset) * depth + i % depth], with offset read on the device
+    // (see copy_2d_indirect). Used by the position encoder under CUDA graphs.
+    template <typename T>
+    static void add_batch_broadcast_indirect(const T* base, const int32_t* offset,
+                                             dim_t depth, T* y, dim_t y_size);
 
     template <typename T>
     static void add_depth_broadcast(const T* a, const T* b, T* c, dim_t a_size, dim_t b_size);

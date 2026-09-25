@@ -91,6 +91,19 @@ namespace ctranslate2 {
     public:
       void operator()(StorageView& input, dim_t index = 0);
       void operator()(const StorageView& input, StorageView& output, dim_t index = 0);
+      // Same as operator()(input, index), but when index_device is non-null the
+      // position offset is read on the device at kernel time (index is then only used
+      // for the host-side bounds check). Required inside a captured CUDA graph so the
+      // step offset is not baked into the captured launch.
+      void add_position(StorageView& input, dim_t index, const StorageView* index_device);
+      // Bounds/growth hook for the CUDA-graph gate: a graph replay skips add_position
+      // (and therefore its bounds throw and any lazy table growth) entirely, so the
+      // decoder pre-checks the table before each graph step. Growing implementations
+      // (sinusoidal) extend the table here; the caller checks dim(0) against the step
+      // and fingerprints the returned buffer so a reallocation disables the replays.
+      const StorageView& ensure_position_encoding(dim_t max_time) {
+        return get_position_encoding(max_time);
+      }
     protected:
       virtual const StorageView& get_position_encoding(dim_t max_time) = 0;
     };

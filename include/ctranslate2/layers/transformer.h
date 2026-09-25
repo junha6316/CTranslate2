@@ -8,6 +8,10 @@
 #include "ctranslate2/padder.h"
 
 namespace ctranslate2 {
+  namespace cuda {
+    class DecoderGraphRunner;
+  }
+
   namespace layers {
 
     class FeedForwardNetwork : public Layer
@@ -174,6 +178,7 @@ namespace ctranslate2 {
     {
     public:
       TransformerDecoder(const models::Model& model, const std::string& scope);
+      ~TransformerDecoder() override;
 
       DecoderState initial_state(bool iterative_decoding = true) const override;
       bool replicate_state(const std::string& name) const override;
@@ -251,6 +256,9 @@ namespace ctranslate2 {
       // same reason decode() and operator() are non-const: each model replica is only
       // ever run by one thread at a time (update_output_layer already relies on this).
       DecodeWorkspace _workspace;
+      // CUDA graph capture/replay controller for the iterative decode path (created
+      // lazily; always null in CPU builds and when CT2_CUDA_GRAPHS is not set).
+      std::unique_ptr<cuda::DecoderGraphRunner> _graph_runner;
     };
 
   }

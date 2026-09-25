@@ -100,6 +100,55 @@ namespace ctranslate2 {
       src, src_pitch, dst, dst_pitch, width);
   }
 
+  template <typename T>
+  __global__ void copy_2d_indirect_kernel(const T* src,
+                                          const cuda::index_t src_pitch,
+                                          T* dst,
+                                          const cuda::index_t dst_pitch,
+                                          const cuda::index_t width,
+                                          const int32_t* dst_offset,
+                                          const cuda::index_t depth) {
+    const T* row_in = src + blockIdx.x * src_pitch;
+    T* row_out = dst + blockIdx.x * dst_pitch + size_t(*dst_offset) * depth;
+    for (cuda::index_t i = threadIdx.x; i < width; i += blockDim.x)
+      row_out[i] = row_in[i];
+  }
+
+  template<>
+  template <typename T>
+  void primitives<Device::CUDA>::copy_2d_indirect(const T* src, dim_t src_pitch,
+                                                  T* dst, dim_t dst_pitch,
+                                                  dim_t width, dim_t height,
+                                                  const int32_t* dst_offset, dim_t depth) {
+    const dim_t threads = std::min(width, cuda::max_threads);
+    copy_2d_indirect_kernel<<<height, threads, 0, cuda::get_cuda_stream()>>>(
+      src, src_pitch, dst, dst_pitch, width, dst_offset, depth);
+  }
+
+  template <typename T>
+  __global__ void add_batch_broadcast_indirect_kernel(const T* base,
+                                                      const int32_t* offset,
+                                                      const cuda::index_t depth,
+                                                      T* y,
+                                                      const cuda::index_t size) {
+    const T* row = base + size_t(*offset) * depth;
+    for (cuda::index_t i = blockIdx.x * blockDim.x + threadIdx.x;
+         i < size;
+         i += gridDim.x * blockDim.x)
+      y[i] = cuda::plus<T>()(y[i], row[i % depth]);
+  }
+
+  template<>
+  template <typename T>
+  void primitives<Device::CUDA>::add_batch_broadcast_indirect(const T* base,
+                                                              const int32_t* offset,
+                                                              dim_t depth, T* y, dim_t y_size) {
+    const dim_t threads = std::min(y_size, cuda::max_threads);
+    const dim_t blocks = std::min((y_size + threads - 1) / threads, dim_t(512));
+    add_batch_broadcast_indirect_kernel<<<blocks, threads, 0, cuda::get_cuda_stream()>>>(
+      cuda::device_cast(base), offset, depth, cuda::device_cast(y), y_size);
+  }
+
   template<>
   template <typename U, typename V>
   void primitives<Device::CUDA>::convert(const U* x, V* y, dim_t size) {
@@ -790,6 +839,10 @@ namespace ctranslate2 {
   primitives<Device::CUDA>::copy<T>(const T* x, T* y, dim_t size);      \
   template void                                                         \
   primitives<Device::CUDA>::copy_2d<T>(const T*, dim_t, T*, dim_t, dim_t, dim_t); \
+  template void                                                         \
+  primitives<Device::CUDA>::copy_2d_indirect<T>(const T*, dim_t, T*, dim_t, dim_t, dim_t, const int32_t*, dim_t); \
+  template void                                                         \
+  primitives<Device::CUDA>::add_batch_broadcast_indirect<T>(const T*, const int32_t*, dim_t, T*, dim_t); \
   template T                                                            \
   primitives<Device::CUDA>::sum(const T* array, dim_t size);            \
   template dim_t                                                        \

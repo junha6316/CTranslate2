@@ -32,6 +32,39 @@ namespace ctranslate2 {
       // buffers survive across layers and steps in a deterministic two-slot choreography.
       StorageView layer_in;
       StorageView layer_out;
+      // Backs the head-transpose in split_heads/combine_heads on the beam>1 cross
+      // attention path, so the transpose ping-pongs between two stable buffers
+      // instead of replacing a slot's grown capacity with an exact-fit local every
+      // step (which reintroduced ~48 allocate/free pairs per beam step).
+      StorageView head_transpose;
+
+      // Padded KV mode (CT2_CUDA_PAD_KV / CT2_CUDA_GRAPHS): the decoder sets padded_kv
+      // for steps where the preallocated self-attention caches should be consumed at
+      // their full capacity, with self_lengths (INT32, one entry per softmax row =
+      // batch x beam x heads, all equal to the exact cached length) masking the spare
+      // tail inside ops::SoftMax. This keeps every GEMM and softmax shape in the
+      // decoder forward constant across the whole decode, a CUDA graph prerequisite.
+      // Exactness: the spare cache capacity is zero-filled once at allocation, so the
+      // padded K rows produce exactly-0 scores, the softmax lengths mask zeroes those
+      // columns, and the padded V rows contribute 0 to the values matmul.
+      bool padded_kv = false;
+      StorageView self_lengths;
+      // Report-back from the attention layers: set when padded_kv was requested but a
+      // layer consumed the cache at its exact length instead (relative positions/bias,
+      // alibi, or a self_lengths row count that does not match the cache layout). Such
+      // a forward is NOT shape-constant across steps, so the decoder-level CUDA-graph
+      // gate must not capture it and must disable replays for the decode (the pointer
+      // fingerprint alone can miss a growing scratch reallocated within the same bin).
+      bool padded_kv_fallback = false;
+      // CUDA graphs: when graph_indirect is set the step-dependent offsets (position
+      // encoding index, cache append offset) are read on the device from step_state
+      // (INT32[2] = {step, cache_length_before_append}), so the captured kernels
+      // replay correctly after the host re-seeds step_state each step.
+      bool graph_indirect = false;
+      StorageView step_state;
+      // Logits shape recorded at capture time, restored on every replay (the replay
+      // path skips the eager code that would otherwise resize the output).
+      Shape graph_logits_shape;
 
       // Returns the slot ready to stand in for a local StorageView(dtype, device). The
       // reassignment normally runs once, before the slot's first allocation; a later
