@@ -43,6 +43,17 @@ namespace ctranslate2 {
     return staging;
   }
 
+  // Upload values into a persistent device tensor, skipping the transfer when the
+  // tensor already holds this exact content from a previous step. The comparison must
+  // be on the full content, not just the size: two steps can select the same number
+  // of different rows or tokens. Returns true when a transfer actually happened,
+  // which the tests use to prove the memo skips redundant uploads.
+  bool upload_memoized(const std::vector<int32_t>& values,
+                       Shape shape,
+                       const Device device,
+                       StorageView& device_tensor,
+                       std::vector<int32_t>& last_values);
+
   // Helper class to disable tokens in the model output.
   class DisableTokens {
   public:

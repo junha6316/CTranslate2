@@ -749,6 +749,13 @@ namespace ctranslate2 {
       const size_t _timestamp_begin_id;
       const size_t _timestamp_end_id;
       const size_t _max_initial_timestamp_id;
+      // Memoized device upload of the rows that need the timestamp-probability gate. At
+      // steady state (e.g. rows {0..4} at batch 1 beam 5) the content repeats on every
+      // step, so both the fresh device tensor and its H2D transfer disappear. One
+      // instance of this processor is built per generate() call, so the memo never
+      // outlives a decode and needs no invalidation.
+      std::vector<int32_t> _last_rows;
+      StorageView _row_ids_device{DataType::INT32};
 
     public:
       ApplyTimestampRules(const size_t eot_id,
@@ -833,11 +840,12 @@ namespace ctranslate2 {
           // takes as long as one over 50257 because the round trip dominates.
           const std::vector<int32_t> rows(check_timestamps_prob_for_batch.begin(),
                                           check_timestamps_prob_for_batch.end());
-          const StorageView row_ids({static_cast<dim_t>(rows.size())}, rows, logits.device());
+          upload_memoized(rows, {static_cast<dim_t>(rows.size())}, logits.device(),
+                          _row_ids_device, _last_rows);
 
           ops::TimestampGate(_timestamp_begin_id,
                              _timestamp_end_id - _timestamp_begin_id + 1)(
-                               logits, row_ids, std::numeric_limits<float>::lowest());
+                               logits, _row_ids_device, std::numeric_limits<float>::lowest());
         }
       }
 

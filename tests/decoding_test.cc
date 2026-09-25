@@ -78,6 +78,28 @@ TEST(DecodingTest, DisableTokensForcedIndexPath) {
   assert_vector_eq(buffers.last_indices, expected_indices);
 }
 
+TEST(DecodingTest, UploadMemoized) {
+  // The pattern behind the DisableTokens buffers and the Whisper timestamp row ids:
+  // same content twice must skip the transfer, changed content must re-upload.
+  StorageView device_tensor;
+  std::vector<int32_t> last_values;
+
+  const std::vector<int32_t> rows{0, 1, 2, 3, 4};
+  EXPECT_TRUE(upload_memoized(rows, {5}, Device::CPU, device_tensor, last_values));
+  expect_storage_eq(device_tensor, StorageView({5}, rows));
+
+  EXPECT_FALSE(upload_memoized(rows, {5}, Device::CPU, device_tensor, last_values));
+
+  // Same size, different content: the memo must compare the values, not the size.
+  const std::vector<int32_t> other{0, 1, 2, 3, 5};
+  EXPECT_TRUE(upload_memoized(other, {5}, Device::CPU, device_tensor, last_values));
+  expect_storage_eq(device_tensor, StorageView({5}, other));
+
+  const std::vector<int32_t> shrunk{2};
+  EXPECT_TRUE(upload_memoized(shrunk, {1}, Device::CPU, device_tensor, last_values));
+  expect_storage_eq(device_tensor, StorageView({1}, shrunk));
+}
+
 TEST(DecodingTest, ToDeviceStagedSameDevice) {
   const StorageView src({2, 2}, std::vector<float>{1, 2, 3, 4});
   StorageView staging(src.dtype(), src.device());

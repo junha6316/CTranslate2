@@ -21,15 +21,11 @@ namespace ctranslate2 {
   {
   }
 
-  // Upload values into a persistent device tensor, skipping the transfer when the
-  // tensor already holds this exact content from a previous step. The comparison must
-  // be on the full content, not just the size: two steps can disable the same number
-  // of different tokens.
-  static void upload_memoized(const std::vector<int32_t>& values,
-                              Shape shape,
-                              const Device device,
-                              StorageView& device_tensor,
-                              std::vector<int32_t>& last_values) {
+  bool upload_memoized(const std::vector<int32_t>& values,
+                       Shape shape,
+                       const Device device,
+                       StorageView& device_tensor,
+                       std::vector<int32_t>& last_values) {
     if (device_tensor.device() != device || device_tensor.dtype() != DataType::INT32)
       device_tensor = StorageView(DataType::INT32, device);
     const dim_t num_values = values.size();
@@ -37,7 +33,9 @@ namespace ctranslate2 {
       device_tensor.resize(std::move(shape));
       device_tensor.copy_from(values.data(), num_values, Device::CPU);
       last_values = values;
+      return true;
     }
+    return false;
   }
 
   void DisableTokens::apply() {
