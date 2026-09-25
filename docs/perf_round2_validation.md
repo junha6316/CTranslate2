@@ -146,3 +146,101 @@ three JSONs. Expectations:
 Results go to `results/<date>/r3/` with the raw JSONs and nsys logs, and the
 summary tables get appended to [whisper_gpu_results.md](whisper_gpu_results.md)
 in the same paired-session format.
+
+---
+
+## Measured results (2026-09-25, A10G)
+
+The plan above was executed on 2026-09-25. Raw data is in
+[`results/2026-09-25/`](../results/2026-09-25/).
+
+### Session
+
+- AWS g5.2xlarge (A10G, sm86), Deep Learning Base GPU AMI, CUDA 12.8,
+  cuDNN 9.10.2 (matching the 2026-09-23 session), Nsight Systems 2026.1.3.
+- Builds: `up` = v4.8.2 (`d44d2d0`), `prev` = `192aa5c`, `head` = `58c584e`
+  (+docs `d59f20e`), all `WITH_CUDA=ON WITH_CUDNN=ON WITH_FLASH_ATTN=ON
+  WITH_MKL=OFF WITH_RUY=ON OPENMP_RUNTIME=COMP CUDA_ARCH_LIST=8.6 Release`,
+  installed side by side and run back to back. `bench_batch.py` at
+  `REPS, WARMUP = (7, 2)`.
+- **Audio substitution**: the original `physicsworks.wav` was lost with the old
+  instance. This session uses a 203 s LibriVox reading (Art of War ch. 1–2,
+  16 kHz mono) under the same filename, plus the same `jfk_x5.flac` recipe.
+  Within-session pairs are unaffected; comparisons against 2026-09-23 absolute
+  numbers are approximate.
+- One environment trap worth recording: with cuDNN 9.26 (the AMI's apt default),
+  any run **under nsys** fails at the first Conv1D with
+  `CUDNN_STATUS_SUBLIBRARY_VERSION_MISMATCH` while the same build runs fine
+  outside nsys. Downgrading to cuDNN 9.10.2 fixed it; all reported numbers,
+  benches and profiles, use 9.10.2.
+
+### Output equivalence: PASS
+
+`tok_ids` across all 48 configurations (2 models x 2 compute types x ts on/off
+x beam 1/5 x batch 1/4/8): `head` vs `prev` **identical in all 48**, flash off
+and flash on both. The bit-identical claim holds on GPU.
+
+`head`/`prev` vs `up` differ in 4/48 (flash off; the bias-epilogue rounding, as
+in round 1) and 22/48 (flash on — expected: upstream ignores encoder flash
+attention, so the fixed encoder changes results). The flash-on cases where
+upstream looks "faster" are not wins: e.g. large-v3 int8 ts-on beam 5 decodes
+11 tokens on `up` against 35 on `head` — upstream's broken encoder path
+produces degenerate short transcripts there.
+
+### Throughput, `head` vs `prev` (the round-2 delta)
+
+48 paired cases, flash off: **median -2.3%**, range -16.1% .. -0.4%.
+
+| axis | median |
+| --- | --- |
+| batch 1 | **-4.7%** |
+| batch 4 | -2.3% |
+| batch 8 | -1.4% |
+| small, batch 1 | **-7.5%** |
+| large-v3, batch 1 | -2.1% |
+
+Flash on, 48 cases: median -1.3% (range -10.0% .. 0.0%). Largest single case:
+small / float16 / ts on / beam 1 / batch 1 at **-16.1%**. The gain concentrates
+exactly where the trace predicted: launch-bound small-model batch-1 decoding,
+and it thins out as the batch grows and the GPU stays busy.
+
+Cumulative against upstream v4.8.2: median **-11.8%** flash off, **-23.6%**
+flash on (the latter includes the encoder flash fix, and 22/48 flash-on cases
+decode different tokens, so treat per-case flash-on deltas as indicative only).
+
+### End to end (faster-whisper, 203 s audio), `head` vs `prev`
+
+| case | prev | head | delta |
+| --- | --- | --- | --- |
+| small fp16 sequential | 1.83 s | 1.69 s (120x rt) | **-7.8%** |
+| small int8 sequential | 2.61 s | 2.46 s (83x rt) | -6.0% |
+| large-v3 fp16 sequential | 14.70 s | 12.92 s (16x rt) | -12.1% |
+| large-v3 int8 sequential | 12.96 s | 9.40 s (22x rt) | -27.5% |
+| batched8 (all four) | — | — | -0.6% .. -1.7% |
+
+The large-v3 sequential rows carry the known temperature-fallback run-to-run
+variance (`prev` measured *slower than upstream* on the int8 row, which is that
+noise, not a regression) — take the small rows as the trustworthy sequential
+signal.
+
+### The trace claim (nsys, small fp16 beam 5 ts on batch 1, 5 decodes)
+
+| metric | prev | head | delta |
+| --- | --- | --- | --- |
+| `cudaMallocAsync`/`cudaFreeAsync` pairs | 129,535 | 54,321 | **-58%** |
+| alloc+free host time | 387 ms | 198 ms | -49% |
+| `cudaMemcpyAsync` (H2D) | 6,823 | 5,297 | -1,526 |
+| `cudaLaunchKernel` | 164,832 | 164,832 | **identical** |
+| wall (5 runs, under nsys) | 2,444 ms | 2,079 ms | -15.0% |
+
+Flash on: pairs 144,655 -> 69,357 (-52%), launches identical (141,984), wall
+-13.2%. Identical launch counts are the mechanism check passing: no op changed,
+only the host work between launches.
+
+The plan's "order of magnitude" pass criterion was **not met**: -58%, not -90%.
+The remaining ~54k pairs over ~1,274 steps (~42/step) are the paths round 2
+deliberately left alone — beam-reorder gather outputs, TopK scratch, softmax
+workspaces, and the logits pipeline — plus block-boundary cache growth. That
+list is the natural round-3 worklist (or it dissolves entirely under CUDA
+Graphs, which these two rounds have now made addressable: buffers and cache
+addresses are stable across steady-state steps).
