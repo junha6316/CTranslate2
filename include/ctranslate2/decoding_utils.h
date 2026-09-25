@@ -32,11 +32,37 @@ namespace ctranslate2 {
     return std::find(end_ids.begin(), end_ids.end(), id) != end_ids.end();
   }
 
+  // Copy a host tensor into a caller-owned device staging tensor, or return the source
+  // unchanged when it is already on the target device. Unlike StorageView::to(Device),
+  // which allocates a fresh tensor on every call, the staging tensor keeps its capacity
+  // across decoding steps.
+  inline const StorageView& to_device_staged(const StorageView& src, StorageView& staging) {
+    if (src.device() == staging.device())
+      return src;
+    staging.copy_from(src);
+    return staging;
+  }
+
   // Helper class to disable tokens in the model output.
   class DisableTokens {
   public:
+    // Device buffers owned by the search loop so they persist across decoding steps.
+    // last_* memoize the host content of the resident device tensors: Whisper uploads
+    // the same static suppress list on every step, so a content match skips the
+    // transfer entirely and reuses the tensor already on the device.
+    struct Buffers {
+      std::vector<int32_t> last_indices;
+      std::vector<int32_t> last_ranges;
+      StorageView indices;
+      StorageView ranges;
+    };
+
+    // force_index_path is test-only: it routes CPU logits through the index upload
+    // path so the buffer reuse logic can be exercised without a GPU.
     DisableTokens(StorageView& logits,
-                  const float disable_value = std::numeric_limits<float>::lowest());
+                  const float disable_value = std::numeric_limits<float>::lowest(),
+                  Buffers* buffers = nullptr,
+                  const bool force_index_path = false);
 
     void add(dim_t batch_id, dim_t token_id) {
       const auto flat_index = batch_id * _vocabulary_size + token_id;
@@ -90,6 +116,7 @@ namespace ctranslate2 {
     const dim_t _vocabulary_size;
     std::vector<int32_t> _flat_indices;
     std::vector<int32_t> _ranges;  // flattened triples of (batch, begin, end)
+    Buffers* _buffers;
   };
 
   // Base class for processing the output logits.

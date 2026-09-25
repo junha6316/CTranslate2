@@ -37,14 +37,19 @@ namespace ctranslate2 {
     }
 
     void Decoder::update_state(DecoderState& state,
-                               StorageView beam_indices,
+                               const StorageView& beam_indices,
                                const dim_t beam_size,
                                const StorageView* alive_batches) const {
+      // Only the batch-shrink path mutates the indices: taking beam_indices by value
+      // would deep-copy a device tensor on every decoding step for that rare case.
+      StorageView adjusted;
       if (alive_batches) {
-        split_batch_beam(beam_indices, beam_size);
-        ops::Gather()(beam_indices, *alive_batches);
-        merge_batch_beam(beam_indices);
+        adjusted = beam_indices;
+        split_batch_beam(adjusted, beam_size);
+        ops::Gather()(adjusted, *alive_batches);
+        merge_batch_beam(adjusted);
       }
+      const StorageView& indices = alive_batches ? adjusted : beam_indices;
 
       // The replicated entries (the self-attention caches) all take the same indices, so
       // gather them together: on GPU that is one kernel launch instead of one per tensor.
@@ -55,7 +60,7 @@ namespace ctranslate2 {
         else if (alive_batches)
           ops::Gather()(value, *alive_batches);
       }
-      ops::Gather::batch(replicated, beam_indices);
+      ops::Gather::batch(replicated, indices);
     }
 
     void Decoder::replicate_state(DecoderState& state, const dim_t beam_size) const {

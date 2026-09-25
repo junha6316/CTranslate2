@@ -4,6 +4,13 @@
 
 namespace ctranslate2 {
 
+  // Caller-owned device buffers reused across sampling calls: without them the GPU
+  // branch allocates and frees two fresh device tensors on every decoding step.
+  struct SamplerStaging {
+    StorageView ids;
+    StorageView scores;
+  };
+
   // Base class for sampling from a score distribution.
   class Sampler {
   public:
@@ -13,7 +20,8 @@ namespace ctranslate2 {
     void operator()(const StorageView& scores,
                     StorageView& sampled_ids,
                     StorageView& sampled_scores,
-                    dim_t num_samples = 1) const;
+                    dim_t num_samples = 1,
+                    SamplerStaging* staging = nullptr) const;
   protected:
     virtual void sample(const StorageView& scores,
                         dim_t num_samples,

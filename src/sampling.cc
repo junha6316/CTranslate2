@@ -7,12 +7,23 @@ namespace ctranslate2 {
   void Sampler::operator()(const StorageView& scores,
                            StorageView& sampled_ids,
                            StorageView& sampled_scores,
-                           dim_t num_samples) const {
+                           dim_t num_samples,
+                           SamplerStaging* staging) const {
     if (sampled_ids.device() != Device::CPU || sampled_scores.device() != Device::CPU)
       throw std::invalid_argument("Sampling outputs should be on the CPU device");
-    if (scores.device() == Device::CPU)
+    if (scores.device() == Device::CPU) {
       sample(scores, num_samples, sampled_ids, sampled_scores);
-    else {
+    } else if (staging) {
+      // Reassign only on a dtype or device mismatch so the buffer capacity is reused
+      // across decoding steps.
+      if (staging->ids.device() != scores.device() || staging->ids.dtype() != DataType::INT32)
+        staging->ids = StorageView(DataType::INT32, scores.device());
+      if (staging->scores.device() != scores.device() || staging->scores.dtype() != scores.dtype())
+        staging->scores = StorageView(scores.dtype(), scores.device());
+      sample(scores, num_samples, staging->ids, staging->scores);
+      sampled_ids.copy_from(staging->ids);
+      sampled_scores.copy_from(staging->scores);
+    } else {
       StorageView sampled_ids_device(DataType::INT32, scores.device());
       StorageView sampled_scores_device(scores.dtype(), scores.device());
       sample(scores, num_samples, sampled_ids_device, sampled_scores_device);

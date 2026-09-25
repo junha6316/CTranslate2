@@ -41,7 +41,7 @@ namespace ctranslate2 {
 
       // Update the decoder state in beam search.
       void update_state(DecoderState& state,
-                        StorageView beam_indices,
+                        const StorageView& beam_indices,
                         const dim_t beam_size,
                         const StorageView* alive_batches = nullptr) const;
 

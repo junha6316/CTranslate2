@@ -7,13 +7,37 @@
 
 namespace ctranslate2 {
 
-  DisableTokens::DisableTokens(StorageView& logits, const float disable_value)
+  DisableTokens::DisableTokens(StorageView& logits,
+                               const float disable_value,
+                               Buffers* buffers,
+                               const bool force_index_path)
     : _logits(logits)
-    , _logits_data(logits.device() == Device::CPU ? logits.data<float>() : nullptr)
+    , _logits_data(logits.device() == Device::CPU && !force_index_path
+                   ? logits.data<float>() : nullptr)
     , _disable_value(disable_value)
     , _batch_size(logits.dim(0))
     , _vocabulary_size(logits.dim(1))
+    , _buffers(buffers)
   {
+  }
+
+  // Upload values into a persistent device tensor, skipping the transfer when the
+  // tensor already holds this exact content from a previous step. The comparison must
+  // be on the full content, not just the size: two steps can disable the same number
+  // of different tokens.
+  static void upload_memoized(const std::vector<int32_t>& values,
+                              Shape shape,
+                              const Device device,
+                              StorageView& device_tensor,
+                              std::vector<int32_t>& last_values) {
+    if (device_tensor.device() != device || device_tensor.dtype() != DataType::INT32)
+      device_tensor = StorageView(DataType::INT32, device);
+    const dim_t num_values = values.size();
+    if (device_tensor.size() != num_values || values != last_values) {
+      device_tensor.resize(std::move(shape));
+      device_tensor.copy_from(values.data(), num_values, Device::CPU);
+      last_values = values;
+    }
   }
 
   void DisableTokens::apply() {
@@ -22,12 +46,21 @@ namespace ctranslate2 {
 
     const dim_t num_indices = _flat_indices.size();
     if (num_indices > 0) {
-      const StorageView flat_indices({num_indices}, _flat_indices, device);
+      StorageView local_indices;
+      const StorageView* flat_indices;
+      if (_buffers) {
+        upload_memoized(_flat_indices, {num_indices}, device,
+                        _buffers->indices, _buffers->last_indices);
+        flat_indices = &_buffers->indices;
+      } else {
+        local_indices = StorageView({num_indices}, _flat_indices, device);
+        flat_indices = &local_indices;
+      }
 
       DEVICE_AND_TYPE_DISPATCH(device, dtype,
                                primitives<D>::indexed_fill(_logits.data<T>(),
                                                            static_cast<T>(_disable_value),
-                                                           flat_indices.data<int32_t>(),
+                                                           flat_indices->data<int32_t>(),
                                                            num_indices));
 
       _flat_indices.clear();
@@ -35,8 +68,17 @@ namespace ctranslate2 {
 
     if (!_ranges.empty()) {
       const dim_t num_ranges = _ranges.size() / 3;
-      const StorageView ranges({num_ranges, 3}, _ranges, device);
-      ops::FillRanges()(_logits, ranges, _disable_value);
+      StorageView local_ranges;
+      const StorageView* ranges;
+      if (_buffers) {
+        upload_memoized(_ranges, {num_ranges, 3}, device,
+                        _buffers->ranges, _buffers->last_ranges);
+        ranges = &_buffers->ranges;
+      } else {
+        local_ranges = StorageView({num_ranges, 3}, _ranges, device);
+        ranges = &local_ranges;
+      }
+      ops::FillRanges()(_logits, *ranges, _disable_value);
       _ranges.clear();
     }
   }

@@ -486,6 +486,14 @@ namespace ctranslate2 {
     StorageView alive_seq(topk_ids.dtype());
     StorageView alive_attention;
 
+    // Persistent device mirrors for the per-step host-to-device uploads: reusing them
+    // avoids a device allocation and free on every decoding step.
+    StorageView topk_ids_device(DataType::INT32, device);
+    StorageView topk_scores_device(dtype, device);
+    StorageView gather_indices_device(DataType::INT32, device);
+    DisableTokens::Buffers disable_buffers;
+    SamplerStaging sampler_staging;
+
     const dim_t max_step = get_max_step(max_length,
                                         return_prefix,
                                         use_hard_prefix ? prefix_ids : nullptr);
@@ -497,14 +505,16 @@ namespace ctranslate2 {
       StorageView attention_step(dtype, device);
       convert_to_original_word_ids(decoder, topk_ids);
       decoder(start_step + step,
-              topk_ids.to(device),
+              to_device_staged(topk_ids, topk_ids_device),
               state,
               &logits,  // output shape: (cur_batch_size*beam_size x vocab_size), if not expanded beam_size is 1
               (return_attention || _coverage_penalty != 0) ? &attention_step : nullptr);
 
       const dim_t cur_batch_size = is_expanded ? logits.dim(0) / _beam_size : logits.dim(0);
 
-      DisableTokens disable_tokens(logits);
+      DisableTokens disable_tokens(logits,
+                                   std::numeric_limits<float>::lowest(),
+                                   &disable_buffers);
 
       // Prevent the generation of end_ids until the minimum length is reached.
       apply_min_length(step,
@@ -548,8 +558,9 @@ namespace ctranslate2 {
 
       // Multiply by the current beam log probs.
       if (topk_scores) {
+        const StorageView& scores_dev = to_device_staged(topk_scores, topk_scores_device);
         DEVICE_AND_TYPE_DISPATCH(log_probs.device(), log_probs.dtype(),
-                                 primitives<D>::add_depth_broadcast(topk_scores.to(device).data<T>(),
+                                 primitives<D>::add_depth_broadcast(scores_dev.data<T>(),
                                                                     log_probs.data<T>(),
                                                                     topk_scores.size(),
                                                                     log_probs.size()));
@@ -559,7 +570,7 @@ namespace ctranslate2 {
       log_probs.reshape({cur_batch_size, -1});
 
       // TopK candidates.
-      sampler(log_probs, topk_ids, topk_scores, num_candidates);
+      sampler(log_probs, topk_ids, topk_scores, num_candidates, &sampler_staging);
 
       // Unflatten the ids.
       StorageView gather_indices = unflatten_ids(topk_ids, _beam_size, vocabulary_size, is_expanded);
@@ -705,9 +716,10 @@ namespace ctranslate2 {
           *keep_batches = keep_batches->to(device);
       }
 
-      if (gather_indices.device() != device)
-        gather_indices = gather_indices.to(device);
-      decoder.update_state(state, gather_indices, _beam_size, keep_batches.get());
+      decoder.update_state(state,
+                           to_device_staged(gather_indices, gather_indices_device),
+                           _beam_size,
+                           keep_batches.get());
 
       topk_ids.reshape({next_batch_size * _beam_size});
       topk_scores.reshape({next_batch_size * _beam_size});
@@ -839,17 +851,24 @@ namespace ctranslate2 {
     StorageView attention_step;
     StorageView attention_step_device(dtype, device);
 
+    // Persistent device mirror and staging buffers reused across decoding steps.
+    StorageView sample_from_device(DataType::INT32, device);
+    DisableTokens::Buffers disable_buffers;
+    SamplerStaging sampler_staging;
+
     const dim_t max_step = get_max_step(max_length, return_prefix, prefix_ids);
 
     for (dim_t step = 0; step < max_step; ++step) {
       convert_to_original_word_ids(decoder, sample_from);
       decoder(start_step + step,
-              sample_from.to(device),
+              to_device_staged(sample_from, sample_from_device),
               state,
               &logits,
               gather_attention ? &attention_step_device : nullptr);
 
-      DisableTokens disable_tokens(logits);
+      DisableTokens disable_tokens(logits,
+                                   std::numeric_limits<float>::lowest(),
+                                   &disable_buffers);
 
       // Prevent the generation of end_id until the minimum length is reached.
       apply_min_length(step,
@@ -877,7 +896,7 @@ namespace ctranslate2 {
         ops::LogSoftMax()(logits);
       log_probs.shallow_copy(logits);
 
-      sampler(log_probs, best_ids, best_probs);
+      sampler(log_probs, best_ids, best_probs, /*num_samples=*/1, &sampler_staging);
       if (prefix_ids)
         update_sample_with_prefix(step, best_ids, best_probs, *prefix_ids, end_ids, batch_offset);
       if (attention_step_device)
