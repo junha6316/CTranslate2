@@ -12,7 +12,9 @@ namespace ctranslate2 {
     template <Device D, typename DataType, typename IndexType>
     void TopK::compute(const StorageView& x,
                        StorageView& values,
-                       StorageView& indices) const {
+                       StorageView& indices,
+                       StorageView*,   // scratch_ids: only the CUDA kernel needs scratch.
+                       StorageView*) const {  // scratch_vals
       const dim_t depth = x.dim(-1);
       const dim_t batch_size = x.size() / depth;
 
@@ -58,7 +60,9 @@ namespace ctranslate2 {
     template void                                                       \
     TopK::compute<Device::CPU, T, int32_t>(const StorageView& x,        \
                                            StorageView& values,         \
-                                           StorageView& indices) const;
+                                           StorageView& indices,        \
+                                           StorageView* scratch_ids,    \
+                                           StorageView* scratch_vals) const;
 
     DECLARE_ALL_TYPES(DECLARE_IMPL)
 

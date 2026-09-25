@@ -27,16 +27,32 @@ namespace ctranslate2 {
     template <Device D, typename DataType, typename IndexType>
     void TopK::compute(const StorageView& x,
                        StorageView& values,
-                       StorageView& indices) const {
+                       StorageView& indices,
+                       StorageView* scratch_ids,
+                       StorageView* scratch_vals) const {
       const dim_t depth = x.dim(-1);
       const dim_t batch_size = x.size() / depth;
       const dim_t temp_size = batch_size * _k * MAX_BLOCKS_PER_BEAM;
 
-      auto& allocator = get_allocator<D>();
-      auto* topk_tmp_id = static_cast<IndexType*>(
-        allocator.allocate(temp_size * sizeof (IndexType)));
-      auto* topk_tmp_val = static_cast<DataType*>(
-        allocator.allocate(temp_size * sizeof (DataType)));
+      IndexType* topk_tmp_id;
+      DataType* topk_tmp_val;
+      const bool use_scratch = scratch_ids && scratch_vals;
+      if (use_scratch) {
+        // temp_size only depends on batch_size and k, both constant across decoding
+        // steps, so after the first call these reserves are no-ops. The operator()
+        // wrapper already fixed the scratch dtypes, so reserve() counts elements of
+        // the right item size.
+        scratch_ids->reserve(temp_size);
+        scratch_vals->reserve(temp_size);
+        topk_tmp_id = static_cast<IndexType*>(scratch_ids->buffer());
+        topk_tmp_val = static_cast<DataType*>(scratch_vals->buffer());
+      } else {
+        auto& allocator = get_allocator<D>();
+        topk_tmp_id = static_cast<IndexType*>(
+          allocator.allocate(temp_size * sizeof (IndexType)));
+        topk_tmp_val = static_cast<DataType*>(
+          allocator.allocate(temp_size * sizeof (DataType)));
+      }
 
       fastertransformer::topK_kernelLauncher(cuda::device_cast(x.data<DataType>()),
                                              cuda::device_cast(topk_tmp_id),
@@ -49,15 +65,20 @@ namespace ctranslate2 {
                                              depth,
                                              cuda::get_cuda_stream());
 
-      allocator.free(topk_tmp_id);
-      allocator.free(topk_tmp_val);
+      if (!use_scratch) {
+        auto& allocator = get_allocator<D>();
+        allocator.free(topk_tmp_id);
+        allocator.free(topk_tmp_val);
+      }
     }
 
 #define DECLARE_IMPL(T)                                                 \
     template void                                                       \
     TopK::compute<Device::CUDA, T, int32_t>(const StorageView& x,       \
                                             StorageView& values,        \
-                                            StorageView& indices) const;
+                                            StorageView& indices,       \
+                                            StorageView* scratch_ids,   \
+                                            StorageView* scratch_vals) const;
 
     DECLARE_IMPL(float)
     DECLARE_IMPL(float16_t)

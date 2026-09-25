@@ -5,10 +5,14 @@
 namespace ctranslate2 {
 
   // Caller-owned device buffers reused across sampling calls: without them the GPU
-  // branch allocates and frees two fresh device tensors on every decoding step.
+  // branch allocates and frees two fresh device tensors on every decoding step, and the
+  // CUDA TopK allocates and frees its two temporary reduction buffers. The TopK scratch
+  // size is decode-constant (batch x k x blocks-per-beam), so those two reserve once.
   struct SamplerStaging {
     StorageView ids;
     StorageView scores;
+    StorageView topk_tmp_ids;
+    StorageView topk_tmp_vals;
   };
 
   // Base class for sampling from a score distribution.
@@ -26,7 +30,8 @@ namespace ctranslate2 {
     virtual void sample(const StorageView& scores,
                         dim_t num_samples,
                         StorageView& sampled_ids,
-                        StorageView& sampled_scores) const = 0;
+                        StorageView& sampled_scores,
+                        SamplerStaging* staging) const = 0;
   };
 
 
@@ -35,7 +40,8 @@ namespace ctranslate2 {
     void sample(const StorageView& scores,
                 dim_t num_samples,
                 StorageView& sampled_ids,
-                StorageView& sampled_scores) const final;
+                StorageView& sampled_scores,
+                SamplerStaging* staging) const final;
   };
 
 
@@ -46,7 +52,8 @@ namespace ctranslate2 {
     void sample(const StorageView& scores,
                 dim_t num_samples,
                 StorageView& sampled_ids,
-                StorageView& sampled_scores) const final;
+                StorageView& sampled_scores,
+                SamplerStaging* staging) const final;
   private:
     dim_t _from_topk;
     float _topp;

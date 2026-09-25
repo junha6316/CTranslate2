@@ -108,5 +108,8 @@ TEST(DecodingTest, SamplerStagingParity) {
 
     expect_storage_eq(staged_ids, ids);
     expect_storage_eq(staged_scores, sampled_scores);
+    // Scores live on CPU here, and the CPU TopK never touches the scratch slots.
+    EXPECT_TRUE(staging.topk_tmp_ids.empty());
+    EXPECT_TRUE(staging.topk_tmp_vals.empty());
   }
 }

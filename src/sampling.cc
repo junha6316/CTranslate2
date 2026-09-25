@@ -12,7 +12,7 @@ namespace ctranslate2 {
     if (sampled_ids.device() != Device::CPU || sampled_scores.device() != Device::CPU)
       throw std::invalid_argument("Sampling outputs should be on the CPU device");
     if (scores.device() == Device::CPU) {
-      sample(scores, num_samples, sampled_ids, sampled_scores);
+      sample(scores, num_samples, sampled_ids, sampled_scores, staging);
     } else if (staging) {
       // Reassign only on a dtype or device mismatch so the buffer capacity is reused
       // across decoding steps.
@@ -20,13 +20,13 @@ namespace ctranslate2 {
         staging->ids = StorageView(DataType::INT32, scores.device());
       if (staging->scores.device() != scores.device() || staging->scores.dtype() != scores.dtype())
         staging->scores = StorageView(scores.dtype(), scores.device());
-      sample(scores, num_samples, staging->ids, staging->scores);
+      sample(scores, num_samples, staging->ids, staging->scores, staging);
       sampled_ids.copy_from(staging->ids);
       sampled_scores.copy_from(staging->scores);
     } else {
       StorageView sampled_ids_device(DataType::INT32, scores.device());
       StorageView sampled_scores_device(scores.dtype(), scores.device());
-      sample(scores, num_samples, sampled_ids_device, sampled_scores_device);
+      sample(scores, num_samples, sampled_ids_device, sampled_scores_device, nullptr);
       sampled_ids.copy_from(sampled_ids_device);
       sampled_scores.copy_from(sampled_scores_device);
     }
@@ -36,10 +36,15 @@ namespace ctranslate2 {
   void BestSampler::sample(const StorageView& scores,
                            dim_t num_samples,
                            StorageView& sampled_ids,
-                           StorageView& sampled_scores) const {
+                           StorageView& sampled_scores,
+                           SamplerStaging* staging) const {
     PROFILE("BestSampler");
     const ops::TopK topk_op(num_samples);
-    topk_op(scores, sampled_scores, sampled_ids);
+    topk_op(scores,
+            sampled_scores,
+            sampled_ids,
+            staging ? &staging->topk_tmp_ids : nullptr,
+            staging ? &staging->topk_tmp_vals : nullptr);
   }
 
 
@@ -52,7 +57,8 @@ namespace ctranslate2 {
   void RandomSampler::sample(const StorageView& scores,
                              dim_t num_samples,
                              StorageView& sampled_ids,
-                             StorageView& sampled_scores) const {
+                             StorageView& sampled_scores,
+                             SamplerStaging* staging) const {
     PROFILE("RandomSampler");
     const Device device = scores.device();
     const DataType dtype = scores.dtype();
@@ -64,7 +70,11 @@ namespace ctranslate2 {
     const dim_t total_candidates = scores.dim(-1);
     if (_from_topk > 0 && _from_topk < total_candidates) {
       const ops::TopK topk_op(_from_topk);
-      topk_op(scores, top_scores, top_ids);
+      topk_op(scores,
+              top_scores,
+              top_ids,
+              staging ? &staging->topk_tmp_ids : nullptr,
+              staging ? &staging->topk_tmp_vals : nullptr);
       final_scores = &top_scores;
     } else if (_from_topk > total_candidates) {
       throw std::invalid_argument("sampling_topk option ("

@@ -915,6 +915,36 @@ TEST_P(OpDeviceFPTest, TopK) {
   expect_storage_eq(indices, expected_indices);
 }
 
+TEST_P(OpDeviceFPTest, TopKWithScratch) {
+  // The scratch overload must match the 2-output overload; on CPU the scratch stays
+  // untouched, on CUDA a second call must reuse the reserved scratch.
+  const Device device = GetParam().device;
+  const DataType dtype = GetParam().dtype;
+  const float error = GetParam().error;
+  const int k = 3;
+  StorageView input({2, 6}, std::vector<float>{0.1, -0.5, 2.0, 0.0, 0.2, 0.6, 1.0, 1.1, 0.2, 0.3, -0.2, 0.0}, device);
+  StorageView expected_values(dtype, device);
+  StorageView expected_indices(DataType::INT32, device);
+  ops::TopK op(k);
+  op(input.to(dtype), expected_values, expected_indices);
+
+  StorageView values(dtype, device);
+  StorageView indices(DataType::INT32, device);
+  StorageView scratch_ids;
+  StorageView scratch_vals;
+  op(input.to(dtype), values, indices, &scratch_ids, &scratch_vals);
+  expect_storage_eq(values.to_float32(), expected_values.to_float32(), error);
+  expect_storage_eq(indices, expected_indices);
+  if (device == Device::CPU) {
+    EXPECT_TRUE(scratch_ids.empty());
+    EXPECT_TRUE(scratch_vals.empty());
+  }
+
+  op(input.to(dtype), values, indices, &scratch_ids, &scratch_vals);
+  expect_storage_eq(values.to_float32(), expected_values.to_float32(), error);
+  expect_storage_eq(indices, expected_indices);
+}
+
 TEST_P(OpDeviceTest, TopKVariableDepth) {
   Device device = GetParam();
   const int k = 3;
