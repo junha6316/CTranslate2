@@ -254,6 +254,12 @@ namespace ctranslate2 {
         // synchronizations: hand it back now. A pool at the default threshold already
         // released it on the last synchronization.
         const std::lock_guard<std::mutex> lock(_pools_mutex);
+        if (_pools.empty())
+          return;
+        // The trim only returns memory whose asynchronous frees have completed, and
+        // unload_model() frees the model and the decoder state on the stream right
+        // before calling this.
+        CUDA_CHECK(cudaDeviceSynchronize());
         for (const auto& pool : _pools)
           CUDA_CHECK(cudaMemPoolTrimTo(pool, 0));
 #endif
@@ -337,7 +343,9 @@ namespace ctranslate2 {
       static std::once_flag log_once_flag;
       std::call_once(log_once_flag, [&allocator_name, allocator]() {
         spdlog::info("Using CUDA allocator: {}", allocator_name);
-        if (allocator != CudaAllocator::MallocAsync && pool_release_threshold() > 0)
+        // Test the raw value: parsing it could throw, and the variable is ignored here.
+        if (allocator != CudaAllocator::MallocAsync
+            && !read_string_from_env("CT2_CUDA_POOL_RELEASE_THRESHOLD").empty())
           spdlog::warn("CT2_CUDA_POOL_RELEASE_THRESHOLD only applies to the "
                        "cuda_malloc_async allocator and is ignored");
       });
