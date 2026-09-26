@@ -1409,6 +1409,268 @@ TEST_F(TransformerDecoderTest, CacheReserveKnobClampAndBlockRounding) {
   }
 }
 
+TEST_F(TransformerDecoderTest, CacheTierPolicyParse) {
+  // CT2_CUDA_GRAPHS_TIERS as WhisperReplica::generate resolves it: the SAME production
+  // function (models::parse_cache_tier_policy) and the SAME ladder step
+  // (CacheTierPolicy::next) the decoder's graph guard calls at a capacity crossing.
+  const dim_t max_length = 448;  // whisper options.max_length -> top = 448
+  const auto parse = [&](const std::string& spec, dim_t reserve) {
+    return models::parse_cache_tier_policy(spec, max_length, reserve);
+  };
+
+  // Off, malformed, or nothing left to grow into: inactive, so next() is always 0 and
+  // the guard keeps the single-cap behaviour.
+  for (const std::string spec : {"", "0", "off", "OFF", "false", "garbage", "+0", "+-3",
+                                 "1,,2", "256,", "+", "+64x", "-64"}) {
+    const auto policy = parse(spec, 128);
+    EXPECT_FALSE(policy.active()) << "spec '" << spec << "'";
+    EXPECT_EQ(policy.next(128), 0) << "spec '" << spec << "'";
+  }
+  for (const dim_t reserve : {dim_t(430), dim_t(448), dim_t(512)}) {  // base >= top
+    for (const std::string spec : {"+64", "on", "256,448"})
+      EXPECT_FALSE(parse(spec, reserve).active()) << spec << " reserve=" << reserve;
+  }
+
+  // Relative stride: next = min(top, C + S) while C < top.
+  {
+    const auto policy = parse("+64", 128);
+    ASSERT_TRUE(policy.active());
+    EXPECT_EQ(policy.stride, 64);
+    EXPECT_EQ(policy.top, 448);
+    EXPECT_EQ(policy.next(128), 192);
+    EXPECT_EQ(policy.next(160), 224);  // A prompt-sized tier 0 (P=131 -> C0=160).
+    EXPECT_EQ(policy.next(192), 256);
+    EXPECT_EQ(policy.next(384), 448);
+    EXPECT_EQ(policy.next(416), 448);  // Clamped to top.
+    EXPECT_EQ(policy.next(448), 0);    // No tier past top.
+  }
+  EXPECT_EQ(parse("+50", 128).stride, 64);   // Block-rounded.
+  EXPECT_EQ(parse("+1", 128).stride, 32);    // At least one block.
+  EXPECT_EQ(parse("1", 128).stride, 64);     // Aliases of "+64".
+  EXPECT_EQ(parse("on", 128).stride, 64);
+  EXPECT_EQ(parse("true", 128).stride, 64);
+  // A reserve that is not a block multiple: base = round_up(100, 32) = 128.
+  {
+    const auto policy = parse("+64", 100);
+    ASSERT_TRUE(policy.active());
+    EXPECT_EQ(policy.next(128), 192);
+  }
+
+  // Explicit tiers: block-rounded, clamped to top, only those above the base, sorted and
+  // deduplicated; top is not appended implicitly.
+  {
+    const auto policy = parse("256,448", 128);
+    ASSERT_TRUE(policy.active());
+    EXPECT_EQ(policy.stride, 0);
+    EXPECT_EQ(policy.tiers, (std::vector<dim_t>{256, 448}));
+    EXPECT_EQ(policy.next(128), 256);
+    EXPECT_EQ(policy.next(160), 256);
+    EXPECT_EQ(policy.next(256), 448);
+    EXPECT_EQ(policy.next(448), 0);
+  }
+  EXPECT_EQ(parse("100,90,500", 64).tiers, (std::vector<dim_t>{96, 128, 448}));
+  EXPECT_EQ(parse(" 256 , 256,448 ", 128).tiers, (std::vector<dim_t>{256, 448}));
+  {
+    const auto policy = parse("192", 128);  // Past the last tier: back to the sticky tail.
+    EXPECT_EQ(policy.next(128), 192);
+    EXPECT_EQ(policy.next(192), 0);
+  }
+  EXPECT_FALSE(parse("64,96", 128).active());  // Every tier <= base.
+
+  // A default policy (what generate() installs without CT2_CUDA_GRAPHS) never names a
+  // next tier.
+  EXPECT_FALSE(layers::CacheTierPolicy().active());
+  EXPECT_EQ(layers::CacheTierPolicy().next(64), 0);
+}
+
+// Exposes the protected capacity-tier plumbing of TransformerDecoder, so the tests
+// below drive the production apply_cache_reserve / set_cache_reserve_steps code paths.
+struct TierTestDecoder : layers::TransformerDecoder {
+  using layers::TransformerDecoder::TransformerDecoder;
+  using layers::TransformerDecoder::apply_cache_reserve;
+  dim_t cache_reserve_steps() const {
+    return _cache_reserve_steps;
+  }
+  dim_t cache_reserve_base() const {
+    return _cache_reserve_base;
+  }
+  dim_t layer_cache_reserve(size_t layer) const {
+    return _layers[layer]->get_self_attention().cache_reserve_steps();
+  }
+  size_t num_layers() const {
+    return _layers.size();
+  }
+  // The pitfall pinned by CacheReserveLayerOnlyBumpRegrowsRecord: raising only the
+  // per-layer reserve, as a naive tier transition would.
+  void bump_layer_reserves_only(dim_t steps) {
+    for (const auto& layer : _layers)
+      layer->get_self_attention().set_cache_reserve_steps(steps);
+  }
+};
+
+TEST_F(TransformerDecoderTest, CacheReserveMidDecodeBump) {
+  // A capacity-tier transition as the CUDA-graph guard performs it: the decode starts
+  // at the base reserve (40 -> capacity 64) and, at the first step past the capacity,
+  // apply_cache_reserve(128) raises the reserve before the eager crossing step. That
+  // step must grow every cache straight to the tier (one change of dim(2), 64 -> 128),
+  // grow the self_length record to the tier too, and then nothing may reallocate for
+  // the rest of the tier -- the property a re-captured graph depends on -- while the
+  // logits stay bit-identical to an unreserved decoder at every step.
+  TierTestDecoder decoder(*_model, "decoder");
+  layers::TransformerDecoder reference(*_model, "decoder");
+  decoder.set_cache_reserve_steps(40);
+
+  auto state = make_state();
+  auto ref_state = make_state();
+  StorageView tok({1}, int32_t(1));
+
+  int capacity_changes = 0;
+  dim_t last_capacity = 0;
+  dim_t tier_record_bytes = -1;
+  const void* tier_record_buffer = nullptr;
+  for (dim_t step = 0; step < 128; ++step) {
+    if (step == 64)
+      decoder.apply_cache_reserve(128);
+
+    StorageView logits;
+    StorageView ref_logits;
+    decoder(step, tok, state, &logits);
+    reference(step, tok, ref_state, &ref_logits);
+    expect_storage_eq(logits, ref_logits);
+
+    const dim_t capacity = state.at("self_keys_0").dim(2);
+    EXPECT_EQ(capacity, step < 64 ? 64 : 128) << "step " << step;
+    for (size_t l = 0; l < decoder.num_layers(); ++l) {
+      const std::string l_str = std::to_string(l);
+      EXPECT_EQ(state.at("self_keys_" + l_str).dim(2), capacity) << "layer " << l;
+      EXPECT_EQ(state.at("self_values_" + l_str).dim(2), capacity) << "layer " << l;
+    }
+    if (last_capacity != 0 && capacity != last_capacity)
+      ++capacity_changes;
+    last_capacity = capacity;
+
+    const StorageView& record = state.at("self_length");
+    EXPECT_EQ(record.dim(1), step + 1);
+    if (step >= 64) {
+      EXPECT_GE(record.reserved_memory(), dim_t(128 * 16)) << "step " << step;
+      if (step == 64) {
+        tier_record_bytes = record.reserved_memory();
+        tier_record_buffer = record.buffer();
+      } else {
+        EXPECT_EQ(record.reserved_memory(), tier_record_bytes) << "step " << step;
+        EXPECT_EQ(record.buffer(), tier_record_buffer)
+          << "the record reallocated inside the tier at step " << step;
+      }
+    }
+  }
+  EXPECT_EQ(capacity_changes, 1);
+  // The bump is the current reserve only: the base is still what generate() set.
+  EXPECT_EQ(decoder.cache_reserve_steps(), 128);
+  EXPECT_EQ(decoder.cache_reserve_base(), 40);
+  for (size_t l = 0; l < decoder.num_layers(); ++l)
+    EXPECT_EQ(decoder.layer_cache_reserve(l), 128);
+}
+
+TEST_F(TransformerDecoderTest, CacheReserveLayerOnlyBumpRegrowsRecord) {
+  // Negative control for CacheReserveMidDecodeBump: bumping ONLY the per-layer reserves
+  // (not _cache_reserve_steps) still grows the caches to the tier, but the self_length
+  // record keeps rounding from the old reserve, so it regrows in 32-step blocks inside
+  // the tier -- a reallocation mid-tier that would invalidate a captured graph. This is
+  // why apply_cache_reserve sets both values.
+  TierTestDecoder decoder(*_model, "decoder");
+  decoder.set_cache_reserve_steps(40);
+
+  auto state = make_state();
+  StorageView tok({1}, int32_t(1));
+  for (dim_t step = 0; step < 100; ++step) {
+    if (step == 64)
+      decoder.bump_layer_reserves_only(128);
+    StorageView logits;
+    decoder(step, tok, state, &logits);
+
+    const dim_t capacity = state.at("self_keys_0").dim(2);
+    EXPECT_EQ(capacity, step < 64 ? 64 : 128) << "step " << step;
+    const StorageView& record = state.at("self_length");
+    if (step >= 64 && step < 96)
+      EXPECT_EQ(record.reserved_memory(), dim_t(96 * 16)) << "step " << step;
+    else if (step >= 96)
+      EXPECT_EQ(record.reserved_memory(), dim_t(128 * 16)) << "step " << step;
+  }
+  EXPECT_EQ(decoder.cache_reserve_steps(), 40);  // Unchanged by the layer-only bump.
+}
+
+TEST_F(TransformerDecoderTest, CacheReserveBumpResetAtDecodeBoundary) {
+  // A bump lives for one decode only: the next decode boundary (a step-0 call or a
+  // prompt/sequence forward on a fresh state) restores the base reserve before
+  // anything allocates, even when set_cache_reserve_steps is not called again (e.g.
+  // detect_language or alignment after a tiered generate).
+  TierTestDecoder decoder(*_model, "decoder");
+  decoder.set_cache_reserve_steps(40);
+
+  {
+    auto state = make_state();
+    StorageView tok({1}, int32_t(1));
+    for (dim_t step = 0; step < 70; ++step) {
+      if (step == 64)
+        decoder.apply_cache_reserve(128);
+      StorageView logits;
+      decoder(step, tok, state, &logits);
+    }
+    EXPECT_EQ(state.at("self_keys_0").dim(2), 128);
+    EXPECT_EQ(decoder.cache_reserve_steps(), 128);
+  }
+
+  // New decode, single-token step 0: the base capacity again.
+  {
+    auto state = make_state();
+    StorageView tok({1}, int32_t(1));
+    StorageView logits;
+    decoder(0, tok, state, &logits);
+    EXPECT_EQ(state.at("self_keys_0").dim(2), 64);
+    EXPECT_EQ(decoder.cache_reserve_steps(), 40);
+    EXPECT_EQ(decoder.cache_reserve_base(), 40);
+    for (size_t l = 0; l < decoder.num_layers(); ++l)
+      EXPECT_EQ(decoder.layer_cache_reserve(l), 40);
+    EXPECT_GE(state.at("self_length").reserved_memory(), dim_t(64 * 16));
+    EXPECT_LT(state.at("self_length").reserved_memory(), dim_t(128 * 16));
+  }
+
+  // New decode after another bump, starting with a step-0 prompt (sequence) forward:
+  // capacity round_up(max(P, 40), 32), for a short and a long prompt.
+  for (const dim_t prompt_length : {dim_t(3), dim_t(70)}) {
+    decoder.apply_cache_reserve(128);
+    auto state = make_state();
+    std::vector<int32_t> prompt_ids(prompt_length, 1);
+    StorageView prompt({1, prompt_length}, prompt_ids);
+    StorageView logits;
+    decoder(0, prompt, state, &logits);
+    const dim_t expected = (std::max(prompt_length, dim_t(40)) + 31) / 32 * 32;
+    EXPECT_EQ(state.at("self_keys_0").dim(2), expected) << "P=" << prompt_length;
+    EXPECT_EQ(decoder.cache_reserve_steps(), 40) << "P=" << prompt_length;
+  }
+}
+
+TEST_F(TransformerDecoderTest, SetCacheReserveStepsRestoresBase) {
+  // set_cache_reserve_steps (called once per generate) sets the base AND the current
+  // reserve, dropping any bump left by a previous decode.
+  TierTestDecoder decoder(*_model, "decoder");
+  decoder.set_cache_reserve_steps(40);
+  EXPECT_EQ(decoder.cache_reserve_base(), 40);
+  EXPECT_EQ(decoder.cache_reserve_steps(), 40);
+
+  decoder.apply_cache_reserve(128);
+  EXPECT_EQ(decoder.cache_reserve_base(), 40);
+  EXPECT_EQ(decoder.cache_reserve_steps(), 128);
+  for (size_t l = 0; l < decoder.num_layers(); ++l)
+    EXPECT_EQ(decoder.layer_cache_reserve(l), 128);
+
+  decoder.set_cache_reserve_steps(40);
+  EXPECT_EQ(decoder.cache_reserve_base(), 40);
+  EXPECT_EQ(decoder.cache_reserve_steps(), 40);
+  for (size_t l = 0; l < decoder.num_layers(); ++l)
+    EXPECT_EQ(decoder.layer_cache_reserve(l), 40);
+}
+
 TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
   auto state = make_state(/*iterative_decoding=*/false);
   StorageView target({1, 4}, std::vector<int32_t>{1, 3, 4, 5});

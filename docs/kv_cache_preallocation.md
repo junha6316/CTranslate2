@@ -278,3 +278,71 @@ Traced by hand but not run anywhere in the C++ suite:
 All three keep the invariant: `check_prompts` rejects prompts of differing length, and the
 generator trims prompts to a common length, so no padding makes `step` and the cache
 disagree. The Whisper token comparison on the GPU box exercises the third one.
+
+## Capacity tiers under CUDA graphs (round 5)
+
+The CUDA-graph decoder path (`CT2_CUDA_GRAPHS=1`, opt-in) replays captured executables
+that bake the cache capacity `C` into every GEMM and softmax shape, so it preallocates
+the caches for `CT2_CUDA_GRAPHS_RESERVE` steps. Round 4 capped that reserve (128 for
+beam5) to cut the padding tax, at a price: a decode that outgrows the cap hits the host
+guard in `TransformerDecoder::decode`, disables replays for the rest of the decode and
+runs an eager tail with 32-block growth. Long windows (dense speech, a previous-text
+prompt) lose the replay saving exactly where they have the most steps left.
+
+`CT2_CUDA_GRAPHS_TIERS` (see [environment variables](environment_variables.md)) turns
+that crossing into a transition: the cache grows to the next capacity tier and the
+graph runner re-captures at the new shapes. Default off; with the policy inactive the
+guard takes today's branch and the path is bit-identical.
+
+### The ladder
+
+Tier 0 is the capacity the prompt forward allocates, `C0 = round_up(max(P, R), 32)`.
+At a crossing with capacity `C`, `CacheTierPolicy::next(C)` names the next tier:
+`min(top, C + S)` for a relative stride `+N` (`S = max(32, round_up(N, 32))`,
+`top = round_up(max_length, 32)`), or the first listed tier above `C` for an explicit
+list. With `R = 128` and `+64`: `P = 2` gives 128, 192, 256, 320, 384, 448; `P = 226`
+(a 223-token previous-text prompt) gives 256, 320, 384, 448. A decode transitions at
+most `ceil((top - C0) / S)` times.
+
+### One crossing, in order
+
+At the step `s` whose write would exceed the capacity (`C == s`):
+
+1. The host guard sees a capacity-only overflow and a next tier `T`.
+2. `DecoderGraphRunner::begin_tier_transition` destroys **both** executables on the
+   host, before anything is freed. Replays of steps `s-1`/`s-2` still in flight
+   complete normally; the driver defers the release of a launched executable. It
+   refuses (and the decode keeps today's eager tail) when the decode is Disabled, a
+   capture is active, or the batch changed since the decode's first capture.
+3. `apply_cache_reserve(T)` raises the per-layer reserve **and**
+   `_cache_reserve_steps`. Both matter: `append_to_cache` sizes the growth from the
+   first, `update_length_record` rounds the `self_length` record from the second
+   (bumping only the layers would leave the record regrowing in 32-step blocks inside
+   the tier, a mid-tier reallocation; `CacheReserveLayerOnlyBumpRegrowsRecord` pins it).
+4. Step `s` runs eager at `C = T`: every cache is reallocated to `T`, zeroed, the `s`
+   old steps copied and step `s` written; the old buffers are freed stream-ordered
+   after all earlier work. The record and the capacity-dependent workspace (attention
+   scores) grow to `T` in the same step, and the beam reorder re-reserves its shadow
+   buffers to `T` after the sampler.
+5. Step `s+1` re-captures (fast re-entry: the period is known from the decode's first
+   capture), and `s+2` captures the second slot for beam search. Both captures are
+   allocation-free; replays resume at `s+2`/`s+3`, checked against the critical
+   fingerprint as before.
+
+Between steps 2 and 5 no executable exists; every live executable only references
+post-crossing buffers; at most one executable pair is alive. The crossing step itself is
+never replayed. Any capture, instantiate, launch, replay, fingerprint or allocation
+failure after a transition disables replays for the rest of the decode (the tail then
+runs padded-eager at `T` and grows in 32-blocks past it). A bump lives for one decode:
+the next `set_cache_reserve_steps` or the next prompt/step-0 forward restores the base
+reserve.
+
+### Memory
+
+The steady state is the new tier's caches plus their reorder shadows, bounded by what
+the uncapped reserve (`R = max_length`) allocates up front since `T <= max_length`.
+During the crossing step each layer briefly holds its old and new cache (the old one is
+freed right after the copy), and the old shadows live until the reorder re-reserves
+them at `T`, so the transient stays below the uncapped footprint as well.
+
+Measurements (gates, wall time, memory, token parity): [perf_round5.md](perf_round5.md).

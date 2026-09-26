@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <vector>
+
 #include "ctranslate2/layers/attention.h"
 #include "ctranslate2/layers/flash_attention.h"
 #include "ctranslate2/layers/common.h"
@@ -13,6 +16,34 @@ namespace ctranslate2 {
   }
 
   namespace layers {
+
+    // Capacity ladder for the CUDA-graph decode path (CT2_CUDA_GRAPHS_TIERS, parsed by
+    // models::parse_cache_tier_policy). When a decode outgrows its KV capacity C, the
+    // decoder's host guard asks next(C) for the capacity to grow to, so the graph runner
+    // can re-capture at the larger shapes instead of running the rest of the decode
+    // eager. Either a relative stride (next = min(top, C + stride) while C < top) or an
+    // explicit ascending list of block-rounded tiers (next = the first tier > C). 0 means
+    // "no next tier": the decode keeps today's behaviour (eager tail, 32-block growth).
+    // A default-constructed policy is inactive and next() always returns 0.
+    struct CacheTierPolicy {
+      dim_t stride = 0;
+      std::vector<dim_t> tiers;  // Ascending, unique; only used when stride == 0.
+      dim_t top = 0;
+
+      bool active() const {
+        return stride > 0 ? top > 0 : !tiers.empty();
+      }
+
+      dim_t next(dim_t capacity) const {
+        if (stride > 0)
+          return capacity < top ? std::min(top, capacity + stride) : 0;
+        for (const dim_t tier : tiers) {
+          if (tier > capacity)
+            return tier;
+        }
+        return 0;
+      }
+    };
 
     class FeedForwardNetwork : public Layer
     {
@@ -200,7 +231,18 @@ namespace ctranslate2 {
       // Opt-in: preallocate the self-attention caches (and the self_length record) for
       // this many decoding steps so their buffers and addresses stay fixed for the whole
       // decode. Costs the full cache memory up front; 0 restores block-by-block growth.
+      // This is the decode's base reserve: a capacity tier (see set_cache_tier_policy)
+      // raises the reserve for the rest of one decode only, and the next call here or the
+      // next decode boundary (a prompt/sequence or step-0 forward) restores this value.
+      // Also a decode boundary for the CUDA graph runner.
       void set_cache_reserve_steps(dim_t steps);
+
+      // Capacity tiers for the CUDA-graph decode path (opt-in, inactive by default). When
+      // a graph-eligible step outgrows the KV capacity and the policy names a next tier,
+      // the crossing step runs eager at the next tier's reserve and the graph runner
+      // re-captures at the new shapes instead of disabling replays for the rest of the
+      // decode. Only consulted on the CUDA graph path.
+      void set_cache_tier_policy(CacheTierPolicy policy);
 
       // Returns the device tensor selecting the alignment heads of this layer, or nullptr
       // when the layer has none. The tensor is cached: its content only depends on the
@@ -226,6 +268,13 @@ namespace ctranslate2 {
                   StorageView* attention = nullptr,
                   bool return_logits = true);
 
+      // Sets the reserve used by the next cache growth, in BOTH places that read it: the
+      // per-layer self-attention reserve (append_to_cache) and _cache_reserve_steps (the
+      // self_length record rounding and the padded-KV gate). Unlike
+      // set_cache_reserve_steps it neither changes the base reserve nor touches the graph
+      // runner, so a capacity tier can raise the reserve mid-decode.
+      void apply_cache_reserve(dim_t steps);
+
       const dim_t _num_heads;
       const ComputeType _compute_type;
       const Embeddings _embeddings;
@@ -247,7 +296,11 @@ namespace ctranslate2 {
       // same single-thread-per-replica reason as _workspace below).
       mutable std::vector<StorageView> _alignment_heads_device;
       mutable dim_t _alignment_heads_batch = -1;
+      // Current reserve (the base, or a capacity tier raised mid-decode) and the base
+      // reserve set by set_cache_reserve_steps, restored at every decode boundary.
       dim_t _cache_reserve_steps = 0;
+      dim_t _cache_reserve_base = 0;
+      CacheTierPolicy _cache_tier_policy;
       Dense _proj;
       const dim_t _sliding_window;
       const bool _tensor_parallel;

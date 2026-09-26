@@ -63,6 +63,26 @@ export CT2_CUDA_POOL_RELEASE_THRESHOLD=8G
 
 The threshold applies to the device's current memory pool, which is shared with any other library using `cudaMallocAsync` in the same process.
 
+## `CT2_CUDA_GRAPHS_TIERS`
+
+Capacity tiers for the opt-in CUDA-graph replay of the Whisper decoder (`CT2_CUDA_GRAPHS=1`). The graph path preallocates the self-attention caches for `CT2_CUDA_GRAPHS_RESERVE` decoding steps (or the whole decode length when the reserve is unset) and replays captured graphs at that fixed capacity. Without tiers, a decode that outgrows a capped reserve runs its remaining steps eagerly. With tiers, the step that crosses the capacity grows the caches to the next tier and the decoder re-captures its graphs at the new shapes, so the rest of the decode keeps replaying.
+
+* unset, `0`, `off` or `false`: inactive (default).
+* `+N`: at each crossing, grow the capacity by `N` steps (rounded up to a multiple of 32, at least 32), up to the decode length (`max_length`, 448 for Whisper). `1`, `on` and `true` are aliases for `+64`.
+* `a,b,...`: explicit capacities, each rounded up to a multiple of 32 and capped at the decode length; values not above the reserve are ignored. Past the last listed capacity the decode continues eagerly, as without tiers.
+
+Any other value leaves tiers inactive and logs a warning. Tiers have no effect without `CT2_CUDA_GRAPHS=1`, when the reserve already covers the whole decode (`CT2_CUDA_GRAPHS_RESERVE` unset), or with flash attention, which the graph path does not support. Tokens match the graph path at the same capacities: a decode that transitions is bit-identical to the padded eager decode on the same capacity schedule.
+
+The recommended setting for long-form beam search is:
+
+```bash
+export CT2_CUDA_GRAPHS=1 CT2_CUDA_GRAPHS_RESERVE=128 CT2_CUDA_GRAPHS_TIERS=+64
+```
+
+The caches never grow past what an unset reserve would allocate up front. A crossing briefly holds the old and the new cache together.
+
+`CT2_CUDA_GRAPHS_TIERS_REENTRY=warmup` is a debugging switch: each transition repeats the full capture warmup instead of re-capturing at the next step (`fast`, the default).
+
 ## `CT2_FORCE_CPU_ISA`
 
 Force CTranslate2 to select a specific instruction set architecture (ISA). Possible values are:

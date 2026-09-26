@@ -1,8 +1,12 @@
 #include "ctranslate2/models/whisper.h"
 
 #include <algorithm>
+#include <atomic>
+#include <cctype>
 #include <limits>
 #include <vector>
+
+#include <spdlog/spdlog.h>
 
 #include "ctranslate2/decoding.h"
 #include "ctranslate2/ops/timestamp_gate.h"
@@ -23,6 +27,91 @@ namespace ctranslate2 {
       if (reserve_knob > 0)
         reserve = std::min<dim_t>(max_length, reserve_knob);
       return reserve;
+    }
+
+    static std::string trim_spaces(const std::string& s) {
+      const size_t first = s.find_first_not_of(" \t");
+      if (first == std::string::npos)
+        return "";
+      const size_t last = s.find_last_not_of(" \t");
+      return s.substr(first, last - first + 1);
+    }
+
+    // A strictly positive decimal integer (digits only: no sign, no suffix).
+    static bool parse_positive_steps(const std::string& token, dim_t& value) {
+      if (token.empty() || token.size() > 9)
+        return false;
+      for (const char c : token) {
+        if (c < '0' || c > '9')
+          return false;
+      }
+      value = std::stoll(token);
+      return value >= 1;
+    }
+
+    layers::CacheTierPolicy parse_cache_tier_policy(const std::string& spec,
+                                                    dim_t max_length,
+                                                    dim_t reserve) {
+      // Same block rounding as append_to_cache (kv_cache_block = 32).
+      const auto round_up = [](dim_t n) { return (n + 31) / 32 * 32; };
+      const dim_t base = round_up(reserve);
+      const dim_t top = round_up(max_length);
+
+      std::string value = trim_spaces(spec);
+      for (char& c : value)
+        c = std::tolower(static_cast<unsigned char>(c));
+      if (value.empty() || value == "0" || value == "off" || value == "false")
+        return {};
+      if (value == "1" || value == "on" || value == "true")
+        value = "+64";  // The recommended beam5 stride.
+
+      layers::CacheTierPolicy policy;
+      bool malformed = false;
+      if (value[0] == '+') {
+        dim_t steps = 0;
+        if (parse_positive_steps(trim_spaces(value.substr(1)), steps)) {
+          policy.stride = std::max<dim_t>(32, round_up(steps));
+          policy.top = top;
+        } else {
+          malformed = true;
+        }
+      } else {
+        size_t start = 0;
+        while (true) {
+          const size_t comma = value.find(',', start);
+          const std::string token = trim_spaces(
+            value.substr(start, comma == std::string::npos ? std::string::npos
+                                                           : comma - start));
+          dim_t steps = 0;
+          if (!parse_positive_steps(token, steps)) {
+            malformed = true;
+            break;
+          }
+          const dim_t tier = std::min(top, round_up(steps));
+          if (tier > base)
+            policy.tiers.push_back(tier);
+          if (comma == std::string::npos)
+            break;
+          start = comma + 1;
+        }
+        std::sort(policy.tiers.begin(), policy.tiers.end());
+        policy.tiers.erase(std::unique(policy.tiers.begin(), policy.tiers.end()),
+                           policy.tiers.end());
+        policy.top = top;
+      }
+
+      if (malformed) {
+        static std::atomic<bool> warned(false);
+        if (!warned.exchange(true))
+          spdlog::warn("CT2_CUDA_GRAPHS_TIERS: cannot parse '{}' (expected +N, a "
+                       "comma-separated list of steps, on or off); capacity tiers stay "
+                       "inactive", spec);
+        return {};
+      }
+      // Nothing to grow into: the base reserve already covers the whole decode.
+      if (base >= top || !policy.active())
+        return {};
+      return policy;
     }
 
     const Vocabulary& WhisperModel::get_vocabulary() const {
@@ -277,8 +366,18 @@ namespace ctranslate2 {
         // (transformer.cc) turns that step ineligible so the tail runs eager -- correct,
         // just without the replay win. Independent of CT2_CUDA_GRAPHS and CT2_CUDA_PAD_KV.
         static const int reserve_knob = read_int_from_env("CT2_CUDA_GRAPHS_RESERVE", 0);
-        _decoder->set_cache_reserve_steps(
-          clamp_cache_reserve_steps(options.max_length, reserve_knob));
+        // Opt-in capacity tiers (CT2_CUDA_GRAPHS=1 only): past the reserve, grow the
+        // caches to the next tier and re-capture instead of running the tail eager.
+        // The policy is only consulted by the graph path's host guard, so PAD_KV or
+        // PREALLOC_KV alone never bump. read_bool_from_env rather than the graph
+        // runner's own reader: this file builds without CUDA.
+        static const std::string tiers_spec = read_string_from_env("CT2_CUDA_GRAPHS_TIERS");
+        static const bool graphs_env = read_bool_from_env("CT2_CUDA_GRAPHS");
+        const dim_t reserve = clamp_cache_reserve_steps(options.max_length, reserve_knob);
+        _decoder->set_cache_tier_policy(
+          graphs_env ? parse_cache_tier_policy(tiers_spec, options.max_length, reserve)
+                     : layers::CacheTierPolicy());
+        _decoder->set_cache_reserve_steps(reserve);
       }
 
       layers::DecoderState state = _decoder->initial_state();

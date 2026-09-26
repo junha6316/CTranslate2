@@ -65,6 +65,20 @@ namespace ctranslate2 {
     // WhisperReplica::generate, factored out here so it is directly unit-testable.
     dim_t clamp_cache_reserve_steps(dim_t max_length, int reserve_knob);
 
+    // Parse the CT2_CUDA_GRAPHS_TIERS capacity ladder for one decode, given the decode
+    // length and the base reserve R (clamp_cache_reserve_steps above). With
+    // base = round_up(R, 32) and top = round_up(max_length, 32):
+    // - "", "0", "off", "false": inactive (the single-cap policy);
+    // - "1", "on", "true": the "+64" alias;
+    // - "+N" (N >= 1): relative stride max(32, round_up(N, 32)), next = min(top, C + S);
+    // - "a,b,...": absolute tiers, each block-rounded and clamped to top, keeping only
+    //   those > base (sorted, deduplicated); top is not appended implicitly;
+    // - anything else: inactive, with one warning.
+    // The policy is also inactive when base >= top (e.g. an unset reserve).
+    layers::CacheTierPolicy parse_cache_tier_policy(const std::string& spec,
+                                                    dim_t max_length,
+                                                    dim_t reserve);
+
     struct WhisperGenerationResult {
       std::vector<std::vector<std::string>> sequences;
       std::vector<std::vector<size_t>> sequences_ids;

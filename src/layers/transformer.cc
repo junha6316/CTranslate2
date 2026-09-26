@@ -651,9 +651,8 @@ namespace ctranslate2 {
     }
 
     void TransformerDecoder::set_cache_reserve_steps(dim_t steps) {
-      _cache_reserve_steps = steps;
-      for (const auto& layer : _layers)
-        layer->get_self_attention().set_cache_reserve_steps(steps);
+      _cache_reserve_base = steps;
+      apply_cache_reserve(steps);
 #ifdef CT2_WITH_CUDA
       // The opted-in models call this once per generate(): a reliable decode boundary
       // for the graph runner (a step-number heuristic alone can collide across
@@ -661,6 +660,20 @@ namespace ctranslate2 {
       if (_graph_runner)
         _graph_runner->note_new_decode();
 #endif
+    }
+
+    void TransformerDecoder::apply_cache_reserve(dim_t steps) {
+      // Both values must move together: append_to_cache sizes the KV growth from the
+      // per-layer reserve, while update_length_record rounds the self_length record
+      // from _cache_reserve_steps. Bumping only the layers would leave the record
+      // regrowing in 32-step blocks inside a tier, i.e. reallocating mid-tier.
+      _cache_reserve_steps = steps;
+      for (const auto& layer : _layers)
+        layer->get_self_attention().set_cache_reserve_steps(steps);
+    }
+
+    void TransformerDecoder::set_cache_tier_policy(CacheTierPolicy policy) {
+      _cache_tier_policy = std::move(policy);
     }
 
     const StorageView*
@@ -740,6 +753,13 @@ namespace ctranslate2 {
                                    "self-attention cache (" + std::to_string(cached_length)
                                    + ")");
       }
+
+      // A capacity tier raises the reserve for the rest of one decode only (see the
+      // graph guard below). A prompt/sequence forward or a step-0 call starts a new
+      // decode (whisper's forward_prompt, detect_language, alignment scoring), so
+      // restore the base reserve before anything allocates. A no-op unless a tier fired.
+      if ((is_sequence || step <= 0) && _cache_reserve_steps != _cache_reserve_base)
+        apply_cache_reserve(_cache_reserve_base);
 
       // On the iterative path the two layer activations come from the decode workspace so
       // their buffers survive across steps; every move-assignment between them below is a
@@ -838,7 +858,11 @@ namespace ctranslate2 {
           // be read out of bounds on the device. A failed guard makes the step
           // ineligible: the eager forward then either grows the cache (reserve
           // overflow) or throws the same clean error as eager decoding, and replays
-          // are disabled for the rest of the decode.
+          // are disabled for the rest of the decode -- unless a capacity tier applies:
+          // a capacity-only overflow with a next tier makes the runner drop both
+          // executables (before this eager step frees the old buffers) and re-capture
+          // at the new shapes from the next step on, while this step grows the caches,
+          // the self_length record and the capacity-dependent workspace to the tier.
           const auto cache_it = state.find("self_keys_0");
           const dim_t cache_capacity =
               (cache_it != state.end() && cache_it->second.rank() == 4)
@@ -846,13 +870,29 @@ namespace ctranslate2 {
               : 0;
           if (_position_encoder)
             encodings = &_position_encoder->ensure_position_encoding(step + 1);
-          if (step + 1 > cache_capacity
-              || (encodings && step + 1 > encodings->dim(0))) {
-            spdlog::debug("CUDA graphs: step {} does not fit the captured shapes"
-                          " (cache capacity {}, position table {}), going eager",
-                          step, cache_capacity,
-                          encodings ? encodings->dim(0) : dim_t(-1));
-            _graph_runner->note_ineligible(step);
+          const bool cap_over = step + 1 > cache_capacity;
+          const bool pos_over = encodings && step + 1 > encodings->dim(0);
+          if (cap_over || pos_over) {
+            dim_t next = 0;
+            if (cap_over && !pos_over && cache_capacity > 0) {
+              next = _cache_tier_policy.next(cache_capacity);
+              if (encodings)
+                next = std::min(next, encodings->dim(0));
+            }
+            if (next > cache_capacity
+                && _graph_runner->begin_tier_transition(step, ids.dim(0),
+                                                        cache_capacity, next)) {
+              // Not set_cache_reserve_steps: the base reserve and the runner's decode
+              // state must survive the transition.
+              apply_cache_reserve(next);
+            } else {
+              spdlog::debug("CUDA graphs: step {} does not fit the captured shapes"
+                            " (cache capacity {}, position table {}), going eager",
+                            step, cache_capacity,
+                            encodings ? encodings->dim(0) : dim_t(-1));
+              _graph_runner->note_ineligible(step);
+            }
+            // The crossing step always runs eager: it performs the growth.
             eligible = false;
           }
         }
@@ -900,7 +940,8 @@ namespace ctranslate2 {
                                           &_workspace.layer_in, &_workspace.layer_out})
             fingerprint.push_back(reinterpret_cast<std::uintptr_t>(slot->buffer()));
 
-          graph_action = _graph_runner->begin_step(step, std::move(fingerprint), num_critical);
+          graph_action = _graph_runner->begin_step(step, std::move(fingerprint), num_critical,
+                                                   ids.dim(0));
         }
       } else if (_graph_runner) {
         if (is_sequence || step <= 0)
@@ -1196,7 +1237,8 @@ namespace ctranslate2 {
         bool captured = false;
         if (_graph_runner->begin_capture()) {
           try {
-            if (cuda::DecoderGraphRunner::injected_fault() == "alloc")
+            if (cuda::DecoderGraphRunner::injected_fault() == "alloc"
+                || _graph_runner->consume_tier_fault("tier_alloc"))
               // Fault injection: a real allocation inside the capture window, which
               // must throw through the allocator assert-hook and abort the capture.
               get_allocator<Device::CUDA>().allocate(256);

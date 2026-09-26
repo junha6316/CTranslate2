@@ -12,9 +12,13 @@
 //      the capture and the step is rerun eagerly);
 //   4. on Action::Replay it skips the forward and calls replay().
 // Any CUDA error degrades to eager for the remainder of the decode, logged once,
-// never fatal. There is no mid-decode recapture; a new decode (reported by the
-// decoder through note_new_decode(), or detected by a step discontinuity) restarts
-// the warmup.
+// never fatal. Mid-decode recapture happens only at a capacity-tier transition, which
+// the decoder's host guard requests through begin_tier_transition() at the first step
+// that outgrows the KV capacity: both executables are destroyed there, before the
+// eager crossing step frees the old buffers, and the next steps re-capture at the new
+// shapes. Disabled stays sticky until the next decode boundary (reported by the
+// decoder through note_new_decode(), or detected by a step discontinuity), which also
+// restarts the warmup.
 
 #include <cstdint>
 #include <memory>
@@ -42,8 +46,14 @@ namespace ctranslate2 {
       // CT2_CUDA_GRAPHS_CHECK=1: replay AND eager each step, compare logits.
       static bool check_enabled();
       // CT2_CUDA_GRAPHS_FAULT=capture|instantiate|replay|fingerprint|alloc: fault
-      // injection for the fallback tests. Empty string when unset.
+      // injection for the fallback tests. The tier_capture|tier_instantiate|
+      // tier_replay|tier_alloc values fire once, at the first capture / instantiate /
+      // replay / in-capture allocation after a tier transition (see
+      // consume_tier_fault). Empty string when unset.
       static const std::string& injected_fault();
+      // CT2_CUDA_GRAPHS_TIERS_REENTRY=warmup (debug/A-B only): a tier transition
+      // re-enters the full warmup instead of re-capturing at the next step.
+      static bool warmup_reentry();
 
       // One-time device preconditions for the calling thread: a non-default stream
       // (the main thread owns the legacy stream, which cudaStreamBeginCapture
@@ -58,14 +68,29 @@ namespace ctranslate2 {
       // every replay; the remaining entries (workspace slots) rotate only inside the
       // eager forward, freeze once replays start, and therefore only participate in
       // the warmup stability detection. Detects decode boundaries through step
-      // discontinuities.
+      // discontinuities. batch is the step's batch x beam size (ids.dim(0)).
       Action begin_step(dim_t step,
                         std::vector<std::uintptr_t> fingerprint,
-                        std::size_t num_critical);
+                        std::size_t num_critical,
+                        dim_t batch);
 
       // Called when a step is not graph-eligible (e.g. attention weights requested):
       // keeps the step counter coherent and forces eager for the rest of the decode.
       void note_ineligible(dim_t step);
+
+      // Called by the decoder's host guard at a step whose KV capacity is exhausted
+      // (capacity == step) when the tier policy names a larger capacity. Returns false
+      // (the caller then takes the note_ineligible path) when the decode is Disabled, a
+      // capture is active, or the batch changed since this decode's first capture.
+      // Otherwise destroys BOTH executables -- the step about to run eager frees the
+      // buffers they bake -- and arms a re-capture: from the next step (fast re-entry,
+      // once this decode has captured) or through a fresh warmup. The crossing step
+      // itself must run eager; it counts as this decode's step.
+      bool begin_tier_transition(dim_t step, dim_t batch, dim_t from, dim_t to);
+
+      // Fault injection for the tier faults: true once per process, when
+      // injected_fault() == name and this decode has made a tier transition.
+      bool consume_tier_fault(const char* name);
 
       // Called at a decode boundary (a prompt/prefix forward, a new cache reserve, a
       // step-0 call): drops the executables and restarts the warmup. The step
