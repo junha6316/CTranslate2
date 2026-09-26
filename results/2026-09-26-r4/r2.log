@@ -1,0 +1,23 @@
+=== checkout b3fc0d1 (r2) ===
+HEAD: b3fc0d1a docs: record the measured round-2 A10G results
+=== incremental build (started 22:15:34) ===
+[ 98%] Linking CXX executable benchmark_ops
+[ 98%] Built target benchmark_ops
+[ 98%] Linking CXX executable ctranslate2_test
+[100%] Built target ctranslate2_test
+=== build+install done in 133s ===
+=== bench r2 ===
+r2 small     float16       ts=0 b5 n=1:    61.75 ms  (min    61.68)  16 tok
+r2 small     float16       ts=0 b1 n=1:    23.85 ms  (min    23.75)  5 tok
+r2 small     float16       ts=1 b5 n=1:   258.28 ms  (min   258.17)  84 tok
+r2 small     int8_float16  ts=0 b5 n=1:    83.14 ms  (min    82.30)  21 tok
+r2 small     int8_float16  ts=0 b1 n=1:    29.31 ms  (min    29.17)  5 tok
+r2 small     int8_float16  ts=1 b5 n=1:   271.44 ms  (min   270.31)  84 tok
+r2 large-v3  float16       ts=0 b5 n=1:   360.60 ms  (min   359.62)  23 tok
+r2 large-v3  float16       ts=0 b1 n=1:   256.31 ms  (min   255.17)  26 tok
+r2 large-v3  float16       ts=1 b5 n=1:   462.15 ms  (min   461.23)  35 tok
+r2 large-v3  int8_float16  ts=0 b5 n=1:   360.17 ms  (min   359.29)  24 tok
+r2 large-v3  int8_float16  ts=0 b1 n=1:   261.95 ms  (min   260.74)  26 tok
+r2 large-v3  int8_float16  ts=1 b5 n=1:   461.47 ms  (min   460.03)  35 tok
+wrote /opt/real/r5/flash_r2.json 12
+=== DONE r2 ===

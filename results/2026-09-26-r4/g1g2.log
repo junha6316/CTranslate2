@@ -1,0 +1,36 @@
+=== references ===
+r5_eager b1 reserve=None graphs=None pad=None: 165.6 ms (min 165.4, max 165.9) 84 tok score=-0.1950196474790573
+r5_eager b5 reserve=None graphs=None pad=None: 215.7 ms (min 215.5, max 217.6) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_eager.json
+r5_pad448 b1 reserve=None graphs=None pad=1: 169.1 ms (min 168.9, max 169.9) 84 tok score=-0.19521063566207886
+r5_pad448 b5 reserve=None graphs=None pad=1: 254.0 ms (min 253.8, max 254.2) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_pad448.json
+r5_graphs448 b1 reserve=None graphs=1 pad=None: 153.9 ms (min 153.6, max 154.6) 84 tok score=-0.19521063566207886
+r5_graphs448 b5 reserve=None graphs=1 pad=None: 233.7 ms (min 233.6, max 233.9) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_graphs448.json
+=== G1 pad-eager sweep + G2 graphs sweep ===
+r5_pad96 b1 reserve=96 graphs=None pad=1: 167.1 ms (min 166.6, max 167.4) 84 tok score=-0.19509878754615784
+r5_pad96 b5 reserve=96 graphs=None pad=1: 219.3 ms (min 219.2, max 220.3) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_pad96.json
+r5_graphs96 b1 reserve=96 graphs=1 pad=None: 149.8 ms (min 149.6, max 149.8) 84 tok score=-0.19509878754615784
+r5_graphs96 b5 reserve=96 graphs=1 pad=None: 199.1 ms (min 199.0, max 200.3) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_graphs96.json
+r5_pad128 b1 reserve=128 graphs=None pad=1: 166.5 ms (min 166.3, max 167.3) 84 tok score=-0.19509878754615784
+r5_pad128 b5 reserve=128 graphs=None pad=1: 221.1 ms (min 221.0, max 221.3) 84 tok score=-0.1951264888048172
+wrote /opt/real/r5/r5_pad128.json
+r5_graphs128 b1 reserve=128 graphs=1 pad=None: 150.1 ms (min 150.0, max 150.9) 84 tok score=-0.19509878754615784
+r5_graphs128 b5 reserve=128 graphs=1 pad=None: 201.5 ms (min 201.4, max 201.6) 84 tok score=-0.1951264888048172
+wrote /opt/real/r5/r5_graphs128.json
+r5_pad160 b1 reserve=160 graphs=None pad=1: 166.8 ms (min 166.6, max 167.7) 84 tok score=-0.19509342312812805
+r5_pad160 b5 reserve=160 graphs=None pad=1: 225.7 ms (min 224.8, max 226.7) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_pad160.json
+r5_graphs160 b1 reserve=160 graphs=1 pad=None: 150.7 ms (min 150.6, max 151.8) 84 tok score=-0.19509342312812805
+r5_graphs160 b5 reserve=160 graphs=1 pad=None: 206.5 ms (min 205.5, max 207.5) 84 tok score=-0.1949404776096344
+wrote /opt/real/r5/r5_graphs160.json
+r5_pad256 b1 reserve=256 graphs=None pad=1: 168.3 ms (min 167.5, max 169.4) 84 tok score=-0.19509342312812805
+r5_pad256 b5 reserve=256 graphs=None pad=1: 235.0 ms (min 234.7, max 235.7) 84 tok score=-0.1951264888048172
+wrote /opt/real/r5/r5_pad256.json
+r5_graphs256 b1 reserve=256 graphs=1 pad=None: 151.4 ms (min 151.3, max 153.3) 84 tok score=-0.19509342312812805
+r5_graphs256 b5 reserve=256 graphs=1 pad=None: 215.0 ms (min 214.8, max 215.2) 84 tok score=-0.1951264888048172
+wrote /opt/real/r5/r5_graphs256.json
+=== ALLRUNSDONE ===

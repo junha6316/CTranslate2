@@ -1,0 +1,35 @@
+oldgraphs small float16 ts=True b1 n=1: 152.6 ms, 152.6 ms/window, 84 tok
+oldgraphs small float16 ts=True b1 n=8: 461.7 ms, 57.7 ms/window, 667 tok
+oldgraphs small float16 ts=True b5 n=1: 234.9 ms, 234.9 ms/window, 84 tok
+oldgraphs small float16 ts=True b5 n=8: 874.4 ms, 109.3 ms/window, 672 tok
+oldgraphs small float16 ts=False b1 n=1: 38.0 ms, 38.0 ms/window, 5 tok
+oldgraphs small float16 ts=False b1 n=8: 430.4 ms, 53.8 ms/window, 506 tok
+oldgraphs small float16 ts=False b5 n=1: 78.1 ms, 78.1 ms/window, 16 tok
+oldgraphs small float16 ts=False b5 n=8: 599.1 ms, 74.9 ms/window, 329 tok
+oldgraphs small int8_float16 ts=True b1 n=1: 255.3 ms, 255.3 ms/window, 84 tok
+oldgraphs small int8_float16 ts=True b1 n=8: 543.6 ms, 67.9 ms/window, 664 tok
+oldgraphs small int8_float16 ts=True b5 n=1: 276.9 ms, 276.9 ms/window, 75 tok
+oldgraphs small int8_float16 ts=True b5 n=8: 998.9 ms, 124.9 ms/window, 681 tok
+oldgraphs small int8_float16 ts=False b1 n=1: 43.5 ms, 43.5 ms/window, 5 tok
+oldgraphs small int8_float16 ts=False b1 n=8: 475.1 ms, 59.4 ms/window, 496 tok
+oldgraphs small int8_float16 ts=False b5 n=1: 90.6 ms, 90.6 ms/window, 17 tok
+oldgraphs small int8_float16 ts=False b5 n=8: 694.1 ms, 86.8 ms/window, 358 tok
+wrote /opt/real/r5/tok_old_graphs.json 16
+oldrsv128 small float16 ts=True b1 n=1: 148.9 ms, 148.9 ms/window, 84 tok
+oldrsv128 small float16 ts=True b1 n=8: 445.3 ms, 55.7 ms/window, 667 tok
+oldrsv128 small float16 ts=True b5 n=1: 202.1 ms, 202.1 ms/window, 84 tok
+oldrsv128 small float16 ts=True b5 n=8: 607.8 ms, 76.0 ms/window, 672 tok
+oldrsv128 small float16 ts=False b1 n=1: 37.4 ms, 37.4 ms/window, 5 tok
+oldrsv128 small float16 ts=False b1 n=8: 416.8 ms, 52.1 ms/window, 506 tok
+oldrsv128 small float16 ts=False b5 n=1: 65.0 ms, 65.0 ms/window, 16 tok
+oldrsv128 small float16 ts=False b5 n=8: 459.7 ms, 57.5 ms/window, 329 tok
+oldrsv128 small int8_float16 ts=True b1 n=1: 259.8 ms, 259.8 ms/window, 84 tok
+oldrsv128 small int8_float16 ts=True b1 n=8: 527.9 ms, 66.0 ms/window, 662 tok
+oldrsv128 small int8_float16 ts=True b5 n=1: 287.9 ms, 287.9 ms/window, 75 tok
+oldrsv128 small int8_float16 ts=True b5 n=8: 721.6 ms, 90.2 ms/window, 673 tok
+oldrsv128 small int8_float16 ts=False b1 n=1: 44.7 ms, 44.7 ms/window, 5 tok
+oldrsv128 small int8_float16 ts=False b1 n=8: 468.0 ms, 58.5 ms/window, 496 tok
+oldrsv128 small int8_float16 ts=False b5 n=1: 83.7 ms, 83.7 ms/window, 17 tok
+oldrsv128 small int8_float16 ts=False b5 n=8: 547.5 ms, 68.4 ms/window, 358 tok
+wrote /opt/real/r5/tok_old_rsv128.json 16
+ALL_OLDCHECK_DONE

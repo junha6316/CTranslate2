@@ -1,0 +1,31 @@
+=== G3.1 graphs reserve=64 (forced crossing) token dump (beam1+beam5) ===
+r5_graphs64 b1 reserve=64 graphs=1 pad=None: 155.4 ms (min 155.0, max 155.5) 84 tok score=-0.1952265501022339
+r5_graphs64 b5 reserve=64 graphs=1 pad=None: 205.2 ms (min 205.0, max 205.5) 84 tok score=-0.1947544664144516
+wrote /opt/real/r5/r5_graphs64.json
+=== G3.2 crossing + disable-for-decode log (reserve=64, VERBOSE=2, one decode) ===
+does-not-fit: 1  falling-back: 1
+[2026-09-25 23:45:03.693] [ctranslate2] [thread 37793] [debug] CUDA graphs: step 64 does not fit the captured shapes (cache capacity 64, position table 448), going eager
+[2026-09-25 23:45:03.693] [ctranslate2] [thread 37793] [debug] CUDA graphs: falling back to eager for this decode (ineligible step mid-decode)
+NTOK 84
+=== G3.3 CHECK dual-run over 3 windows (reserve=128) ===
+logits-mismatch lines (expect 0): 0
+WINDOW 0: 84 tok
+WINDOW 1: 77 tok
+WINDOW 2: 88 tok
+=== G4.1 fault injection (reserve=128, one decode each) ===
+fault=capture : graph-log-lines=1  NTOK 84
+[2026-09-25 23:45:08.161] [ctranslate2] [thread 37862] [debug] CUDA graphs: falling back to eager for this decode (injected capture failure)
+fault=instantiate : graph-log-lines=2  NTOK 84
+[2026-09-25 23:45:10.007] [ctranslate2] [thread 37897] [debug] CUDA graphs: cudaGraphInstantiate failed: unknown error
+fault=replay : graph-log-lines=1  NTOK 84
+[2026-09-25 23:45:11.865] [ctranslate2] [thread 37932] [debug] CUDA graphs: falling back to eager for this decode (injected replay failure)
+fault=fingerprint : graph-log-lines=1  NTOK 84
+[2026-09-25 23:45:13.708] [ctranslate2] [thread 37967] [debug] CUDA graphs: falling back to eager for this decode (pointer fingerprint changed)
+fault=alloc : graph-log-lines=1  NTOK 84
+[2026-09-25 23:45:15.561] [ctranslate2] [thread 38002] [debug] CUDA graphs: falling back to eager for this decode (ct2_graph_capture_allocation)
+=== G4.3 memory front (peak process GPU MB) ===
+MEM small b5 n1 graphs=1 pad=None reserve=128: peak_used=986 MB
+MEM small b5 n1 graphs=1 pad=None reserve=448: peak_used=1082 MB
+MEM large-v3 b5 n1 graphs=1 pad=None reserve=128: peak_used=3678 MB
+MEM large-v3 b5 n1 graphs=1 pad=None reserve=448: peak_used=3902 MB
+=== G3G4DONE ===

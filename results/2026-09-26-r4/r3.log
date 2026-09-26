@@ -1,0 +1,13 @@
+r3 small     float16       ts=0 b5 n=1:    56.71 ms  (min    56.61)  16 tok
+r3 small     float16       ts=0 b1 n=1:    23.85 ms  (min    23.81)  5 tok
+r3 small     float16       ts=1 b5 n=1:   248.15 ms  (min   247.72)  84 tok
+r3 small     int8_float16  ts=0 b5 n=1:    77.49 ms  (min    76.25)  21 tok
+r3 small     int8_float16  ts=0 b1 n=1:    29.64 ms  (min    29.53)  5 tok
+r3 small     int8_float16  ts=1 b5 n=1:   261.39 ms  (min   261.24)  84 tok
+r3 large-v3  float16       ts=0 b5 n=1:   341.23 ms  (min   339.48)  23 tok
+r3 large-v3  float16       ts=0 b1 n=1:   254.76 ms  (min   253.86)  26 tok
+r3 large-v3  float16       ts=1 b5 n=1:   446.91 ms  (min   445.11)  35 tok
+r3 large-v3  int8_float16  ts=0 b5 n=1:   339.32 ms  (min   338.47)  24 tok
+r3 large-v3  int8_float16  ts=0 b1 n=1:   258.98 ms  (min   257.95)  26 tok
+r3 large-v3  int8_float16  ts=1 b5 n=1:   440.11 ms  (min   438.45)  35 tok
+wrote /opt/real/r5/flash_r3.json 12

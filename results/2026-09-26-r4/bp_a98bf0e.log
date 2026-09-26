@@ -1,0 +1,5 @@
+HEAD: a98bf0ee perf(decoding): ping-pong the fused beam-reorder gather
+[ 98%] Linking CXX executable ctranslate2_test
+[100%] Built target ctranslate2_test
+build 115s
+a98bf0e COLD=58.16 POISONED=78.96 ratio=1.358

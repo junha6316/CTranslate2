@@ -1,0 +1,11 @@
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+WALL small n=1 1073.4 ms for 5 runs
+Collecting data...
+Generating '/tmp/nsys-report-ac40.qdstrm'
+[1/1] [0%                          ] nsys_graphs96.nsys-rep[1/1] [0%                          ] nsys_graphs96.nsys-rep[1/1] [0%                          ] nsys_graphs96.nsys-rep[1/1] [10%                         ] nsys_graphs96.nsys-rep[1/1] [==20%                       ] nsys_graphs96.nsys-rep[1/1] [=====30%                    ] nsys_graphs96.nsys-rep[1/1] [========40%                 ] nsys_graphs96.nsys-rep[1/1] [===========50%              ] nsys_graphs96.nsys-rep[1/1] [========================100%] nsys_graphs96.nsys-rep[1/1] [========================100%] nsys_graphs96.nsys-rep
+Generated:
+	/opt/real/r5/nsys_graphs96.nsys-rep

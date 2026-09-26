@@ -1,0 +1,12 @@
+=== G4.2b flag-off 48-config matrix (this build, all flags off) ===
+r5off large-v3 int8_float16 ts=False b5 n=4: 1414.0 ms, 353.5 ms/window, 237 tok
+r5off large-v3 int8_float16 ts=False b5 n=8: 2206.2 ms, 275.8 ms/window, 516 tok
+wrote /opt/real/r5/r5_matrix.json 48
+--- compare to round-3 eager baseline (batch_r3.json) ---
+configs=48 identical=48 diff=0 (only-in-A=0 only-in-B=0)
+BITIDENTICAL
+=== G3.4 compute-sanitizer memcheck, reserve=64 forced crossing (beam5) ===
+exit=0
+--- sanitizer summary ---
+NTOK 84
+=== G4SANDONE ===

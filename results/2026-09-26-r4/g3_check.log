@@ -1,0 +1,15 @@
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - Selected ISA: AVX2
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - Use Intel MKL: false
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - Allow INT8: true
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-25 23:45:04.578] [ctranslate2] [thread 37799] [info]  - Allow BF16: true
+[2026-09-25 23:45:04.964] [ctranslate2] [thread 37799] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-25 23:45:05.032] [ctranslate2] [thread 37799] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-25 23:45:05.032] [ctranslate2] [thread 37799] [info]  - Binary version: 6
+[2026-09-25 23:45:05.032] [ctranslate2] [thread 37799] [info]  - Model specification revision: 3
+[2026-09-25 23:45:05.032] [ctranslate2] [thread 37799] [info]  - Selected compute type: float16

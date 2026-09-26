@@ -1,0 +1,16 @@
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - Selected ISA: AVX2
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - Use Intel MKL: false
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - Allow INT8: true
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-25 23:45:11.021] [ctranslate2] [thread 37902] [info]  - Allow BF16: true
+[2026-09-25 23:45:11.403] [ctranslate2] [thread 37902] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-25 23:45:11.472] [ctranslate2] [thread 37902] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-25 23:45:11.472] [ctranslate2] [thread 37902] [info]  - Binary version: 6
+[2026-09-25 23:45:11.472] [ctranslate2] [thread 37902] [info]  - Model specification revision: 3
+[2026-09-25 23:45:11.472] [ctranslate2] [thread 37902] [info]  - Selected compute type: float16
+[2026-09-25 23:45:11.865] [ctranslate2] [thread 37932] [debug] CUDA graphs: falling back to eager for this decode (injected replay failure)

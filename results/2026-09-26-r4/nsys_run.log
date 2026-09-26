@@ -1,0 +1,11 @@
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+done ntok 84
+Collecting data...
+Generating '/tmp/nsys-report-de8d.qdstrm'
+[1/1] [0%                          ] nsys_r4graphs.nsys-rep[1/1] [0%                          ] nsys_r4graphs.nsys-rep[1/1] [0%                          ] nsys_r4graphs.nsys-rep[1/1] [=15%                        ] nsys_r4graphs.nsys-rep[1/1] [=====29%                    ] nsys_r4graphs.nsys-rep[1/1] [=========44%                ] nsys_r4graphs.nsys-rep[1/1] [===========50%              ] nsys_r4graphs.nsys-rep[1/1] [========================100%] nsys_r4graphs.nsys-rep[1/1] [========================100%] nsys_r4graphs.nsys-rep
+Generated:
+	/opt/real/r5/nsys_r4graphs.nsys-rep

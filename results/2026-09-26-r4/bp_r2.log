@@ -1,0 +1,5 @@
+HEAD: b3fc0d1a docs: record the measured round-2 A10G results
+[ 98%] Built target benchmark_ops
+[100%] Built target ctranslate2_test
+build 12s
+r2probe COLD=61.81 POISONED=60.86 ratio=0.985
