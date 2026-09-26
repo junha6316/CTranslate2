@@ -64,6 +64,16 @@ namespace ctranslate2 {
     }
 
     void Decoder::replicate_state(DecoderState& state, const dim_t beam_size) const {
+      // The beam-reorder shadow buffers (see update_state) are a per-decode allocation
+      // cache reserved to the source cache's block-rounded capacity, and reserve() only
+      // grows. Drop them at the start of each generation so a previous, larger decode
+      // (bigger batch or more beams) cannot leave them holding oversized buffers: once a
+      // shadow (and, through the post-gather swap, the cache it pairs with) exceeds the
+      // CUDA caching allocator's max cached bin (16 MB, see cuda/allocator.cc), every
+      // reorder step of a later smaller decode pays a real cudaMalloc/cudaFree instead of
+      // a cache hit. They regrow to this decode's own size on the first reorder, so the
+      // within-decode allocation reuse is preserved.
+      _reorder_shadows.clear();
       for (auto& [name, value] : state) {
         if (value && replicate_state(name))
           repeat_batch(value, beam_size);
