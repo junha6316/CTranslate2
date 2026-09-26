@@ -1,0 +1,712 @@
+##### GRAPHS 17:44:07
+SWITCH bisect: ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=0
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+final_g_r4base small std:0 b5: 201.6 ms (min 201.5 max 201.7) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:0 b5: 396.5 ms (min 396.0 max 398.5) 183 tok score=-0.120816 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:1 b5: 430.7 ms (min 429.8 max 432.3) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:2 b5: 363.2 ms (min 362.5 max 364.2) 169 tok score=-0.163739 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:3 b5: 396.9 ms (min 396.2 max 398.0) 184 tok score=-0.145126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:4 b5: 441.7 ms (min 441.0 max 444.0) 204 tok score=-0.109222 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:5 b5: 428.1 ms (min 427.5 max 429.9) 198 tok score=-0.146859 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:64 b5: 202.2 ms (min 201.8 max 203.3) 84 tok score=-0.152902 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:128 b5: 219.5 ms (min 219.0 max 221.0) 86 tok score=-0.156432 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:192 b5: 220.4 ms (min 219.9 max 220.9) 82 tok score=-0.164253 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:223 b5: 220.6 ms (min 220.4 max 221.4) 82 tok score=-0.172161 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small std:0 b1: 150.5 ms (min 150.3 max 150.7) 84 tok score=-0.195099 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:0 b1: 307.1 ms (min 306.8 max 307.3) 182 tok score=-0.126238 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:1 b1: 335.8 ms (min 335.2 max 336.5) 199 tok score=-0.140005 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:2 b1: 332.1 ms (min 330.9 max 332.4) 197 tok score=-0.190864 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:3 b1: 307.3 ms (min 307.2 max 307.6) 183 tok score=-0.147889 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:4 b1: 343.6 ms (min 343.1 max 343.9) 204 tok score=-0.17167 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:5 b1: 329.8 ms (min 329.4 max 330.2) 196 tok score=-0.126191 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:64 b1: 156.8 ms (min 156.7 max 156.9) 84 tok score=-0.153316 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:128 b1: 167.8 ms (min 167.6 max 168.0) 85 tok score=-0.168203 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:192 b1: 167.8 ms (min 167.7 max 167.9) 84 tok score=-0.170523 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:223 b1: 164.8 ms (min 164.6 max 165.6) 82 tok score=-0.172108 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+SWITCH r3: ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=13
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+final_g_r5tiers small std:0 b5: 201.5 ms (min 201.4 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+final_g_r5tiers small dense:0 b5: 384.1 ms (min 384.0 max 387.7) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:1 b5: 417.9 ms (min 417.4 max 418.9) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:2 b5: 355.1 ms (min 354.8 max 357.0) 169 tok score=-0.163554 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:3 b5: 385.8 ms (min 385.1 max 386.2) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:4 b5: 429.4 ms (min 428.7 max 431.3) 204 tok score=-0.109298 | tr=2 cap=6 rep=193 seg=[120, 61, 12] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:5 b5: 417.0 ms (min 415.2 max 418.0) 198 tok score=-0.14678 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small prev:64 b5: 199.3 ms (min 198.9 max 200.0) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->192@128] dis=none
+final_g_r5tiers small prev:128 b5: 208.0 ms (min 207.8 max 208.2) 86 tok score=-0.156432 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->224@160] dis=none
+final_g_r5tiers small prev:192 b5: 209.4 ms (min 208.6 max 211.6) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+final_g_r5tiers small prev:223 b5: 209.9 ms (min 209.6 max 210.9) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->320@256] dis=none
+final_g_r5tiers small std:0 b1: 150.0 ms (min 149.9 max 151.0) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+final_g_r5tiers small dense:0 b1: 293.8 ms (min 293.7 max 294.7) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:1 b1: 321.0 ms (min 320.0 max 321.2) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:2 b1: 317.4 ms (min 317.2 max 318.5) 197 tok score=-0.190864 | tr=2 cap=3 rep=190 seg=[122, 62, 6] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:3 b1: 296.1 ms (min 295.1 max 296.3) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:4 b1: 327.5 ms (min 327.2 max 328.5) 204 tok score=-0.17167 | tr=2 cap=3 rep=197 seg=[122, 62, 13] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:5 b1: 316.6 ms (min 315.7 max 316.9) 196 tok score=-0.126191 | tr=2 cap=3 rep=189 seg=[122, 62, 5] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small prev:64 b1: 152.8 ms (min 152.7 max 153.8) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->192@128] dis=none
+final_g_r5tiers small prev:128 b1: 156.8 ms (min 155.9 max 157.0) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->224@160] dis=none
+final_g_r5tiers small prev:192 b1: 156.4 ms (min 156.3 max 157.3) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+final_g_r5tiers small prev:223 b1: 153.9 ms (min 153.9 max 154.7) 82 tok score=-0.172108 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->320@256] dis=none
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+final_g_r5sc128 small std:0 b5: 201.5 ms (min 201.4 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+final_g_r5sc128 small dense:0 b5: 396.5 ms (min 396.0 max 397.9) 183 tok score=-0.120816 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:1 b5: 430.5 ms (min 429.8 max 431.9) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:2 b5: 362.9 ms (min 362.8 max 364.2) 169 tok score=-0.163739 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:3 b5: 396.5 ms (min 395.9 max 397.5) 184 tok score=-0.145126 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:4 b5: 441.0 ms (min 440.8 max 443.6) 204 tok score=-0.109222 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:5 b5: 428.0 ms (min 427.0 max 429.7) 198 tok score=-0.146859 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:64 b5: 202.1 ms (min 201.8 max 203.1) 84 tok score=-0.152902 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:128 b5: 219.6 ms (min 219.4 max 221.8) 86 tok score=-0.156432 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:192 b5: 220.1 ms (min 219.8 max 220.9) 82 tok score=-0.164253 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:223 b5: 220.7 ms (min 220.4 max 221.5) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small std:0 b1: 150.0 ms (min 149.9 max 150.2) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+final_g_r5sc128 small dense:0 b1: 305.5 ms (min 305.4 max 305.8) 182 tok score=-0.126238 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:1 b1: 334.6 ms (min 334.1 max 334.7) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:2 b1: 331.1 ms (min 330.7 max 331.3) 197 tok score=-0.190864 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:3 b1: 307.3 ms (min 307.0 max 307.8) 183 tok score=-0.147889 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:4 b1: 342.8 ms (min 342.5 max 343.2) 204 tok score=-0.17167 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:5 b1: 329.3 ms (min 329.0 max 329.5) 196 tok score=-0.126191 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:64 b1: 156.8 ms (min 156.7 max 156.8) 84 tok score=-0.153316 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:128 b1: 167.7 ms (min 167.6 max 168.0) 85 tok score=-0.168203 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:192 b1: 167.8 ms (min 167.7 max 168.2) 84 tok score=-0.170523 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:223 b1: 164.9 ms (min 164.6 max 165.9) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+final_g_r5eager small std:0 b5: 218.7 ms (min 217.3 max 220.1) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:0 b5: 422.3 ms (min 421.0 max 425.8) 183 tok score=-0.120816 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:1 b5: 456.1 ms (min 455.6 max 457.0) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:2 b5: 389.6 ms (min 387.3 max 392.0) 169 tok score=-0.163739 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:3 b5: 425.5 ms (min 423.1 max 428.4) 184 tok score=-0.145465 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:4 b5: 468.2 ms (min 466.6 max 470.0) 204 tok score=-0.109298 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:5 b5: 454.7 ms (min 453.4 max 456.8) 198 tok score=-0.14678 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:64 b5: 213.1 ms (min 212.8 max 216.1) 84 tok score=-0.153274 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:128 b5: 222.9 ms (min 222.8 max 223.7) 86 tok score=-0.156523 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:192 b5: 228.9 ms (min 228.3 max 229.9) 84 tok score=-0.170387 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:223 b5: 225.2 ms (min 225.1 max 226.1) 82 tok score=-0.172351 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small std:0 b1: 167.2 ms (min 166.6 max 168.3) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:0 b1: 332.0 ms (min 331.3 max 332.5) 182 tok score=-0.126264 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:1 b1: 360.7 ms (min 359.3 max 361.6) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:2 b1: 360.5 ms (min 357.0 max 361.9) 197 tok score=-0.190846 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:3 b1: 325.4 ms (min 324.7 max 326.4) 178 tok score=-0.153905 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:4 b1: 371.6 ms (min 369.6 max 373.8) 204 tok score=-0.171601 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:5 b1: 358.2 ms (min 357.1 max 358.9) 196 tok score=-0.126097 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:64 b1: 170.9 ms (min 170.5 max 172.2) 84 tok score=-0.153283 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:128 b1: 172.9 ms (min 172.6 max 173.3) 85 tok score=-0.168507 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:192 b1: 172.2 ms (min 171.3 max 173.0) 84 tok score=-0.170714 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:223 b1: 168.9 ms (min 168.7 max 169.7) 82 tok score=-0.172288 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+final_g_r5eager small std:0 b5: 216.4 ms (min 216.2 max 218.2) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:0 b5: 420.6 ms (min 419.7 max 422.4) 183 tok score=-0.120816 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:1 b5: 453.7 ms (min 453.3 max 454.0) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:2 b5: 388.6 ms (min 387.1 max 389.1) 169 tok score=-0.163739 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:3 b5: 422.7 ms (min 419.4 max 427.3) 184 tok score=-0.145465 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:4 b5: 465.2 ms (min 464.5 max 467.5) 204 tok score=-0.109298 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:5 b5: 451.7 ms (min 450.9 max 452.3) 198 tok score=-0.14678 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:64 b5: 212.1 ms (min 211.9 max 214.8) 84 tok score=-0.153274 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:128 b5: 222.0 ms (min 221.8 max 222.9) 86 tok score=-0.156523 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:192 b5: 227.6 ms (min 227.4 max 228.6) 84 tok score=-0.170387 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:223 b5: 224.3 ms (min 224.2 max 225.4) 82 tok score=-0.172351 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small std:0 b1: 166.2 ms (min 165.9 max 166.9) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:0 b1: 329.7 ms (min 329.3 max 330.7) 182 tok score=-0.126264 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:1 b1: 358.0 ms (min 357.9 max 358.1) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:2 b1: 355.3 ms (min 354.6 max 356.1) 197 tok score=-0.190846 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:3 b1: 323.7 ms (min 323.1 max 324.0) 178 tok score=-0.153905 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:4 b1: 366.1 ms (min 365.7 max 366.4) 204 tok score=-0.171601 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small dense:5 b1: 352.7 ms (min 352.6 max 353.0) 196 tok score=-0.126097 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:64 b1: 168.6 ms (min 167.4 max 168.8) 84 tok score=-0.153283 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:128 b1: 170.6 ms (min 170.4 max 170.7) 85 tok score=-0.168507 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:192 b1: 170.9 ms (min 170.7 max 171.7) 84 tok score=-0.170714 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r5eager small prev:223 b1: 168.2 ms (min 168.0 max 169.0) 82 tok score=-0.172288 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+final_g_r5sc128 small std:0 b5: 201.5 ms (min 201.3 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+final_g_r5sc128 small dense:0 b5: 396.6 ms (min 396.5 max 397.7) 183 tok score=-0.120816 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:1 b5: 431.0 ms (min 430.2 max 431.7) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:2 b5: 362.0 ms (min 362.0 max 363.4) 169 tok score=-0.163739 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:3 b5: 396.6 ms (min 395.7 max 397.7) 184 tok score=-0.145126 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:4 b5: 441.6 ms (min 441.5 max 444.4) 204 tok score=-0.109222 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:5 b5: 427.9 ms (min 427.4 max 430.1) 198 tok score=-0.146859 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:64 b5: 202.0 ms (min 201.6 max 202.7) 84 tok score=-0.152902 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:128 b5: 219.1 ms (min 219.0 max 221.0) 86 tok score=-0.156432 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:192 b5: 220.1 ms (min 219.7 max 220.6) 82 tok score=-0.164253 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:223 b5: 220.6 ms (min 220.3 max 221.4) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small std:0 b1: 150.3 ms (min 150.3 max 150.6) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+final_g_r5sc128 small dense:0 b1: 306.9 ms (min 306.6 max 308.1) 182 tok score=-0.126238 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:1 b1: 337.4 ms (min 335.0 max 337.8) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:2 b1: 333.1 ms (min 332.4 max 334.2) 197 tok score=-0.190864 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:3 b1: 309.3 ms (min 308.2 max 310.0) 183 tok score=-0.147889 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:4 b1: 345.2 ms (min 344.1 max 346.7) 204 tok score=-0.17167 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small dense:5 b1: 332.1 ms (min 331.2 max 332.4) 196 tok score=-0.126191 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:64 b1: 157.6 ms (min 157.0 max 158.0) 84 tok score=-0.153316 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:128 b1: 169.4 ms (min 168.7 max 169.9) 85 tok score=-0.168203 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:192 b1: 169.3 ms (min 168.5 max 169.7) 84 tok score=-0.170523 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+final_g_r5sc128 small prev:223 b1: 166.3 ms (min 165.0 max 167.6) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+final_g_r5tiers small std:0 b5: 201.8 ms (min 201.8 max 202.0) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+final_g_r5tiers small dense:0 b5: 384.7 ms (min 384.4 max 387.7) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:1 b5: 417.7 ms (min 416.4 max 418.8) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:2 b5: 355.0 ms (min 354.8 max 356.8) 169 tok score=-0.163554 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:3 b5: 384.5 ms (min 383.5 max 385.9) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:4 b5: 428.1 ms (min 427.7 max 430.4) 204 tok score=-0.109298 | tr=2 cap=6 rep=193 seg=[120, 61, 12] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:5 b5: 415.4 ms (min 414.4 max 416.1) 198 tok score=-0.14678 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small prev:64 b5: 198.6 ms (min 198.4 max 199.3) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->192@128] dis=none
+final_g_r5tiers small prev:128 b5: 207.5 ms (min 207.2 max 207.8) 86 tok score=-0.156432 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->224@160] dis=none
+final_g_r5tiers small prev:192 b5: 209.1 ms (min 208.1 max 211.0) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+final_g_r5tiers small prev:223 b5: 209.2 ms (min 209.0 max 210.0) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->320@256] dis=none
+final_g_r5tiers small std:0 b1: 150.1 ms (min 149.9 max 151.0) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+final_g_r5tiers small dense:0 b1: 294.1 ms (min 293.7 max 294.8) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:1 b1: 321.0 ms (min 320.0 max 321.2) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:2 b1: 317.4 ms (min 317.2 max 318.4) 197 tok score=-0.190864 | tr=2 cap=3 rep=190 seg=[122, 62, 6] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:3 b1: 296.2 ms (min 295.1 max 296.3) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+final_g_r5tiers small dense:4 b1: 327.6 ms (min 327.4 max 328.6) 204 tok score=-0.17167 | tr=2 cap=3 rep=197 seg=[122, 62, 13] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small dense:5 b1: 316.6 ms (min 315.7 max 316.9) 196 tok score=-0.126191 | tr=2 cap=3 rep=189 seg=[122, 62, 5] tiers=[128->192@128,192->256@192] dis=none
+final_g_r5tiers small prev:64 b1: 152.9 ms (min 152.8 max 153.8) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->192@128] dis=none
+final_g_r5tiers small prev:128 b1: 156.8 ms (min 156.0 max 157.2) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->224@160] dis=none
+final_g_r5tiers small prev:192 b1: 156.4 ms (min 156.4 max 157.4) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+final_g_r5tiers small prev:223 b1: 154.1 ms (min 153.9 max 154.9) 82 tok score=-0.172108 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->320@256] dis=none
+SWITCH bisect: ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=0
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+final_g_r4base small std:0 b5: 201.5 ms (min 201.4 max 201.7) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:0 b5: 396.3 ms (min 395.4 max 396.9) 183 tok score=-0.120816 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:1 b5: 431.2 ms (min 430.0 max 431.7) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:2 b5: 363.0 ms (min 362.7 max 364.0) 169 tok score=-0.163739 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:3 b5: 396.8 ms (min 396.2 max 398.1) 184 tok score=-0.145126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:4 b5: 441.0 ms (min 440.4 max 443.7) 204 tok score=-0.109222 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:5 b5: 427.9 ms (min 427.2 max 429.6) 198 tok score=-0.146859 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:64 b5: 201.7 ms (min 201.3 max 202.4) 84 tok score=-0.152902 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:128 b5: 218.8 ms (min 218.7 max 220.6) 86 tok score=-0.156432 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:192 b5: 219.7 ms (min 219.5 max 220.6) 82 tok score=-0.164253 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:223 b5: 220.1 ms (min 220.1 max 221.1) 82 tok score=-0.172161 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small std:0 b1: 150.1 ms (min 150.0 max 150.2) 84 tok score=-0.195099 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:0 b1: 305.5 ms (min 305.3 max 305.7) 182 tok score=-0.126238 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:1 b1: 334.2 ms (min 334.1 max 334.5) 199 tok score=-0.140005 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:2 b1: 330.7 ms (min 330.6 max 331.0) 197 tok score=-0.190864 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:3 b1: 307.1 ms (min 307.0 max 307.3) 183 tok score=-0.147889 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:4 b1: 342.6 ms (min 342.5 max 342.9) 204 tok score=-0.17167 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small dense:5 b1: 329.1 ms (min 329.0 max 329.3) 196 tok score=-0.126191 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:64 b1: 156.7 ms (min 156.6 max 156.8) 84 tok score=-0.153316 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:128 b1: 167.5 ms (min 167.4 max 167.8) 85 tok score=-0.168203 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:192 b1: 167.6 ms (min 167.4 max 167.8) 84 tok score=-0.170523 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+final_g_r4base small prev:223 b1: 164.7 ms (min 164.5 max 165.5) 82 tok score=-0.172108 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+SWITCH r3: ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=13
+##### GRAPHS DONE 17:55:51
+===== FINAL ALL DONE 17:55:51 =====
+##### NSYS 17:55:51
+SWITCH r3: ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=13
+[r5tiers b5] lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=37040
+    cudaGraphLaunch calls=1358
+    cudaGraphInstantiate calls=42
+    cudaMallocAsync calls=3160
+    cudaFreeAsync calls=3160
+    cudaStreamBeginCapture calls=42
+[r5tiers b1] lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=28304
+    cudaGraphLaunch calls=1365
+    cudaMallocAsync calls=2428
+    cudaGraphInstantiate calls=21
+    cudaFreeAsync calls=2428
+    cudaStreamBeginCapture calls=21
+[r5sc128 b5] lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=147332
+    cudaGraphLaunch calls=854
+    cudaMallocAsync calls=3510
+    cudaGraphInstantiate calls=14
+    cudaFreeAsync calls=3510
+    cudaStreamBeginCapture calls=14
+[r5sc128 b1] lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=148200
+    cudaGraphLaunch calls=861
+    cudaMallocAsync calls=2603
+    cudaGraphInstantiate calls=7
+    cudaFreeAsync calls=2603
+    cudaStreamBeginCapture calls=7
+[r5eager b5] lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=350710
+    cudaMallocAsync calls=4558
+    cudaFreeAsync calls=4558
+[r5eager b1] lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=352474
+    cudaMallocAsync calls=3126
+    cudaFreeAsync calls=3126
+SWITCH bisect: ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=0
+[r4base b5] lib = /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=147332
+    cudaGraphLaunch calls=854
+    cudaMallocAsync calls=3510
+    cudaGraphInstantiate calls=14
+    cudaFreeAsync calls=3510
+    cudaStreamBeginCapture calls=14
+[r4base b1] lib = /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2 done ntok 199
+    cudaLaunchKernel calls=148200
+    cudaGraphLaunch calls=861
+    cudaMallocAsync calls=2603
+    cudaGraphInstantiate calls=7
+    cudaFreeAsync calls=2603
+    cudaStreamBeginCapture calls=7
+##### NSYS DONE 17:58:43
+===== FINAL ALL DONE 17:58:43 =====
+##### SANITIZER 17:58:43
+SWITCH r3: ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=13
+--- R128_T64_b5: ========= ERROR SUMMARY: 0 errors tier-lines=2 fallback=0 NTOK 199
+     tier 128 -> 192 at step 128 (from Ready, fast re-entry)
+     tier 192 -> 256 at step 192 (from Ready, fast re-entry)
+--- R128_T64_b1: ========= ERROR SUMMARY: 0 errors tier-lines=2 fallback=0 NTOK 199
+     tier 128 -> 192 at step 128 (from Ready, fast re-entry)
+     tier 192 -> 256 at step 192 (from Ready, fast re-entry)
+--- R128_T32_b5: ========= ERROR SUMMARY: 0 errors tier-lines=3 fallback=0 NTOK 199
+     tier 128 -> 160 at step 128 (from Ready, fast re-entry)
+     tier 160 -> 192 at step 160 (from Ready, fast re-entry)
+     tier 192 -> 224 at step 192 (from Ready, fast re-entry)
+##### SANITIZER DONE 18:00:47
+===== FINAL ALL DONE 18:00:47 =====
+##### MATRIX ABBA 18:00:47
+SWITCH bisect: ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=0
+== final_r4base_1 start 18:01:23 tree=bisect env: 
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+-rw-r--r-- 1 ubuntu ubuntu 168224016 17:42 /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+7a41c90b docs: record round-4 results
+final_r4base_1_off small float16 ts=True b1 n=1: 164.8 ms, 164.8 ms/window, 84 tok
+final_r4base_1_off small float16 ts=True b1 n=4: 291.5 ms, 72.9 ms/window, 336 tok
+final_r4base_1_off small float16 ts=True b1 n=8: 455.5 ms, 56.9 ms/window, 667 tok
+final_r4base_1_off small float16 ts=True b5 n=1: 216.2 ms, 216.2 ms/window, 84 tok
+final_r4base_1_off small float16 ts=True b5 n=4: 363.8 ms, 91.0 ms/window, 347 tok
+final_r4base_1_off small float16 ts=True b5 n=8: 565.9 ms, 70.7 ms/window, 672 tok
+final_r4base_1_off small float16 ts=False b1 n=1: 35.3 ms, 35.3 ms/window, 5 tok
+final_r4base_1_off small float16 ts=False b1 n=4: 270.0 ms, 67.5 ms/window, 249 tok
+final_r4base_1_off small float16 ts=False b1 n=8: 411.1 ms, 51.4 ms/window, 506 tok
+final_r4base_1_off small float16 ts=False b5 n=1: 60.0 ms, 60.0 ms/window, 16 tok
+final_r4base_1_off small float16 ts=False b5 n=4: 294.4 ms, 73.6 ms/window, 173 tok
+final_r4base_1_off small float16 ts=False b5 n=8: 431.2 ms, 53.9 ms/window, 329 tok
+final_r4base_1_off small int8_float16 ts=True b1 n=1: 257.7 ms, 257.7 ms/window, 84 tok
+final_r4base_1_off small int8_float16 ts=True b1 n=4: 399.1 ms, 99.8 ms/window, 355 tok
+final_r4base_1_off small int8_float16 ts=True b1 n=8: 527.5 ms, 65.9 ms/window, 663 tok
+final_r4base_1_off small int8_float16 ts=True b5 n=1: 286.3 ms, 286.3 ms/window, 84 tok
+final_r4base_1_off small int8_float16 ts=True b5 n=4: 471.9 ms, 118.0 ms/window, 343 tok
+final_r4base_1_off small int8_float16 ts=True b5 n=8: 666.7 ms, 83.3 ms/window, 673 tok
+final_r4base_1_off small int8_float16 ts=False b1 n=1: 42.8 ms, 42.8 ms/window, 5 tok
+final_r4base_1_off small int8_float16 ts=False b1 n=4: 347.6 ms, 86.9 ms/window, 187 tok
+final_r4base_1_off small int8_float16 ts=False b1 n=8: 453.7 ms, 56.7 ms/window, 492 tok
+final_r4base_1_off small int8_float16 ts=False b5 n=1: 79.5 ms, 79.5 ms/window, 17 tok
+final_r4base_1_off small int8_float16 ts=False b5 n=4: 372.5 ms, 93.1 ms/window, 178 tok
+final_r4base_1_off small int8_float16 ts=False b5 n=8: 515.8 ms, 64.5 ms/window, 358 tok
+final_r4base_1_off large-v3 float16 ts=True b1 n=1: 202.4 ms, 202.4 ms/window, 11 tok
+final_r4base_1_off large-v3 float16 ts=True b1 n=4: 1207.4 ms, 301.8 ms/window, 252 tok
+final_r4base_1_off large-v3 float16 ts=True b1 n=8: 1917.7 ms, 239.7 ms/window, 568 tok
+final_r4base_1_off large-v3 float16 ts=True b5 n=1: 406.6 ms, 406.6 ms/window, 35 tok
+final_r4base_1_off large-v3 float16 ts=True b5 n=4: 1381.1 ms, 345.3 ms/window, 276 tok
+final_r4base_1_off large-v3 float16 ts=True b5 n=8: 2254.5 ms, 281.8 ms/window, 592 tok
+final_r4base_1_off large-v3 float16 ts=False b1 n=1: 292.7 ms, 292.7 ms/window, 26 tok
+final_r4base_1_off large-v3 float16 ts=False b1 n=4: 1165.5 ms, 291.4 ms/window, 255 tok
+final_r4base_1_off large-v3 float16 ts=False b1 n=8: 1834.6 ms, 229.3 ms/window, 555 tok
+final_r4base_1_off large-v3 float16 ts=False b5 n=1: 325.9 ms, 325.9 ms/window, 23 tok
+final_r4base_1_off large-v3 float16 ts=False b5 n=4: 1297.8 ms, 324.4 ms/window, 236 tok
+final_r4base_1_off large-v3 float16 ts=False b5 n=8: 2091.9 ms, 261.5 ms/window, 515 tok
+final_r4base_1_off large-v3 int8_float16 ts=True b1 n=1: 210.5 ms, 210.5 ms/window, 11 tok
+final_r4base_1_off large-v3 int8_float16 ts=True b1 n=4: 1218.3 ms, 304.6 ms/window, 252 tok
+final_r4base_1_off large-v3 int8_float16 ts=True b1 n=8: 1933.0 ms, 241.6 ms/window, 573 tok
+final_r4base_1_off large-v3 int8_float16 ts=True b5 n=1: 453.3 ms, 453.3 ms/window, 41 tok
+final_r4base_1_off large-v3 int8_float16 ts=True b5 n=4: 1477.4 ms, 369.4 ms/window, 252 tok
+final_r4base_1_off large-v3 int8_float16 ts=True b5 n=8: 2386.7 ms, 298.3 ms/window, 592 tok
+final_r4base_1_off large-v3 int8_float16 ts=False b1 n=1: 310.0 ms, 310.0 ms/window, 26 tok
+final_r4base_1_off large-v3 int8_float16 ts=False b1 n=4: 1176.2 ms, 294.1 ms/window, 255 tok
+final_r4base_1_off large-v3 int8_float16 ts=False b1 n=8: 1841.7 ms, 230.2 ms/window, 557 tok
+final_r4base_1_off large-v3 int8_float16 ts=False b5 n=1: 326.4 ms, 326.4 ms/window, 25 tok
+final_r4base_1_off large-v3 int8_float16 ts=False b5 n=4: 1414.5 ms, 353.6 ms/window, 237 tok
+final_r4base_1_off large-v3 int8_float16 ts=False b5 n=8: 2209.3 ms, 276.2 ms/window, 516 tok
+wrote /opt/real/r6/final_r4base_1_off.json 48
+== final_r4base_1 off done 18:07:08
+final_r4base_1_on small float16 ts=True b1 n=1: 166.9 ms, 166.9 ms/window, 84 tok
+final_r4base_1_on small float16 ts=True b1 n=4: 259.0 ms, 64.8 ms/window, 336 tok
+final_r4base_1_on small float16 ts=True b1 n=8: 380.5 ms, 47.6 ms/window, 667 tok
+final_r4base_1_on small float16 ts=True b5 n=1: 247.8 ms, 247.8 ms/window, 84 tok
+final_r4base_1_on small float16 ts=True b5 n=4: 477.5 ms, 119.4 ms/window, 347 tok
+final_r4base_1_on small float16 ts=True b5 n=8: 780.4 ms, 97.5 ms/window, 670 tok
+final_r4base_1_on small float16 ts=False b1 n=1: 23.8 ms, 23.8 ms/window, 5 tok
+final_r4base_1_on small float16 ts=False b1 n=4: 233.7 ms, 58.4 ms/window, 249 tok
+final_r4base_1_on small float16 ts=False b1 n=8: 331.0 ms, 41.4 ms/window, 506 tok
+final_r4base_1_on small float16 ts=False b5 n=1: 57.4 ms, 57.4 ms/window, 16 tok
+final_r4base_1_on small float16 ts=False b5 n=4: 335.2 ms, 83.8 ms/window, 173 tok
+final_r4base_1_on small float16 ts=False b5 n=8: 498.3 ms, 62.3 ms/window, 329 tok
+final_r4base_1_on small int8_float16 ts=True b1 n=1: 237.3 ms, 237.3 ms/window, 85 tok
+final_r4base_1_on small int8_float16 ts=True b1 n=4: 337.5 ms, 84.4 ms/window, 335 tok
+final_r4base_1_on small int8_float16 ts=True b1 n=8: 419.4 ms, 52.4 ms/window, 666 tok
+final_r4base_1_on small int8_float16 ts=True b5 n=1: 259.0 ms, 259.0 ms/window, 84 tok
+final_r4base_1_on small int8_float16 ts=True b5 n=4: 567.2 ms, 141.8 ms/window, 353 tok
+final_r4base_1_on small int8_float16 ts=True b5 n=8: 882.9 ms, 110.4 ms/window, 676 tok
+final_r4base_1_on small int8_float16 ts=False b1 n=1: 29.5 ms, 29.5 ms/window, 5 tok
+final_r4base_1_on small int8_float16 ts=False b1 n=4: 283.1 ms, 70.8 ms/window, 249 tok
+final_r4base_1_on small int8_float16 ts=False b1 n=8: 369.1 ms, 46.1 ms/window, 508 tok
+final_r4base_1_on small int8_float16 ts=False b5 n=1: 76.8 ms, 76.8 ms/window, 21 tok
+final_r4base_1_on small int8_float16 ts=False b5 n=4: 454.2 ms, 113.6 ms/window, 262 tok
+final_r4base_1_on small int8_float16 ts=False b5 n=8: 597.9 ms, 74.7 ms/window, 386 tok
+final_r4base_1_on large-v3 float16 ts=True b1 n=1: 152.7 ms, 152.7 ms/window, 11 tok
+final_r4base_1_on large-v3 float16 ts=True b1 n=4: 1034.5 ms, 258.6 ms/window, 252 tok
+final_r4base_1_on large-v3 float16 ts=True b1 n=8: 1560.9 ms, 195.1 ms/window, 568 tok
+final_r4base_1_on large-v3 float16 ts=True b5 n=1: 442.4 ms, 442.4 ms/window, 35 tok
+final_r4base_1_on large-v3 float16 ts=True b5 n=4: 1756.6 ms, 439.2 ms/window, 276 tok
+final_r4base_1_on large-v3 float16 ts=True b5 n=8: 3049.2 ms, 381.2 ms/window, 592 tok
+final_r4base_1_on large-v3 float16 ts=False b1 n=1: 254.0 ms, 254.0 ms/window, 26 tok
+final_r4base_1_on large-v3 float16 ts=False b1 n=4: 988.5 ms, 247.1 ms/window, 255 tok
+final_r4base_1_on large-v3 float16 ts=False b1 n=8: 1466.7 ms, 183.3 ms/window, 555 tok
+final_r4base_1_on large-v3 float16 ts=False b5 n=1: 341.0 ms, 341.0 ms/window, 23 tok
+final_r4base_1_on large-v3 float16 ts=False b5 n=4: 1632.7 ms, 408.2 ms/window, 237 tok
+final_r4base_1_on large-v3 float16 ts=False b5 n=8: 2808.7 ms, 351.1 ms/window, 515 tok
+final_r4base_1_on large-v3 int8_float16 ts=True b1 n=1: 154.6 ms, 154.6 ms/window, 11 tok
+final_r4base_1_on large-v3 int8_float16 ts=True b1 n=4: 1030.7 ms, 257.7 ms/window, 252 tok
+final_r4base_1_on large-v3 int8_float16 ts=True b1 n=8: 1561.8 ms, 195.2 ms/window, 570 tok
+final_r4base_1_on large-v3 int8_float16 ts=True b5 n=1: 440.6 ms, 440.6 ms/window, 35 tok
+final_r4base_1_on large-v3 int8_float16 ts=True b5 n=4: 1860.4 ms, 465.1 ms/window, 276 tok
+final_r4base_1_on large-v3 int8_float16 ts=True b5 n=8: 3175.0 ms, 396.9 ms/window, 593 tok
+final_r4base_1_on large-v3 int8_float16 ts=False b1 n=1: 260.2 ms, 260.2 ms/window, 26 tok
+final_r4base_1_on large-v3 int8_float16 ts=False b1 n=4: 983.2 ms, 245.8 ms/window, 255 tok
+final_r4base_1_on large-v3 int8_float16 ts=False b1 n=8: 1469.2 ms, 183.6 ms/window, 555 tok
+final_r4base_1_on large-v3 int8_float16 ts=False b5 n=1: 340.7 ms, 340.7 ms/window, 24 tok
+final_r4base_1_on large-v3 int8_float16 ts=False b5 n=4: 1736.2 ms, 434.0 ms/window, 237 tok
+final_r4base_1_on large-v3 int8_float16 ts=False b5 n=8: 2899.0 ms, 362.4 ms/window, 516 tok
+wrote /opt/real/r6/final_r4base_1_on.json 48
+== final_r4base_1 on done 18:13:15
+SWITCH r3: ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=13
+== final_r5_1 start 18:13:52 tree=r3 env: 
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+-rw-r--r-- 1 ubuntu ubuntu 168282048 16:27 /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+7a41c90b docs: record round-4 results
+ M docs/environment_variables.md
+ M docs/kv_cache_preallocation.md
+ M include/ctranslate2/layers/transformer.h
+ M include/ctranslate2/models/whisper.h
+ M src/cuda/allocator.cc
+ M src/cuda/graph_runner.cc
+ M src/cuda/graph_runner.h
+ M src/env.cc
+ M src/env.h
+ M src/layers/transformer.cc
+final_r5_1_off small float16 ts=True b1 n=1: 164.7 ms, 164.7 ms/window, 84 tok
+final_r5_1_off small float16 ts=True b1 n=4: 292.1 ms, 73.0 ms/window, 336 tok
+final_r5_1_off small float16 ts=True b1 n=8: 456.3 ms, 57.0 ms/window, 667 tok
+final_r5_1_off small float16 ts=True b5 n=1: 216.7 ms, 216.7 ms/window, 84 tok
+final_r5_1_off small float16 ts=True b5 n=4: 364.9 ms, 91.2 ms/window, 347 tok
+final_r5_1_off small float16 ts=True b5 n=8: 565.7 ms, 70.7 ms/window, 672 tok
+final_r5_1_off small float16 ts=False b1 n=1: 35.2 ms, 35.2 ms/window, 5 tok
+final_r5_1_off small float16 ts=False b1 n=4: 270.4 ms, 67.6 ms/window, 249 tok
+final_r5_1_off small float16 ts=False b1 n=8: 411.8 ms, 51.5 ms/window, 506 tok
+final_r5_1_off small float16 ts=False b5 n=1: 60.1 ms, 60.1 ms/window, 16 tok
+final_r5_1_off small float16 ts=False b5 n=4: 295.6 ms, 73.9 ms/window, 173 tok
+final_r5_1_off small float16 ts=False b5 n=8: 432.2 ms, 54.0 ms/window, 329 tok
+final_r5_1_off small int8_float16 ts=True b1 n=1: 253.6 ms, 253.6 ms/window, 84 tok
+final_r5_1_off small int8_float16 ts=True b1 n=4: 394.0 ms, 98.5 ms/window, 355 tok
+final_r5_1_off small int8_float16 ts=True b1 n=8: 527.3 ms, 65.9 ms/window, 663 tok
+final_r5_1_off small int8_float16 ts=True b5 n=1: 281.7 ms, 281.7 ms/window, 84 tok
+final_r5_1_off small int8_float16 ts=True b5 n=4: 471.4 ms, 117.8 ms/window, 343 tok
+final_r5_1_off small int8_float16 ts=True b5 n=8: 667.7 ms, 83.5 ms/window, 673 tok
+final_r5_1_off small int8_float16 ts=False b1 n=1: 42.2 ms, 42.2 ms/window, 5 tok
+final_r5_1_off small int8_float16 ts=False b1 n=4: 338.7 ms, 84.7 ms/window, 187 tok
+final_r5_1_off small int8_float16 ts=False b1 n=8: 452.1 ms, 56.5 ms/window, 492 tok
+final_r5_1_off small int8_float16 ts=False b5 n=1: 79.4 ms, 79.4 ms/window, 17 tok
+final_r5_1_off small int8_float16 ts=False b5 n=4: 373.9 ms, 93.5 ms/window, 178 tok
+final_r5_1_off small int8_float16 ts=False b5 n=8: 515.9 ms, 64.5 ms/window, 358 tok
+final_r5_1_off large-v3 float16 ts=True b1 n=1: 202.1 ms, 202.1 ms/window, 11 tok
+final_r5_1_off large-v3 float16 ts=True b1 n=4: 1205.6 ms, 301.4 ms/window, 252 tok
+final_r5_1_off large-v3 float16 ts=True b1 n=8: 1915.7 ms, 239.5 ms/window, 568 tok
+final_r5_1_off large-v3 float16 ts=True b5 n=1: 406.5 ms, 406.5 ms/window, 35 tok
+final_r5_1_off large-v3 float16 ts=True b5 n=4: 1379.7 ms, 344.9 ms/window, 276 tok
+final_r5_1_off large-v3 float16 ts=True b5 n=8: 2253.0 ms, 281.6 ms/window, 592 tok
+final_r5_1_off large-v3 float16 ts=False b1 n=1: 292.8 ms, 292.8 ms/window, 26 tok
+final_r5_1_off large-v3 float16 ts=False b1 n=4: 1162.5 ms, 290.6 ms/window, 255 tok
+final_r5_1_off large-v3 float16 ts=False b1 n=8: 1834.5 ms, 229.3 ms/window, 555 tok
+final_r5_1_off large-v3 float16 ts=False b5 n=1: 325.5 ms, 325.5 ms/window, 23 tok
+final_r5_1_off large-v3 float16 ts=False b5 n=4: 1297.8 ms, 324.5 ms/window, 236 tok
+final_r5_1_off large-v3 float16 ts=False b5 n=8: 2096.0 ms, 262.0 ms/window, 515 tok
+final_r5_1_off large-v3 int8_float16 ts=True b1 n=1: 207.8 ms, 207.8 ms/window, 11 tok
+final_r5_1_off large-v3 int8_float16 ts=True b1 n=4: 1220.5 ms, 305.1 ms/window, 252 tok
+final_r5_1_off large-v3 int8_float16 ts=True b1 n=8: 1931.4 ms, 241.4 ms/window, 573 tok
+final_r5_1_off large-v3 int8_float16 ts=True b5 n=1: 451.6 ms, 451.6 ms/window, 41 tok
+final_r5_1_off large-v3 int8_float16 ts=True b5 n=4: 1474.6 ms, 368.6 ms/window, 252 tok
+final_r5_1_off large-v3 int8_float16 ts=True b5 n=8: 2384.3 ms, 298.0 ms/window, 592 tok
+final_r5_1_off large-v3 int8_float16 ts=False b1 n=1: 319.4 ms, 319.4 ms/window, 26 tok
+final_r5_1_off large-v3 int8_float16 ts=False b1 n=4: 1174.6 ms, 293.7 ms/window, 255 tok
+final_r5_1_off large-v3 int8_float16 ts=False b1 n=8: 1841.3 ms, 230.2 ms/window, 557 tok
+final_r5_1_off large-v3 int8_float16 ts=False b5 n=1: 327.9 ms, 327.9 ms/window, 25 tok
+final_r5_1_off large-v3 int8_float16 ts=False b5 n=4: 1413.0 ms, 353.3 ms/window, 237 tok
+final_r5_1_off large-v3 int8_float16 ts=False b5 n=8: 2206.7 ms, 275.8 ms/window, 516 tok
+wrote /opt/real/r6/final_r5_1_off.json 48
+== final_r5_1 off done 18:19:37
+final_r5_1_on small float16 ts=True b1 n=1: 166.3 ms, 166.3 ms/window, 84 tok
+final_r5_1_on small float16 ts=True b1 n=4: 258.3 ms, 64.6 ms/window, 336 tok
+final_r5_1_on small float16 ts=True b1 n=8: 380.3 ms, 47.5 ms/window, 667 tok
+final_r5_1_on small float16 ts=True b5 n=1: 247.5 ms, 247.5 ms/window, 84 tok
+final_r5_1_on small float16 ts=True b5 n=4: 476.8 ms, 119.2 ms/window, 347 tok
+final_r5_1_on small float16 ts=True b5 n=8: 781.2 ms, 97.7 ms/window, 670 tok
+final_r5_1_on small float16 ts=False b1 n=1: 23.7 ms, 23.7 ms/window, 5 tok
+final_r5_1_on small float16 ts=False b1 n=4: 233.1 ms, 58.3 ms/window, 249 tok
+final_r5_1_on small float16 ts=False b1 n=8: 330.3 ms, 41.3 ms/window, 506 tok
+final_r5_1_on small float16 ts=False b5 n=1: 57.4 ms, 57.4 ms/window, 16 tok
+final_r5_1_on small float16 ts=False b5 n=4: 335.8 ms, 83.9 ms/window, 173 tok
+final_r5_1_on small float16 ts=False b5 n=8: 498.6 ms, 62.3 ms/window, 329 tok
+final_r5_1_on small int8_float16 ts=True b1 n=1: 235.0 ms, 235.0 ms/window, 85 tok
+final_r5_1_on small int8_float16 ts=True b1 n=4: 335.8 ms, 83.9 ms/window, 335 tok
+final_r5_1_on small int8_float16 ts=True b1 n=8: 419.3 ms, 52.4 ms/window, 666 tok
+final_r5_1_on small int8_float16 ts=True b5 n=1: 259.3 ms, 259.3 ms/window, 84 tok
+final_r5_1_on small int8_float16 ts=True b5 n=4: 569.9 ms, 142.5 ms/window, 353 tok
+final_r5_1_on small int8_float16 ts=True b5 n=8: 885.0 ms, 110.6 ms/window, 676 tok
+final_r5_1_on small int8_float16 ts=False b1 n=1: 30.2 ms, 30.2 ms/window, 5 tok
+final_r5_1_on small int8_float16 ts=False b1 n=4: 293.9 ms, 73.5 ms/window, 249 tok
+final_r5_1_on small int8_float16 ts=False b1 n=8: 371.0 ms, 46.4 ms/window, 508 tok
+final_r5_1_on small int8_float16 ts=False b5 n=1: 78.4 ms, 78.4 ms/window, 21 tok
+final_r5_1_on small int8_float16 ts=False b5 n=4: 456.2 ms, 114.0 ms/window, 262 tok
+final_r5_1_on small int8_float16 ts=False b5 n=8: 599.6 ms, 75.0 ms/window, 386 tok
+final_r5_1_on large-v3 float16 ts=True b1 n=1: 152.4 ms, 152.4 ms/window, 11 tok
+final_r5_1_on large-v3 float16 ts=True b1 n=4: 1033.6 ms, 258.4 ms/window, 252 tok
+final_r5_1_on large-v3 float16 ts=True b1 n=8: 1558.8 ms, 194.8 ms/window, 568 tok
+final_r5_1_on large-v3 float16 ts=True b5 n=1: 441.6 ms, 441.6 ms/window, 35 tok
+final_r5_1_on large-v3 float16 ts=True b5 n=4: 1755.9 ms, 439.0 ms/window, 276 tok
+final_r5_1_on large-v3 float16 ts=True b5 n=8: 3049.5 ms, 381.2 ms/window, 592 tok
+final_r5_1_on large-v3 float16 ts=False b1 n=1: 253.7 ms, 253.7 ms/window, 26 tok
+final_r5_1_on large-v3 float16 ts=False b1 n=4: 988.4 ms, 247.1 ms/window, 255 tok
+final_r5_1_on large-v3 float16 ts=False b1 n=8: 1466.6 ms, 183.3 ms/window, 555 tok
+final_r5_1_on large-v3 float16 ts=False b5 n=1: 341.0 ms, 341.0 ms/window, 23 tok
+final_r5_1_on large-v3 float16 ts=False b5 n=4: 1632.7 ms, 408.2 ms/window, 237 tok
+final_r5_1_on large-v3 float16 ts=False b5 n=8: 2809.3 ms, 351.2 ms/window, 515 tok
+final_r5_1_on large-v3 int8_float16 ts=True b1 n=1: 154.5 ms, 154.5 ms/window, 11 tok
+final_r5_1_on large-v3 int8_float16 ts=True b1 n=4: 1027.5 ms, 256.9 ms/window, 252 tok
+final_r5_1_on large-v3 int8_float16 ts=True b1 n=8: 1560.6 ms, 195.1 ms/window, 570 tok
+final_r5_1_on large-v3 int8_float16 ts=True b5 n=1: 440.3 ms, 440.3 ms/window, 35 tok
+final_r5_1_on large-v3 int8_float16 ts=True b5 n=4: 1861.0 ms, 465.2 ms/window, 276 tok
+final_r5_1_on large-v3 int8_float16 ts=True b5 n=8: 3176.1 ms, 397.0 ms/window, 593 tok
+final_r5_1_on large-v3 int8_float16 ts=False b1 n=1: 259.6 ms, 259.6 ms/window, 26 tok
+final_r5_1_on large-v3 int8_float16 ts=False b1 n=4: 981.1 ms, 245.3 ms/window, 255 tok
+final_r5_1_on large-v3 int8_float16 ts=False b1 n=8: 1468.1 ms, 183.5 ms/window, 555 tok
+final_r5_1_on large-v3 int8_float16 ts=False b5 n=1: 340.2 ms, 340.2 ms/window, 24 tok
+final_r5_1_on large-v3 int8_float16 ts=False b5 n=4: 1737.5 ms, 434.4 ms/window, 237 tok
+final_r5_1_on large-v3 int8_float16 ts=False b5 n=8: 2901.5 ms, 362.7 ms/window, 516 tok
+wrote /opt/real/r6/final_r5_1_on.json 48
+== final_r5_1 on done 18:25:44
+== final_r5_2 start 18:25:44 tree=r3 env: 
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+-rw-r--r-- 1 ubuntu ubuntu 168282048 16:27 /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+7a41c90b docs: record round-4 results
+ M docs/environment_variables.md
+ M docs/kv_cache_preallocation.md
+ M include/ctranslate2/layers/transformer.h
+ M include/ctranslate2/models/whisper.h
+ M src/cuda/allocator.cc
+ M src/cuda/graph_runner.cc
+ M src/cuda/graph_runner.h
+ M src/env.cc
+ M src/env.h
+ M src/layers/transformer.cc
+final_r5_2_off small float16 ts=True b1 n=1: 164.2 ms, 164.2 ms/window, 84 tok
+final_r5_2_off small float16 ts=True b1 n=4: 291.4 ms, 72.9 ms/window, 336 tok
+final_r5_2_off small float16 ts=True b1 n=8: 455.5 ms, 56.9 ms/window, 667 tok
+final_r5_2_off small float16 ts=True b5 n=1: 215.9 ms, 215.9 ms/window, 84 tok
+final_r5_2_off small float16 ts=True b5 n=4: 363.6 ms, 90.9 ms/window, 347 tok
+final_r5_2_off small float16 ts=True b5 n=8: 565.1 ms, 70.6 ms/window, 672 tok
+final_r5_2_off small float16 ts=False b1 n=1: 35.2 ms, 35.2 ms/window, 5 tok
+final_r5_2_off small float16 ts=False b1 n=4: 269.6 ms, 67.4 ms/window, 249 tok
+final_r5_2_off small float16 ts=False b1 n=8: 411.0 ms, 51.4 ms/window, 506 tok
+final_r5_2_off small float16 ts=False b5 n=1: 60.2 ms, 60.2 ms/window, 16 tok
+final_r5_2_off small float16 ts=False b5 n=4: 294.4 ms, 73.6 ms/window, 173 tok
+final_r5_2_off small float16 ts=False b5 n=8: 431.6 ms, 53.9 ms/window, 329 tok
+final_r5_2_off small int8_float16 ts=True b1 n=1: 254.1 ms, 254.1 ms/window, 84 tok
+final_r5_2_off small int8_float16 ts=True b1 n=4: 393.4 ms, 98.4 ms/window, 355 tok
+final_r5_2_off small int8_float16 ts=True b1 n=8: 529.3 ms, 66.2 ms/window, 663 tok
+final_r5_2_off small int8_float16 ts=True b5 n=1: 290.2 ms, 290.2 ms/window, 84 tok
+final_r5_2_off small int8_float16 ts=True b5 n=4: 474.6 ms, 118.7 ms/window, 343 tok
+final_r5_2_off small int8_float16 ts=True b5 n=8: 669.4 ms, 83.7 ms/window, 673 tok
+final_r5_2_off small int8_float16 ts=False b1 n=1: 42.0 ms, 42.0 ms/window, 5 tok
+final_r5_2_off small int8_float16 ts=False b1 n=4: 336.0 ms, 84.0 ms/window, 187 tok
+final_r5_2_off small int8_float16 ts=False b1 n=8: 450.1 ms, 56.3 ms/window, 492 tok
+final_r5_2_off small int8_float16 ts=False b5 n=1: 79.4 ms, 79.4 ms/window, 17 tok
+final_r5_2_off small int8_float16 ts=False b5 n=4: 370.3 ms, 92.6 ms/window, 178 tok
+final_r5_2_off small int8_float16 ts=False b5 n=8: 516.4 ms, 64.5 ms/window, 358 tok
+final_r5_2_off large-v3 float16 ts=True b1 n=1: 202.5 ms, 202.5 ms/window, 11 tok
+final_r5_2_off large-v3 float16 ts=True b1 n=4: 1208.1 ms, 302.0 ms/window, 252 tok
+final_r5_2_off large-v3 float16 ts=True b1 n=8: 1917.8 ms, 239.7 ms/window, 568 tok
+final_r5_2_off large-v3 float16 ts=True b5 n=1: 406.7 ms, 406.7 ms/window, 35 tok
+final_r5_2_off large-v3 float16 ts=True b5 n=4: 1384.4 ms, 346.1 ms/window, 276 tok
+final_r5_2_off large-v3 float16 ts=True b5 n=8: 2255.1 ms, 281.9 ms/window, 592 tok
+final_r5_2_off large-v3 float16 ts=False b1 n=1: 292.1 ms, 292.1 ms/window, 26 tok
+final_r5_2_off large-v3 float16 ts=False b1 n=4: 1166.2 ms, 291.6 ms/window, 255 tok
+final_r5_2_off large-v3 float16 ts=False b1 n=8: 1831.8 ms, 229.0 ms/window, 555 tok
+final_r5_2_off large-v3 float16 ts=False b5 n=1: 326.1 ms, 326.1 ms/window, 23 tok
+final_r5_2_off large-v3 float16 ts=False b5 n=4: 1299.0 ms, 324.8 ms/window, 236 tok
+final_r5_2_off large-v3 float16 ts=False b5 n=8: 2090.8 ms, 261.3 ms/window, 515 tok
+final_r5_2_off large-v3 int8_float16 ts=True b1 n=1: 207.8 ms, 207.8 ms/window, 11 tok
+final_r5_2_off large-v3 int8_float16 ts=True b1 n=4: 1212.0 ms, 303.0 ms/window, 252 tok
+final_r5_2_off large-v3 int8_float16 ts=True b1 n=8: 1931.9 ms, 241.5 ms/window, 573 tok
+final_r5_2_off large-v3 int8_float16 ts=True b5 n=1: 452.0 ms, 452.0 ms/window, 41 tok
+final_r5_2_off large-v3 int8_float16 ts=True b5 n=4: 1482.7 ms, 370.7 ms/window, 252 tok
+final_r5_2_off large-v3 int8_float16 ts=True b5 n=8: 2383.9 ms, 298.0 ms/window, 592 tok
+final_r5_2_off large-v3 int8_float16 ts=False b1 n=1: 304.4 ms, 304.4 ms/window, 26 tok
+final_r5_2_off large-v3 int8_float16 ts=False b1 n=4: 1169.4 ms, 292.3 ms/window, 255 tok
+final_r5_2_off large-v3 int8_float16 ts=False b1 n=8: 1841.2 ms, 230.1 ms/window, 557 tok
+final_r5_2_off large-v3 int8_float16 ts=False b5 n=1: 325.4 ms, 325.4 ms/window, 25 tok
+final_r5_2_off large-v3 int8_float16 ts=False b5 n=4: 1416.9 ms, 354.2 ms/window, 237 tok
+final_r5_2_off large-v3 int8_float16 ts=False b5 n=8: 2212.2 ms, 276.5 ms/window, 516 tok
+wrote /opt/real/r6/final_r5_2_off.json 48
+== final_r5_2 off done 18:31:29
+final_r5_2_on small float16 ts=True b1 n=1: 167.0 ms, 167.0 ms/window, 84 tok
+final_r5_2_on small float16 ts=True b1 n=4: 259.6 ms, 64.9 ms/window, 336 tok
+final_r5_2_on small float16 ts=True b1 n=8: 381.1 ms, 47.6 ms/window, 667 tok
+final_r5_2_on small float16 ts=True b5 n=1: 248.5 ms, 248.5 ms/window, 84 tok
+final_r5_2_on small float16 ts=True b5 n=4: 477.7 ms, 119.4 ms/window, 347 tok
+final_r5_2_on small float16 ts=True b5 n=8: 782.4 ms, 97.8 ms/window, 670 tok
+final_r5_2_on small float16 ts=False b1 n=1: 23.8 ms, 23.8 ms/window, 5 tok
+final_r5_2_on small float16 ts=False b1 n=4: 234.1 ms, 58.5 ms/window, 249 tok
+final_r5_2_on small float16 ts=False b1 n=8: 331.5 ms, 41.4 ms/window, 506 tok
+final_r5_2_on small float16 ts=False b5 n=1: 57.7 ms, 57.7 ms/window, 16 tok
+final_r5_2_on small float16 ts=False b5 n=4: 336.1 ms, 84.0 ms/window, 173 tok
+final_r5_2_on small float16 ts=False b5 n=8: 499.0 ms, 62.4 ms/window, 329 tok
+final_r5_2_on small int8_float16 ts=True b1 n=1: 238.1 ms, 238.1 ms/window, 85 tok
+final_r5_2_on small int8_float16 ts=True b1 n=4: 338.3 ms, 84.6 ms/window, 335 tok
+final_r5_2_on small int8_float16 ts=True b1 n=8: 419.4 ms, 52.4 ms/window, 666 tok
+final_r5_2_on small int8_float16 ts=True b5 n=1: 260.6 ms, 260.6 ms/window, 84 tok
+final_r5_2_on small int8_float16 ts=True b5 n=4: 568.0 ms, 142.0 ms/window, 353 tok
+final_r5_2_on small int8_float16 ts=True b5 n=8: 885.0 ms, 110.6 ms/window, 676 tok
+final_r5_2_on small int8_float16 ts=False b1 n=1: 29.9 ms, 29.9 ms/window, 5 tok
+final_r5_2_on small int8_float16 ts=False b1 n=4: 288.4 ms, 72.1 ms/window, 249 tok
+final_r5_2_on small int8_float16 ts=False b1 n=8: 369.7 ms, 46.2 ms/window, 508 tok
+final_r5_2_on small int8_float16 ts=False b5 n=1: 77.1 ms, 77.1 ms/window, 21 tok
+final_r5_2_on small int8_float16 ts=False b5 n=4: 455.9 ms, 114.0 ms/window, 262 tok
+final_r5_2_on small int8_float16 ts=False b5 n=8: 598.3 ms, 74.8 ms/window, 386 tok
+final_r5_2_on large-v3 float16 ts=True b1 n=1: 152.6 ms, 152.6 ms/window, 11 tok
+final_r5_2_on large-v3 float16 ts=True b1 n=4: 1032.7 ms, 258.2 ms/window, 252 tok
+final_r5_2_on large-v3 float16 ts=True b1 n=8: 1557.8 ms, 194.7 ms/window, 568 tok
+final_r5_2_on large-v3 float16 ts=True b5 n=1: 441.0 ms, 441.0 ms/window, 35 tok
+final_r5_2_on large-v3 float16 ts=True b5 n=4: 1756.0 ms, 439.0 ms/window, 276 tok
+final_r5_2_on large-v3 float16 ts=True b5 n=8: 3047.9 ms, 381.0 ms/window, 592 tok
+final_r5_2_on large-v3 float16 ts=False b1 n=1: 253.7 ms, 253.7 ms/window, 26 tok
+final_r5_2_on large-v3 float16 ts=False b1 n=4: 988.0 ms, 247.0 ms/window, 255 tok
+final_r5_2_on large-v3 float16 ts=False b1 n=8: 1465.3 ms, 183.2 ms/window, 555 tok
+final_r5_2_on large-v3 float16 ts=False b5 n=1: 340.5 ms, 340.5 ms/window, 23 tok
+final_r5_2_on large-v3 float16 ts=False b5 n=4: 1631.8 ms, 408.0 ms/window, 237 tok
+final_r5_2_on large-v3 float16 ts=False b5 n=8: 2806.8 ms, 350.9 ms/window, 515 tok
+final_r5_2_on large-v3 int8_float16 ts=True b1 n=1: 154.6 ms, 154.6 ms/window, 11 tok
+final_r5_2_on large-v3 int8_float16 ts=True b1 n=4: 1028.3 ms, 257.1 ms/window, 252 tok
+final_r5_2_on large-v3 int8_float16 ts=True b1 n=8: 1559.1 ms, 194.9 ms/window, 570 tok
+final_r5_2_on large-v3 int8_float16 ts=True b5 n=1: 439.5 ms, 439.5 ms/window, 35 tok
+final_r5_2_on large-v3 int8_float16 ts=True b5 n=4: 1860.3 ms, 465.1 ms/window, 276 tok
+final_r5_2_on large-v3 int8_float16 ts=True b5 n=8: 3174.9 ms, 396.9 ms/window, 593 tok
+final_r5_2_on large-v3 int8_float16 ts=False b1 n=1: 259.4 ms, 259.4 ms/window, 26 tok
+final_r5_2_on large-v3 int8_float16 ts=False b1 n=4: 980.5 ms, 245.1 ms/window, 255 tok
+final_r5_2_on large-v3 int8_float16 ts=False b1 n=8: 1467.2 ms, 183.4 ms/window, 555 tok
+final_r5_2_on large-v3 int8_float16 ts=False b5 n=1: 340.4 ms, 340.4 ms/window, 24 tok
+final_r5_2_on large-v3 int8_float16 ts=False b5 n=4: 1736.5 ms, 434.1 ms/window, 237 tok
+final_r5_2_on large-v3 int8_float16 ts=False b5 n=8: 2902.4 ms, 362.8 ms/window, 516 tok
+wrote /opt/real/r6/final_r5_2_on.json 48
+== final_r5_2 on done 18:37:36
+SWITCH bisect: ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+HEAD 7a41c90b dirty=0
+== final_r4base_2 start 18:38:12 tree=bisect env: 
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+-rw-r--r-- 1 ubuntu ubuntu 168224016 17:42 /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+7a41c90b docs: record round-4 results
+final_r4base_2_off small float16 ts=True b1 n=1: 165.0 ms, 165.0 ms/window, 84 tok
+final_r4base_2_off small float16 ts=True b1 n=4: 291.3 ms, 72.8 ms/window, 336 tok
+final_r4base_2_off small float16 ts=True b1 n=8: 455.3 ms, 56.9 ms/window, 667 tok
+final_r4base_2_off small float16 ts=True b5 n=1: 216.4 ms, 216.4 ms/window, 84 tok
+final_r4base_2_off small float16 ts=True b5 n=4: 363.3 ms, 90.8 ms/window, 347 tok
+final_r4base_2_off small float16 ts=True b5 n=8: 565.1 ms, 70.6 ms/window, 672 tok
+final_r4base_2_off small float16 ts=False b1 n=1: 35.2 ms, 35.2 ms/window, 5 tok
+final_r4base_2_off small float16 ts=False b1 n=4: 269.8 ms, 67.4 ms/window, 249 tok
+final_r4base_2_off small float16 ts=False b1 n=8: 411.2 ms, 51.4 ms/window, 506 tok
+final_r4base_2_off small float16 ts=False b5 n=1: 60.2 ms, 60.2 ms/window, 16 tok
+final_r4base_2_off small float16 ts=False b5 n=4: 294.5 ms, 73.6 ms/window, 173 tok
+final_r4base_2_off small float16 ts=False b5 n=8: 431.6 ms, 54.0 ms/window, 329 tok
+final_r4base_2_off small int8_float16 ts=True b1 n=1: 256.3 ms, 256.3 ms/window, 84 tok
+final_r4base_2_off small int8_float16 ts=True b1 n=4: 395.8 ms, 98.9 ms/window, 355 tok
+final_r4base_2_off small int8_float16 ts=True b1 n=8: 528.6 ms, 66.1 ms/window, 663 tok
+final_r4base_2_off small int8_float16 ts=True b5 n=1: 286.3 ms, 286.3 ms/window, 84 tok
+final_r4base_2_off small int8_float16 ts=True b5 n=4: 473.9 ms, 118.5 ms/window, 343 tok
+final_r4base_2_off small int8_float16 ts=True b5 n=8: 669.0 ms, 83.6 ms/window, 673 tok
+final_r4base_2_off small int8_float16 ts=False b1 n=1: 42.7 ms, 42.7 ms/window, 5 tok
+final_r4base_2_off small int8_float16 ts=False b1 n=4: 343.6 ms, 85.9 ms/window, 187 tok
+final_r4base_2_off small int8_float16 ts=False b1 n=8: 453.9 ms, 56.7 ms/window, 492 tok
+final_r4base_2_off small int8_float16 ts=False b5 n=1: 80.2 ms, 80.2 ms/window, 17 tok
+final_r4base_2_off small int8_float16 ts=False b5 n=4: 377.8 ms, 94.4 ms/window, 178 tok
+final_r4base_2_off small int8_float16 ts=False b5 n=8: 517.5 ms, 64.7 ms/window, 358 tok
+final_r4base_2_off large-v3 float16 ts=True b1 n=1: 202.2 ms, 202.2 ms/window, 11 tok
+final_r4base_2_off large-v3 float16 ts=True b1 n=4: 1205.7 ms, 301.4 ms/window, 252 tok
+final_r4base_2_off large-v3 float16 ts=True b1 n=8: 1915.4 ms, 239.4 ms/window, 568 tok
+final_r4base_2_off large-v3 float16 ts=True b5 n=1: 405.1 ms, 405.1 ms/window, 35 tok
+final_r4base_2_off large-v3 float16 ts=True b5 n=4: 1376.3 ms, 344.1 ms/window, 276 tok
+final_r4base_2_off large-v3 float16 ts=True b5 n=8: 2250.0 ms, 281.3 ms/window, 592 tok
+final_r4base_2_off large-v3 float16 ts=False b1 n=1: 292.4 ms, 292.4 ms/window, 26 tok
+final_r4base_2_off large-v3 float16 ts=False b1 n=4: 1164.5 ms, 291.1 ms/window, 255 tok
+final_r4base_2_off large-v3 float16 ts=False b1 n=8: 1832.4 ms, 229.0 ms/window, 555 tok
+final_r4base_2_off large-v3 float16 ts=False b5 n=1: 325.2 ms, 325.2 ms/window, 23 tok
+final_r4base_2_off large-v3 float16 ts=False b5 n=4: 1298.0 ms, 324.5 ms/window, 236 tok
+final_r4base_2_off large-v3 float16 ts=False b5 n=8: 2089.9 ms, 261.2 ms/window, 515 tok
+final_r4base_2_off large-v3 int8_float16 ts=True b1 n=1: 208.0 ms, 208.0 ms/window, 11 tok
+final_r4base_2_off large-v3 int8_float16 ts=True b1 n=4: 1211.9 ms, 303.0 ms/window, 252 tok
+final_r4base_2_off large-v3 int8_float16 ts=True b1 n=8: 1930.4 ms, 241.3 ms/window, 573 tok
+final_r4base_2_off large-v3 int8_float16 ts=True b5 n=1: 450.8 ms, 450.8 ms/window, 41 tok
+final_r4base_2_off large-v3 int8_float16 ts=True b5 n=4: 1474.1 ms, 368.5 ms/window, 252 tok
+final_r4base_2_off large-v3 int8_float16 ts=True b5 n=8: 2385.0 ms, 298.1 ms/window, 592 tok
+final_r4base_2_off large-v3 int8_float16 ts=False b1 n=1: 307.1 ms, 307.1 ms/window, 26 tok
+final_r4base_2_off large-v3 int8_float16 ts=False b1 n=4: 1166.8 ms, 291.7 ms/window, 255 tok
+final_r4base_2_off large-v3 int8_float16 ts=False b1 n=8: 1837.1 ms, 229.6 ms/window, 557 tok
+final_r4base_2_off large-v3 int8_float16 ts=False b5 n=1: 324.5 ms, 324.5 ms/window, 25 tok
+final_r4base_2_off large-v3 int8_float16 ts=False b5 n=4: 1413.6 ms, 353.4 ms/window, 237 tok
+final_r4base_2_off large-v3 int8_float16 ts=False b5 n=8: 2205.1 ms, 275.6 ms/window, 516 tok
+wrote /opt/real/r6/final_r4base_2_off.json 48
+== final_r4base_2 off done 18:43:56
+final_r4base_2_on small float16 ts=True b1 n=1: 166.9 ms, 166.9 ms/window, 84 tok
+final_r4base_2_on small float16 ts=True b1 n=4: 259.1 ms, 64.8 ms/window, 336 tok
+final_r4base_2_on small float16 ts=True b1 n=8: 381.2 ms, 47.6 ms/window, 667 tok
+final_r4base_2_on small float16 ts=True b5 n=1: 248.0 ms, 248.0 ms/window, 84 tok
+final_r4base_2_on small float16 ts=True b5 n=4: 477.3 ms, 119.3 ms/window, 347 tok
+final_r4base_2_on small float16 ts=True b5 n=8: 781.7 ms, 97.7 ms/window, 670 tok
+final_r4base_2_on small float16 ts=False b1 n=1: 23.8 ms, 23.8 ms/window, 5 tok
+final_r4base_2_on small float16 ts=False b1 n=4: 233.6 ms, 58.4 ms/window, 249 tok
+final_r4base_2_on small float16 ts=False b1 n=8: 331.2 ms, 41.4 ms/window, 506 tok
+final_r4base_2_on small float16 ts=False b5 n=1: 57.5 ms, 57.5 ms/window, 16 tok
+final_r4base_2_on small float16 ts=False b5 n=4: 336.5 ms, 84.1 ms/window, 173 tok
+final_r4base_2_on small float16 ts=False b5 n=8: 499.0 ms, 62.4 ms/window, 329 tok
+final_r4base_2_on small int8_float16 ts=True b1 n=1: 236.3 ms, 236.3 ms/window, 85 tok
+final_r4base_2_on small int8_float16 ts=True b1 n=4: 339.6 ms, 84.9 ms/window, 335 tok
+final_r4base_2_on small int8_float16 ts=True b1 n=8: 419.3 ms, 52.4 ms/window, 666 tok
+final_r4base_2_on small int8_float16 ts=True b5 n=1: 259.2 ms, 259.2 ms/window, 84 tok
+final_r4base_2_on small int8_float16 ts=True b5 n=4: 568.6 ms, 142.1 ms/window, 353 tok
+final_r4base_2_on small int8_float16 ts=True b5 n=8: 883.8 ms, 110.5 ms/window, 676 tok
+final_r4base_2_on small int8_float16 ts=False b1 n=1: 29.4 ms, 29.4 ms/window, 5 tok
+final_r4base_2_on small int8_float16 ts=False b1 n=4: 279.8 ms, 69.9 ms/window, 249 tok
+final_r4base_2_on small int8_float16 ts=False b1 n=8: 368.0 ms, 46.0 ms/window, 508 tok
+final_r4base_2_on small int8_float16 ts=False b5 n=1: 76.9 ms, 76.9 ms/window, 21 tok
+final_r4base_2_on small int8_float16 ts=False b5 n=4: 454.1 ms, 113.5 ms/window, 262 tok
+final_r4base_2_on small int8_float16 ts=False b5 n=8: 598.3 ms, 74.8 ms/window, 386 tok
+final_r4base_2_on large-v3 float16 ts=True b1 n=1: 152.6 ms, 152.6 ms/window, 11 tok
+final_r4base_2_on large-v3 float16 ts=True b1 n=4: 1033.4 ms, 258.3 ms/window, 252 tok
+final_r4base_2_on large-v3 float16 ts=True b1 n=8: 1559.0 ms, 194.9 ms/window, 568 tok
+final_r4base_2_on large-v3 float16 ts=True b5 n=1: 441.5 ms, 441.5 ms/window, 35 tok
+final_r4base_2_on large-v3 float16 ts=True b5 n=4: 1755.4 ms, 438.9 ms/window, 276 tok
+final_r4base_2_on large-v3 float16 ts=True b5 n=8: 3048.7 ms, 381.1 ms/window, 592 tok
+final_r4base_2_on large-v3 float16 ts=False b1 n=1: 253.8 ms, 253.8 ms/window, 26 tok
+final_r4base_2_on large-v3 float16 ts=False b1 n=4: 988.1 ms, 247.0 ms/window, 255 tok
+final_r4base_2_on large-v3 float16 ts=False b1 n=8: 1465.9 ms, 183.2 ms/window, 555 tok
+final_r4base_2_on large-v3 float16 ts=False b5 n=1: 341.0 ms, 341.0 ms/window, 23 tok
+final_r4base_2_on large-v3 float16 ts=False b5 n=4: 1631.9 ms, 408.0 ms/window, 237 tok
+final_r4base_2_on large-v3 float16 ts=False b5 n=8: 2807.8 ms, 351.0 ms/window, 515 tok
+final_r4base_2_on large-v3 int8_float16 ts=True b1 n=1: 154.6 ms, 154.6 ms/window, 11 tok
+final_r4base_2_on large-v3 int8_float16 ts=True b1 n=4: 1029.3 ms, 257.3 ms/window, 252 tok
+final_r4base_2_on large-v3 int8_float16 ts=True b1 n=8: 1561.3 ms, 195.2 ms/window, 570 tok
+final_r4base_2_on large-v3 int8_float16 ts=True b5 n=1: 440.4 ms, 440.4 ms/window, 35 tok
+final_r4base_2_on large-v3 int8_float16 ts=True b5 n=4: 1861.6 ms, 465.4 ms/window, 276 tok
+final_r4base_2_on large-v3 int8_float16 ts=True b5 n=8: 3175.9 ms, 397.0 ms/window, 593 tok
+final_r4base_2_on large-v3 int8_float16 ts=False b1 n=1: 259.9 ms, 259.9 ms/window, 26 tok
+final_r4base_2_on large-v3 int8_float16 ts=False b1 n=4: 982.2 ms, 245.5 ms/window, 255 tok
+final_r4base_2_on large-v3 int8_float16 ts=False b1 n=8: 1469.6 ms, 183.7 ms/window, 555 tok
+final_r4base_2_on large-v3 int8_float16 ts=False b5 n=1: 340.9 ms, 340.9 ms/window, 24 tok
+final_r4base_2_on large-v3 int8_float16 ts=False b5 n=4: 1738.7 ms, 434.7 ms/window, 237 tok
+final_r4base_2_on large-v3 int8_float16 ts=False b5 n=8: 2900.5 ms, 362.6 ms/window, 516 tok
+wrote /opt/real/r6/final_r4base_2_on.json 48
+== final_r4base_2 on done 18:50:03
+##### MATRIX DONE 18:50:03
+===== FINAL ALL DONE 18:50:03 =====

@@ -1,0 +1,30 @@
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - Selected ISA: AVX2
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - Use Intel MKL: false
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - Allow INT8: true
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 17:55:02.947] [ctranslate2] [thread 58513] [info]  - Allow BF16: true
+[2026-09-26 17:55:03.329] [ctranslate2] [thread 58513] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 17:55:03.429] [ctranslate2] [thread 58513] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 17:55:03.429] [ctranslate2] [thread 58513] [info]  - Binary version: 6
+[2026-09-26 17:55:03.429] [ctranslate2] [thread 58513] [info]  - Model specification revision: 3
+[2026-09-26 17:55:03.429] [ctranslate2] [thread 58513] [info]  - Selected compute type: float16
+BEGIN dense:1 decode 0
+[2026-09-26 17:55:04.049] [ctranslate2] [thread 58527] [debug] CUDA graphs: step 128 does not fit the captured shapes (cache capacity 128, position table 448), going eager
+[2026-09-26 17:55:04.050] [ctranslate2] [thread 58527] [debug] CUDA graphs: falling back to eager for this decode (ineligible step mid-decode)
+[2026-09-26 17:55:04.120] [ctranslate2] [thread 58527] [debug] CUDA graphs: step 160 does not fit the captured shapes (cache capacity 160, position table 448), going eager
+[2026-09-26 17:55:04.191] [ctranslate2] [thread 58527] [debug] CUDA graphs: step 192 does not fit the captured shapes (cache capacity 192, position table 448), going eager
+DECODE 0 ENTRY 0 (dense:1) P=2 NTOK 199 SCORE -0.13599247
+TOKS [50364, 1451, 11, 264, 17885, 11, 1732, 11, 25285, 293, 4208, 19246, 533, 13, 50510, 50510, 440, 9723, 2101, 7700, 264, 561, 281, 312, 294, 3566, 18640, 50588, 50588, 365, 641, 19661, 370, 300, 436, 486, 1524, 796, 10060, 50662, 50662, 295, 641, 2909, 11, 674, 1434, 47315, 538, 604, 4330, 13, 50756, 50756, 13676, 1465, 11221, 1818, 293, 786, 11, 3554, 293, 3738, 11, 50854, 50854, 1413, 293, 15050, 13, 50922, 50922, 4755, 16802, 3598, 22182, 11, 869, 293, 1359, 11, 51016, 51016, 4330, 293, 3825, 11, 1269, 2727, 293, 9432, 11335, 11, 51122, 51122, 264, 10486, 295, 993, 293, 2966, 13, 51198, 51198, 440, 17885, 7382, 337, 264, 41106, 295, 10712, 11, 51266, 51266, 44040, 11, 48567, 655, 11, 9892, 293, 10910, 1287, 13, 51390, 51390, 3146, 25285, 293, 4208, 19246, 533, 366, 281, 312, 7320, 51446, 51446, 264, 21653, 24021, 295, 264, 7267, 294, 1080, 2296, 45331, 4252, 11, 51530, 51530, 264, 4138, 763, 295, 6181, 3654, 264, 9199, 11, 51601, 51601, 264, 11258, 295, 11344, 538, 597, 11768, 815, 2524, 51674, 51674, 264, 7267, 293, 264, 1969, 295, 4632, 40377, 13, 51772, 51772, 1981, 1732, 8050, 820, 312, 4963, 281, 633, 2674, 11, 51854, 51854]
+BEGIN dense:1 decode 1
+[2026-09-26 17:55:04.481] [ctranslate2] [thread 58527] [debug] CUDA graphs: step 128 does not fit the captured shapes (cache capacity 128, position table 448), going eager
+[2026-09-26 17:55:04.481] [ctranslate2] [thread 58527] [debug] CUDA graphs: falling back to eager for this decode (ineligible step mid-decode)
+[2026-09-26 17:55:04.551] [ctranslate2] [thread 58527] [debug] CUDA graphs: step 160 does not fit the captured shapes (cache capacity 160, position table 448), going eager
+[2026-09-26 17:55:04.622] [ctranslate2] [thread 58527] [debug] CUDA graphs: step 192 does not fit the captured shapes (cache capacity 192, position table 448), going eager
+DECODE 1 ENTRY 0 (dense:1) P=2 NTOK 199 SCORE -0.13599247
+TOKS [50364, 1451, 11, 264, 17885, 11, 1732, 11, 25285, 293, 4208, 19246, 533, 13, 50510, 50510, 440, 9723, 2101, 7700, 264, 561, 281, 312, 294, 3566, 18640, 50588, 50588, 365, 641, 19661, 370, 300, 436, 486, 1524, 796, 10060, 50662, 50662, 295, 641, 2909, 11, 674, 1434, 47315, 538, 604, 4330, 13, 50756, 50756, 13676, 1465, 11221, 1818, 293, 786, 11, 3554, 293, 3738, 11, 50854, 50854, 1413, 293, 15050, 13, 50922, 50922, 4755, 16802, 3598, 22182, 11, 869, 293, 1359, 11, 51016, 51016, 4330, 293, 3825, 11, 1269, 2727, 293, 9432, 11335, 11, 51122, 51122, 264, 10486, 295, 993, 293, 2966, 13, 51198, 51198, 440, 17885, 7382, 337, 264, 41106, 295, 10712, 11, 51266, 51266, 44040, 11, 48567, 655, 11, 9892, 293, 10910, 1287, 13, 51390, 51390, 3146, 25285, 293, 4208, 19246, 533, 366, 281, 312, 7320, 51446, 51446, 264, 21653, 24021, 295, 264, 7267, 294, 1080, 2296, 45331, 4252, 11, 51530, 51530, 264, 4138, 763, 295, 6181, 3654, 264, 9199, 11, 51601, 51601, 264, 11258, 295, 11344, 538, 597, 11768, 815, 2524, 51674, 51674, 264, 7267, 293, 264, 1969, 295, 4632, 40377, 13, 51772, 51772, 1981, 1732, 8050, 820, 312, 4963, 281, 633, 2674, 11, 51854, 51854]

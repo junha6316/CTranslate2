@@ -275,6 +275,14 @@ opt-in `CT2_CUDA_POOL_RELEASE_THRESHOLD` addresses (matrices in that commit mess
 
 ## Honest caveats
 
+- **Padded attention loses WER parity on long windows (applies to every graphs mode, not
+  just tiers).** Round 3 accepted pad mode, and therefore graphs, on text/WER parity. It
+  checked that only on the 84-token window. On the long dense windows, padded eager itself
+  flips text against default eager: dense:3 beam5 one token edit (WER 0.6%), greedy WER 3.2%,
+  |dscore| up to 6.3e-3. The single caps @128 and @256 flip dense:3 as well, and @448 flips
+  dense:4. So the round-3 acceptance holds for short windows only. All graph and pad flags
+  remain opt-in and the default path is untouched, but anyone enabling them for long-form
+  audio should validate WER on their own data.
 - **Tiers are opt-in and need the capped reserve.** The recommendation is beam5
   long-form; for greedy the reserve choice matters little (single @256 is within 0.9 ms).
 - **Numerics.** Replays are bit-identical to padded eager on the same capacity
@@ -289,3 +297,29 @@ opt-in `CT2_CUDA_POOL_RELEASE_THRESHOLD` addresses (matrices in that commit mess
   from a direct per-crossing measurement.
 - One box session, within-session pairs only; absolute numbers are not comparable across
   sessions.
+- **Test coverage gaps found in review.** The CPU tests reach the tier policy parsing,
+  `CacheTierPolicy::next`, `apply_cache_reserve` and `set_cache_reserve_steps`, but the test
+  that bumps the reserve mid-decode picks the step itself instead of going through the guard
+  in `TransformerDecoder::decode`. `DecoderGraphRunner` transitions (the `begin_tier_transition`
+  refusals, Reentry -> ReentrySecond -> Ready) are covered only by the GPU gates. The
+  batch-shrink refusal in G-safety was reached because one window happens to end at step 63;
+  the gate script does not assert which branch refused.
+- **G1 log.** The committed `g1.log` shows the compare step failing (`python: command not
+  found`) and `scripts/g1.sh` was edited to `python3` afterwards. The G1 verdict
+  (48/48 bit-identical, flash off and on, and under graphs@128) was recomputed from the
+  committed JSONs during review and holds.
+
+## Post-review fixes (ef365c0)
+
+- A malformed `CT2_CUDA_POOL_RELEASE_THRESHOLD` no longer breaks the `cub_caching`
+  allocator, where the variable is ignored. The warning now checks the raw string and does
+  not parse it. Under `cuda_malloc_async` a malformed value still fails at the first
+  allocation.
+- `clear_cache()` synchronizes the device before trimming the pool, so `unload_model()`
+  returns memory whose asynchronous frees were still in flight. Checked on the A10G: with
+  the threshold at `max`, unloading after a b5 x n8 decode goes from 1595 MB to 283 MB,
+  the same floor as the default (1243 -> 283 MB).
+- Final paired bench (round-4 tip vs this branch, ABBA, full matrices) is in
+  [`results/2026-09-26-r5/`](../results/2026-09-26-r5/) (`final_matrix_report.txt`,
+  `final_graphs_report.txt`, nsys `final_nsys_*_cuda_api_sum.csv`), together with the
+  regression bisection logs.

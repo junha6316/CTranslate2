@@ -1,0 +1,15 @@
+flash-off: 48 cfgs, tokens identical (4 runs) 48/48, median +0.03%, range -2.4..+1.1%
+flash-on: 48 cfgs, tokens identical (4 runs) 48/48, median -0.02%, range -0.4..+3.5%
+    -0.2% (pass1 -0.2, pass2 -0.2)  ('large-v3', 'int8_float16', False, 5, 1)  340.8 -> 340.3  [corner]
+    -0.1% (pass1 -0.0, pass2 -0.1)  ('large-v3', 'float16', False, 5, 1)  341.0 -> 340.8  [corner]
+    -0.0% (pass1 +0.1, pass2 -0.1)  ('large-v3', 'int8_float16', False, 5, 4)  1737.4 -> 1737.0  [corner]
+    -0.0% (pass1 +0.0, pass2 -0.0)  ('large-v3', 'float16', False, 5, 8)  2808.2 -> 2808.1  [corner]
+    -0.0% (pass1 -0.0, pass2 -0.0)  ('large-v3', 'float16', False, 5, 4)  1632.3 -> 1632.2  [corner]
+    +0.0% (pass1 +0.2, pass2 -0.1)  ('small', 'float16', False, 5, 4)  335.9 -> 335.9  [corner]
+    +0.0% (pass1 +0.1, pass2 +0.0)  ('small', 'float16', False, 5, 8)  498.6 -> 498.8  [corner]
+    +0.1% (pass1 +0.1, pass2 +0.1)  ('large-v3', 'int8_float16', False, 5, 8)  2899.8 -> 2901.9  [corner]
+    +0.1% (pass1 +0.0, pass2 +0.3)  ('small', 'float16', False, 5, 1)  57.5 -> 57.6  [corner]
+    +0.1% (pass1 +0.3, pass2 +0.0)  ('small', 'int8_float16', False, 5, 8)  598.1 -> 599.0  [corner]
+    +0.4% (pass1 +0.4, pass2 +0.4)  ('small', 'int8_float16', False, 5, 4)  454.2 -> 456.0  [corner]
+    +1.2% (pass1 +2.1, pass2 +0.4)  ('small', 'int8_float16', False, 5, 1)  76.8 -> 77.8  [corner]
+    +3.5% (pass1 +3.8, pass2 +3.1)  ('small', 'int8_float16', False, 1, 4)  281.4 -> 291.2

@@ -1,0 +1,33 @@
+HEAD: a98bf0ee perf(decoding): ping-pong the fused beam-reorder gather through shadow
+changed since b55f6866:
+ src/ops/topk_gpu.cu                          |  39 +--
+ src/sampling.cc                              |  24 +-
+ 26 files changed, 124 insertions(+), 1417 deletions(-)
+[ 80%] Linking CXX shared library libctranslate2.so
+[100%] Built target ctranslate2
+build+install 78s
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+lib: Sep 26 14:18 /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+probe start 14:18:42
+# a98bf0e_final small float16 poisoned: median 78.86 ms IQR 0.26 ntok 16
+{"label": "a98bf0e_final", "model": "small", "ctype": "float16", "file": "/home/ubuntu/w/bisect/python/ctranslate2/__init__.py", "version": "4.8.2", "n_windows": 9, "pool_threshold_env": null, "flash": 1, "poisoned": {"median_ms": 78.86, "iqr_ms": 0.26, "q1": 78.64, "q3": 78.89, "min_ms": 78.62, "ntok": 16, "tok_ids": [6163, 314, 11728, 848, 264, 1523, 295, 1516, 307, 295, 11707, 7379, 281, 264, 1785, 13], "all_ms": [78.64, 78.88, 78.62, 78.89, 78.64, 78.88, 78.62, 79.14, 78.86, 78.97, 78.79], "pool": {"thr": 0, "reserved_cur_mb": 1376.0, "reserved_high_mb": 2592.0, "used_high_mb": 2437.0}}}
+probe done 14:18:46
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+HEAD: a98bf0ee
+a98bf0e small float16 ts=True b1 n=1: 168.1 ms, 168.1 ms/window, 84 tok
+a98bf0e small float16 ts=True b1 n=8: 383.3 ms, 47.9 ms/window, 667 tok
+a98bf0e small float16 ts=True b5 n=1: 254.0 ms, 254.0 ms/window, 84 tok
+a98bf0e small float16 ts=True b5 n=8: 787.6 ms, 98.5 ms/window, 670 tok
+a98bf0e small float16 ts=False b1 n=1: 24.4 ms, 24.4 ms/window, 5 tok
+a98bf0e small float16 ts=False b1 n=8: 333.3 ms, 41.7 ms/window, 506 tok
+a98bf0e small float16 ts=False b5 n=1: 79.3 ms, 79.3 ms/window, 16 tok
+a98bf0e small float16 ts=False b5 n=8: 500.7 ms, 62.6 ms/window, 329 tok
+a98bf0e small int8_float16 ts=True b1 n=1: 248.1 ms, 248.1 ms/window, 85 tok
+a98bf0e small int8_float16 ts=True b1 n=8: 424.3 ms, 53.0 ms/window, 666 tok
+a98bf0e small int8_float16 ts=True b5 n=1: 265.8 ms, 265.8 ms/window, 84 tok
+a98bf0e small int8_float16 ts=True b5 n=8: 895.0 ms, 111.9 ms/window, 676 tok
+a98bf0e small int8_float16 ts=False b1 n=1: 31.5 ms, 31.5 ms/window, 5 tok
+a98bf0e small int8_float16 ts=False b1 n=8: 374.5 ms, 46.8 ms/window, 508 tok
+a98bf0e small int8_float16 ts=False b5 n=1: 102.5 ms, 102.5 ms/window, 21 tok
+a98bf0e small int8_float16 ts=False b5 n=8: 611.3 ms, 76.4 ms/window, 386 tok
+wrote /opt/real/r6/bbq_a98bf0e.json 16

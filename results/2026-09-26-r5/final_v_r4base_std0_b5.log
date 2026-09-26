@@ -1,0 +1,22 @@
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/bisect/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - Selected ISA: AVX2
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - Use Intel MKL: false
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - Allow INT8: true
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 17:54:58.988] [ctranslate2] [thread 58441] [info]  - Allow BF16: true
+[2026-09-26 17:54:59.367] [ctranslate2] [thread 58441] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 17:54:59.467] [ctranslate2] [thread 58441] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 17:54:59.467] [ctranslate2] [thread 58441] [info]  - Binary version: 6
+[2026-09-26 17:54:59.467] [ctranslate2] [thread 58441] [info]  - Model specification revision: 3
+[2026-09-26 17:54:59.467] [ctranslate2] [thread 58441] [info]  - Selected compute type: float16
+BEGIN std:0 decode 0
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19512649
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN std:0 decode 1
+DECODE 1 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19512649
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]

@@ -1,0 +1,12 @@
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+done ntok 199
+Collecting data...
+Generating '/tmp/nsys-report-c7e3.qdstrm'
+[1/1] [0%                          ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [0%                          ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [0%                          ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [10%                         ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [8%                          ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [7%                          ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [14%                         ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [==21%                       ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [=====29%                    ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [=======36%                  ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [=========43%                ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [===========50%              ] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [========================100%] final_nsys_r5tiers_d1_b5.nsys-rep[1/1] [========================100%] final_nsys_r5tiers_d1_b5.nsys-rep
+Generated:
+	/opt/real/r6/final_nsys_r5tiers_d1_b5.nsys-rep

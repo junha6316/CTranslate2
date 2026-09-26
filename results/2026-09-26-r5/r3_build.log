@@ -1,0 +1,110 @@
+-- Compiler Id: GNU
+-- Compiler Version: 11.4.0
+-- Build spdlog: 1.10.0
+-- Build type: Release
+-- Compiling for multiple CPU ISA and enabling runtime dispatch
+-- Using OpenMP: /usr/lib/gcc/x86_64-linux-gnu/11/libgomp.so;/usr/lib/x86_64-linux-gnu/libpthread.a
+-- NVCC host compiler: /usr/bin/c++
+-- NVCC compilation flags: -std=c++17;-Xcompiler=-fopenmp;-gencode;arch=compute_86,code=sm_86;--expt-relaxed-constexpr;--expt-extended-lambda
+-- Found cuDNN include directory: /usr/local/cuda-12.8/include
+-- Found cuDNN libraries: /usr/local/cuda-12.8/lib/libcudnn.so
+-- Found cuBLASLt library: /usr/local/cuda-12.8/lib64/libcublasLt.so
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ubuntu/w/r3/build
+Consolidate compiler generated dependencies of target ruy_profiler_instrumentation
+Consolidate compiler generated dependencies of target ruy_system_aligned_alloc
+Consolidate compiler generated dependencies of target clog
+Consolidate compiler generated dependencies of target ruy_have_built_path_for_avx512
+Consolidate compiler generated dependencies of target ruy_denormal
+Consolidate compiler generated dependencies of target utils
+Consolidate compiler generated dependencies of target ruy_wait
+Consolidate compiler generated dependencies of target ruy_apply_multiplier
+[  0%] Built target ruy_profiler_instrumentation
+[  1%] Built target ruy_system_aligned_alloc
+[  1%] Built target clog
+[  1%] Built target ruy_have_built_path_for_avx512
+[  2%] Built target utils
+[  3%] Built target ruy_wait
+[  4%] Built target ruy_denormal
+[  5%] Built target ruy_apply_multiplier
+Consolidate compiler generated dependencies of target ruy_have_built_path_for_avx2_fma
+Consolidate compiler generated dependencies of target ruy_have_built_path_for_avx
+Consolidate compiler generated dependencies of target cpu_features
+Consolidate compiler generated dependencies of target gtest
+Consolidate compiler generated dependencies of target ruy_prepacked_cache
+Consolidate compiler generated dependencies of target ruy_allocator
+Consolidate compiler generated dependencies of target cpuinfo
+[  5%] Built target ruy_have_built_path_for_avx
+[  6%] Built target ruy_have_built_path_for_avx2_fma
+Consolidate compiler generated dependencies of target ruy_block_map
+[  9%] Built target gtest
+[ 12%] Built target ruy_prepacked_cache
+[ 12%] Built target cpu_features
+[ 12%] Built target ruy_allocator
+[ 19%] Built target cpuinfo
+Consolidate compiler generated dependencies of target ruy_blocking_counter
+[ 19%] Built target ruy_block_map
+Consolidate compiler generated dependencies of target gtest_main
+Consolidate compiler generated dependencies of target ruy_cpuinfo
+[ 20%] Built target ruy_blocking_counter
+[ 20%] Built target gtest_main
+[ 22%] Built target ruy_cpuinfo
+Consolidate compiler generated dependencies of target ruy_thread_pool
+Consolidate compiler generated dependencies of target ruy_tune
+[ 22%] Built target ruy_thread_pool
+[ 22%] Built target ruy_tune
+Consolidate compiler generated dependencies of target ruy_pack_arm
+Consolidate compiler generated dependencies of target ruy_pack_avx2_fma
+Consolidate compiler generated dependencies of target ruy_kernel_arm
+Consolidate compiler generated dependencies of target ruy_kernel_avx2_fma
+Consolidate compiler generated dependencies of target ruy_pack_avx512
+Consolidate compiler generated dependencies of target ruy_kernel_avx512
+Consolidate compiler generated dependencies of target ruy_kernel_avx
+Consolidate compiler generated dependencies of target ruy_pack_avx
+[ 25%] Built target ruy_kernel_arm
+[ 25%] Built target ruy_pack_arm
+[ 25%] Built target ruy_kernel_avx512
+[ 25%] Built target ruy_pack_avx512
+[ 25%] Built target ruy_kernel_avx2_fma
+[ 26%] Built target ruy_pack_avx2_fma
+[ 27%] Built target ruy_kernel_avx
+[ 27%] Built target ruy_pack_avx
+Consolidate compiler generated dependencies of target ruy_ctx
+[ 27%] Built target ruy_ctx
+Consolidate compiler generated dependencies of target ruy_prepare_packed_matrices
+Consolidate compiler generated dependencies of target ruy_context
+Consolidate compiler generated dependencies of target ruy_trmul
+[ 31%] Built target ruy_prepare_packed_matrices
+[ 31%] Built target ruy_context
+[ 31%] Built target ruy_trmul
+Consolidate compiler generated dependencies of target ruy_frontend
+Consolidate compiler generated dependencies of target ruy_context_get_ctx
+[ 32%] Built target ruy_frontend
+[ 32%] Built target ruy_context_get_ctx
+Consolidate compiler generated dependencies of target ctranslate2
+[ 33%] Building CXX object CMakeFiles/ctranslate2.dir/src/cpu/backend.cc.o
+[ 33%] Building CXX object CMakeFiles/ctranslate2.dir/src/cpu/cpu_isa.cc.o
+[ 33%] Building CXX object CMakeFiles/ctranslate2.dir/src/decoding.cc.o
+[ 33%] Building CXX object CMakeFiles/ctranslate2.dir/src/env.cc.o
+[ 34%] Building CXX object CMakeFiles/ctranslate2.dir/src/logging.cc.o
+[ 34%] Building CXX object CMakeFiles/ctranslate2.dir/src/layers/transformer.cc.o
+[ 36%] Building CXX object CMakeFiles/ctranslate2.dir/src/models/whisper.cc.o
+[ 37%] Building CXX object CMakeFiles/ctranslate2.dir/src/types.cc.o
+[ 37%] Building CXX object CMakeFiles/ctranslate2.dir/src/utils.cc.o
+[ 38%] Building CXX object CMakeFiles/ctranslate2.dir/src/cuda/allocator.cc.o
+[ 38%] Building CXX object CMakeFiles/ctranslate2.dir/src/cuda/graph_runner.cc.o
+[ 38%] Building CXX object CMakeFiles/ctranslate2.dir/src/cuda/utils.cc.o
+../src/layers/transformer.cc: In lambda function:
+../src/layers/transformer.cc:1152:24: warning: unused variable ‘device’ [-Wunused-variable]
+ 1152 |             const auto device = outputs->device();
+      |                        ^~~~~~
+[ 38%] Linking CXX shared library libctranslate2.so
+[ 95%] Built target ctranslate2
+Consolidate compiler generated dependencies of target benchmark_ops
+[ 95%] Linking CXX executable benchmark_ops
+Consolidate compiler generated dependencies of target ctranslate2_test
+[ 96%] Building CXX object tests/CMakeFiles/ctranslate2_test.dir/env_test.cc.o
+[ 96%] Built target benchmark_ops
+[ 96%] Linking CXX executable ctranslate2_test
+[100%] Built target ctranslate2_test

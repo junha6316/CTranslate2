@@ -1,0 +1,21 @@
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+r4base_1 b1 n=4: 289.84 ms (min 287.34)
+r4base_1 b5 n=1: 77.27 ms (min 76.00)
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+r5_1 b1 n=4: 284.18 ms (min 282.10)
+r5_1 b5 n=1: 76.40 ms (min 75.36)
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+r4base_2 b1 n=4: 286.77 ms (min 284.38)
+r4base_2 b5 n=1: 76.51 ms (min 75.46)
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+r5_2 b1 n=4: 286.87 ms (min 284.53)
+r5_2 b5 n=1: 76.49 ms (min 75.31)
+ctranslate2.__file__ = /home/ubuntu/w/bisect/python/ctranslate2/__init__.py
+r4base_3 b1 n=4: 289.60 ms (min 285.88)
+r4base_3 b5 n=1: 76.80 ms (min 75.62)
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py
+r5_3 b1 n=4: 288.02 ms (min 283.27)
+r5_3 b5 n=1: 77.02 ms (min 76.20)
+b1 n=4: r4base [289.8, 286.8, 289.6] r5 [284.2, 286.9, 288.0] delta-of-medians -0.94%
+b5 n=1: r4base [77.3, 76.5, 76.8] r5 [76.4, 76.5, 77.0] delta-of-medians -0.41%
+ONEDONE
