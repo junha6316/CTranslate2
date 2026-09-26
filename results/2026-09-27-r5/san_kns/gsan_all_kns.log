@@ -1,0 +1,26 @@
+=== sanitizer all-races, excluding nchwToNhwcKernel 17:31:13
+--- gsanA_ref_eager: ========= ERROR SUMMARY: 14275 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_ref_g128: ========= ERROR SUMMARY: 12771 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_R32_b5: ========= ERROR SUMMARY: 11683 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_R32_b1: ========= ERROR SUMMARY: 7459 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_R128_d1: ========= ERROR SUMMARY: 13379 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_pp: ========= ERROR SUMMARY: 12067 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+=== small beam5 padding tax b (std:0): eager / pad@128 / pad@448, two rounds 17:32:06
+gb_eager small std:0 b5: 217.0 ms (min 216.6 max 218.8) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad128 small std:0 b5: 223.6 ms (min 223.0 max 224.4) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad448 small std:0 b5: 253.8 ms (min 253.7 max 254.9) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_eager small std:0 b5: 216.7 ms (min 216.4 max 218.8) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad128 small std:0 b5: 227.1 ms (min 225.3 max 228.5) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad448 small std:0 b5: 254.2 ms (min 254.0 max 255.0) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None

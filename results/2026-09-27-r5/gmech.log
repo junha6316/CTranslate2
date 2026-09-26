@@ -1,0 +1,132 @@
+=== G-mech logs (VERBOSE=2, 2 decodes per process) 16:46:05
+--- R=64 TIERS=+64 beam5: tier-lines=2 captures=8 falling-back=0 does-not-fit=0 summaries=2
+[debug] CUDA graphs: captured step 6 into slot 0 (initial)
+[debug] CUDA graphs: captured step 7 into slot 1 (initial)
+[debug] CUDA graphs: tier 64 -> 128 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19494048
+[debug] CUDA graphs: decode summary (steps=92, captures=4, replays=83, transitions=1, segment_replays=[56,27], tiers=[64->128@64], phase=Ready, disabled=none)
+[debug] CUDA graphs: captured step 6 into slot 0 (initial)
+[debug] CUDA graphs: captured step 7 into slot 1 (initial)
+[debug] CUDA graphs: tier 64 -> 128 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+DECODE 1 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19494048
+[debug] CUDA graphs: decode summary (steps=92, captures=4, replays=83, transitions=1, segment_replays=[56,27], tiers=[64->128@64], phase=Ready, disabled=none)
+--- R=64 TIERS=+64 beam1: tier-lines=2 captures=4 falling-back=0 does-not-fit=0 summaries=2
+[debug] CUDA graphs: captured step 5 into slot 0 (initial)
+[debug] CUDA graphs: tier 64 -> 128 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19522655
+[debug] CUDA graphs: decode summary (steps=85, captures=2, replays=79, transitions=1, segment_replays=[58,21], tiers=[64->128@64], phase=Ready, disabled=none)
+[debug] CUDA graphs: captured step 5 into slot 0 (initial)
+[debug] CUDA graphs: tier 64 -> 128 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 0 (re-entry)
+DECODE 1 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19522655
+[debug] CUDA graphs: decode summary (steps=85, captures=2, replays=79, transitions=1, segment_replays=[58,21], tiers=[64->128@64], phase=Ready, disabled=none)
+--- R=32 TIERS=+32 beam5: tier-lines=4 captures=12 falling-back=0 does-not-fit=0 summaries=2
+[debug] CUDA graphs: captured step 6 into slot 0 (initial)
+[debug] CUDA graphs: captured step 7 into slot 1 (initial)
+[debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19475447
+[debug] CUDA graphs: decode summary (steps=92, captures=6, replays=80, transitions=2, segment_replays=[24,29,27], tiers=[32->64@32,64->96@64], phase=Ready, disabled=none)
+[debug] CUDA graphs: captured step 6 into slot 0 (initial)
+[debug] CUDA graphs: captured step 7 into slot 1 (initial)
+[debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+DECODE 1 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19475447
+[debug] CUDA graphs: decode summary (steps=92, captures=6, replays=80, transitions=2, segment_replays=[24,29,27], tiers=[32->64@32,64->96@64], phase=Ready, disabled=none)
+--- R=32 TIERS=+32 beam1: tier-lines=4 captures=6 falling-back=0 does-not-fit=0 summaries=2
+[debug] CUDA graphs: captured step 5 into slot 0 (initial)
+[debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 33 into slot 0 (re-entry)
+[debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19522655
+[debug] CUDA graphs: decode summary (steps=85, captures=3, replays=77, transitions=2, segment_replays=[26,30,21], tiers=[32->64@32,64->96@64], phase=Ready, disabled=none)
+[debug] CUDA graphs: captured step 5 into slot 0 (initial)
+[debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 33 into slot 0 (re-entry)
+[debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[debug] CUDA graphs: captured step 65 into slot 0 (re-entry)
+DECODE 1 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19522655
+[debug] CUDA graphs: decode summary (steps=85, captures=3, replays=77, transitions=2, segment_replays=[26,30,21], tiers=[32->64@32,64->96@64], phase=Ready, disabled=none)
+=== G-mech nsys instantiate counts, 7 decodes 16:46:13
+[R=64 +64 beam5]
+    cudaGraphLaunch calls=609
+    cudaGraphInstantiate calls=28
+    cudaMallocAsync calls=2810
+[R=64 +64 beam1]
+    cudaGraphLaunch calls=567
+    cudaMallocAsync calls=2253
+    cudaGraphInstantiate calls=14
+[R=32 +32 beam5]
+    cudaGraphLaunch calls=602
+    cudaGraphInstantiate calls=42
+    cudaMallocAsync calls=3160
+=== G-mech walls (std:0 ts-on, beam 5 and 1), two interleaved rounds 16:46:32
+gm_sc64 small std:0 b5: 205.0 ms (min 204.8 max 205.7) 84 tok score=-0.194754 | tr=0 cap=2 rep=56 seg=[56] tiers=[] dis=ineligible step mid-decode
+gm_sc64 small std:0 b1: 155.3 ms (min 155.1 max 155.7) 84 tok score=-0.195227 | tr=0 cap=1 rep=58 seg=[58] tiers=[] dis=ineligible step mid-decode
+wrote gm_sc64_1.json 2
+gm_t64 small std:0 b5: 201.0 ms (min 200.8 max 202.1) 84 tok score=-0.19494 | tr=1 cap=4 rep=83 seg=[56, 27] tiers=[64->128@64] dis=none
+gm_t64 small std:0 b1: 151.4 ms (min 151.3 max 151.8) 84 tok score=-0.195227 | tr=1 cap=2 rep=79 seg=[58, 21] tiers=[64->128@64] dis=none
+wrote gm_t64_1.json 2
+gm_t64w small std:0 b5: 201.7 ms (min 201.6 max 202.9) 84 tok score=-0.19494 | tr=1 cap=4 rep=80 seg=[56, 24] tiers=[64->128@64] dis=none
+gm_t64w small std:0 b1: 151.9 ms (min 151.8 max 152.2) 84 tok score=-0.195227 | tr=1 cap=2 rep=77 seg=[58, 19] tiers=[64->128@64] dis=none
+wrote gm_t64w_1.json 2
+gm_sc32 small std:0 b5: 214.1 ms (min 212.9 max 215.4) 84 tok score=-0.194754 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gm_sc32 small std:0 b1: 162.9 ms (min 162.5 max 163.8) 84 tok score=-0.195227 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gm_sc32_1.json 2
+gm_t32 small std:0 b5: 202.9 ms (min 202.8 max 204.7) 84 tok score=-0.194754 | tr=2 cap=6 rep=80 seg=[24, 29, 27] tiers=[32->64@32,64->96@64] dis=none
+gm_t32 small std:0 b1: 153.1 ms (min 153.0 max 153.4) 84 tok score=-0.195227 | tr=2 cap=3 rep=77 seg=[26, 30, 21] tiers=[32->64@32,64->96@64] dis=none
+wrote gm_t32_1.json 2
+gm_sc128 small std:0 b5: 201.4 ms (min 201.3 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gm_sc128 small std:0 b1: 150.9 ms (min 149.9 max 151.0) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+wrote gm_sc128_1.json 2
+gm_sc128 small std:0 b5: 201.4 ms (min 201.4 max 201.6) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gm_sc128 small std:0 b1: 150.9 ms (min 149.9 max 151.0) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+wrote gm_sc128_2.json 2
+gm_t32 small std:0 b5: 203.0 ms (min 202.8 max 204.5) 84 tok score=-0.194754 | tr=2 cap=6 rep=80 seg=[24, 29, 27] tiers=[32->64@32,64->96@64] dis=none
+gm_t32 small std:0 b1: 153.1 ms (min 152.8 max 153.3) 84 tok score=-0.195227 | tr=2 cap=3 rep=77 seg=[26, 30, 21] tiers=[32->64@32,64->96@64] dis=none
+wrote gm_t32_2.json 2
+gm_sc32 small std:0 b5: 213.1 ms (min 213.0 max 214.9) 84 tok score=-0.194754 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gm_sc32 small std:0 b1: 162.9 ms (min 162.6 max 163.0) 84 tok score=-0.195227 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gm_sc32_2.json 2
+gm_t64w small std:0 b5: 201.7 ms (min 201.6 max 202.8) 84 tok score=-0.19494 | tr=1 cap=4 rep=80 seg=[56, 24] tiers=[64->128@64] dis=none
+gm_t64w small std:0 b1: 151.9 ms (min 151.8 max 152.1) 84 tok score=-0.195227 | tr=1 cap=2 rep=77 seg=[58, 19] tiers=[64->128@64] dis=none
+wrote gm_t64w_2.json 2
+gm_t64 small std:0 b5: 201.2 ms (min 201.0 max 202.5) 84 tok score=-0.19494 | tr=1 cap=4 rep=83 seg=[56, 27] tiers=[64->128@64] dis=none
+gm_t64 small std:0 b1: 151.7 ms (min 151.6 max 151.9) 84 tok score=-0.195227 | tr=1 cap=2 rep=79 seg=[58, 21] tiers=[64->128@64] dis=none
+wrote gm_t64_2.json 2
+gm_sc64 small std:0 b5: 205.0 ms (min 204.8 max 206.0) 84 tok score=-0.194754 | tr=0 cap=2 rep=56 seg=[56] tiers=[] dis=ineligible step mid-decode
+gm_sc64 small std:0 b1: 155.2 ms (min 155.0 max 155.4) 84 tok score=-0.195227 | tr=0 cap=1 rep=58 seg=[58] tiers=[] dis=ineligible step mid-decode
+wrote gm_sc64_2.json 2
+sc64   b5: 205.05 ms  runs=[205.04, 205.05] ntok=84 score=-0.19475447 tr=0 cap=2 rep=56 seg=[56]
+sc64   b1: 155.22 ms  runs=[155.29, 155.16] ntok=84 score=-0.19522655 tr=0 cap=1 rep=58 seg=[58]
+t64    b5: 201.12 ms  runs=[201.02, 201.21] ntok=84 score=-0.19494048 tr=1 cap=4 rep=83 seg=[56, 27]
+t64    b1: 151.55 ms  runs=[151.42, 151.68] ntok=84 score=-0.19522655 tr=1 cap=2 rep=79 seg=[58, 21]
+t64w   b5: 201.68 ms  runs=[201.67, 201.68] ntok=84 score=-0.19494048 tr=1 cap=4 rep=80 seg=[56, 24]
+t64w   b1: 151.88 ms  runs=[151.91, 151.86] ntok=84 score=-0.19522655 tr=1 cap=2 rep=77 seg=[58, 19]
+sc32   b5: 213.58 ms  runs=[214.07, 213.1] ntok=84 score=-0.19475447 tr=0 cap=2 rep=24 seg=[24]
+sc32   b1: 162.91 ms  runs=[162.89, 162.93] ntok=84 score=-0.19522655 tr=0 cap=1 rep=26 seg=[26]
+t32    b5: 202.94 ms  runs=[202.87, 203.01] ntok=84 score=-0.19475447 tr=2 cap=6 rep=80 seg=[24, 29, 27]
+t32    b1: 153.12 ms  runs=[153.14, 153.1] ntok=84 score=-0.19522655 tr=2 cap=3 rep=77 seg=[26, 30, 21]
+sc128  b5: 201.44 ms  runs=[201.43, 201.45] ntok=84 score=-0.19512649 tr=0 cap=2 rep=86 seg=[86]
+sc128  b1: 150.89 ms  runs=[150.91, 150.87] ntok=84 score=-0.19509879 tr=0 cap=1 rep=81 seg=[81]
+beam5: tiers@64+64 201.12 vs single-cap@64 205.05: gain +3.93 ms (need >= 1.5) -> PASS;  K ~= 27x - 1.06 - gain = 1.92 ms (x=0.256)
+beam5: fast 201.12 vs warmup re-entry 201.68: fast-warmup -0.56 ms (need <= +0.3) -> PASS
+beam5: tiers@32+32 202.94 vs single-cap@32 213.58: gain +10.64 ms; graphs@128 201.44
+beam1: tiers@64+64 151.55 vs single-cap@64 155.22: gain +3.67 ms (need >= 1.0) -> PASS;  K ~= 27x - 1.06 - gain = 2.18 ms (x=0.256)
+beam1: fast 151.55 vs warmup re-entry 151.88: fast-warmup -0.33 ms (need <= +0.3) -> PASS
+beam1: tiers@32+32 153.12 vs single-cap@32 162.91: gain +9.79 ms; graphs@128 150.89
+=== GMECHDONE 16:47:39 ===

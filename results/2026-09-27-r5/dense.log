@@ -1,0 +1,16 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+pw000-060@2.0: 30.01 s, eager beam5 ntok=183 KEEP
+pw060-120@2.0: 30.00 s, eager beam5 ntok=199 KEEP
+pw120-180@2.0: 30.00 s, eager beam5 ntok=169 KEEP
+pw030-090@2.0: 30.01 s, eager beam5 ntok=184 KEEP
+pw090-150@2.0: 30.00 s, eager beam5 ntok=204 KEEP
+pw143-203@2.0: 30.01 s, eager beam5 ntok=188 KEEP
+jfk000-055@1.84: 29.91 s, eager beam5 ntok=109 drop
+pw000-056@1.87: 29.94 s, eager beam5 ntok=189 KEEP
+pw100-157@1.9: 30.01 s, eager beam5 ntok=185 KEEP
+pw180-203+jfk000-033@1.87: 29.95 s, eager beam5 ntok=143 drop
+pw045-100@1.84: 29.89 s, eager beam5 ntok=141 drop
+pw150-208@1.94: 29.90 s, eager beam5 ntok=198 KEEP
+kept [('pw000-060@2.0', 183), ('pw060-120@2.0', 199), ('pw120-180@2.0', 169), ('pw030-090@2.0', 184), ('pw090-150@2.0', 204)]
+wrote dense_80.npy / dense_128.npy: 5 windows
+DONE

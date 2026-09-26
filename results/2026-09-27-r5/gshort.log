@@ -1,0 +1,73 @@
+=== G-short walls: ABC x3 (A=ref graphs@128, B=tip +64, C=tip TIERS unset) 16:43:45
+gs_ref small std:0 b5: 201.6 ms (min 201.4 max 201.7) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0:nots b5: 62.0 ms (min 61.0 max 62.0) 16 tok score=-0.334717 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0 b1: 150.1 ms (min 149.9 max 150.3) 84 tok score=-0.195099 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0:nots b1: 36.0 ms (min 36.0 max 36.0) 5 tok score=-0.656738 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote gs_ref_1.json 4
+gs_t64 small std:0 b5: 201.5 ms (min 201.4 max 201.6) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gs_t64 small std:0:nots b5: 62.0 ms (min 61.0 max 62.1) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+gs_t64 small std:0 b1: 150.0 ms (min 149.9 max 150.2) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gs_t64 small std:0:nots b1: 36.0 ms (min 36.0 max 36.0) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote gs_t64_1.json 4
+gs_tun small std:0 b5: 201.5 ms (min 201.4 max 201.6) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gs_tun small std:0:nots b5: 62.0 ms (min 61.1 max 62.1) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+gs_tun small std:0 b1: 150.1 ms (min 149.9 max 150.2) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gs_tun small std:0:nots b1: 36.0 ms (min 36.0 max 36.1) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote gs_tun_1.json 4
+gs_ref small std:0 b5: 201.5 ms (min 201.4 max 201.6) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0:nots b5: 62.0 ms (min 61.1 max 62.0) 16 tok score=-0.334717 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0 b1: 150.0 ms (min 149.9 max 150.3) 84 tok score=-0.195099 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0:nots b1: 36.0 ms (min 36.0 max 36.0) 5 tok score=-0.656738 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote gs_ref_2.json 4
+gs_t64 small std:0 b5: 201.5 ms (min 201.5 max 201.6) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gs_t64 small std:0:nots b5: 62.0 ms (min 61.1 max 62.1) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+gs_t64 small std:0 b1: 150.0 ms (min 149.9 max 150.2) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gs_t64 small std:0:nots b1: 36.0 ms (min 36.0 max 36.0) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote gs_t64_2.json 4
+gs_tun small std:0 b5: 201.6 ms (min 201.5 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gs_tun small std:0:nots b5: 62.0 ms (min 61.1 max 62.1) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+gs_tun small std:0 b1: 150.0 ms (min 149.8 max 150.4) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gs_tun small std:0:nots b1: 36.0 ms (min 36.0 max 36.2) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote gs_tun_2.json 4
+gs_ref small std:0 b5: 201.6 ms (min 201.5 max 201.7) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0:nots b5: 61.9 ms (min 61.0 max 62.0) 16 tok score=-0.334717 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0 b1: 150.0 ms (min 149.9 max 150.2) 84 tok score=-0.195099 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gs_ref small std:0:nots b1: 36.0 ms (min 36.0 max 36.0) 5 tok score=-0.656738 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote gs_ref_3.json 4
+gs_t64 small std:0 b5: 201.7 ms (min 201.5 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gs_t64 small std:0:nots b5: 62.1 ms (min 61.1 max 62.2) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+gs_t64 small std:0 b1: 150.2 ms (min 150.0 max 150.4) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gs_t64 small std:0:nots b1: 36.0 ms (min 36.0 max 36.1) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote gs_t64_3.json 4
+gs_tun small std:0 b5: 201.9 ms (min 201.8 max 202.0) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+gs_tun small std:0:nots b5: 62.1 ms (min 61.2 max 62.3) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+gs_tun small std:0 b1: 150.3 ms (min 149.9 max 150.5) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gs_tun small std:0:nots b1: 36.0 ms (min 36.0 max 36.3) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote gs_tun_3.json 4
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+std:0       b5: ref 201.56 | t64 201.54 (0.9999x) runs=[201.54, 201.5, 201.65] tok+score=same transitions=[0] | tun 201.59 (1.0001x) runs=[201.53, 201.59, 201.87] tok+score=same transitions=[0]
+std:0       b1: ref 150.05 | t64 150.01 (0.9997x) runs=[149.96, 150.01, 150.24] tok+score=same transitions=[0] | tun 150.10 (1.0003x) runs=[150.1, 149.99, 150.31] tok+score=same transitions=[0]
+std:0:nots  b5: ref 61.95 | t64 62.01 (1.0010x) runs=[62.01, 61.98, 62.05] tok+score=same transitions=[0] | tun 62.00 (1.0008x) runs=[62.0, 61.99, 62.14] tok+score=same transitions=[0]
+std:0:nots  b1: ref 36.00 | t64 36.00 (1.0000x) runs=[35.98, 36.0, 36.02] tok+score=same transitions=[0] | tun 36.04 (1.0011x) runs=[36.04, 36.02, 36.04] tok+score=same transitions=[0]
+G-short wall/token verdict: PASS
+=== G-short tokens: 9 standard windows ts on/off x beam 1/5 16:44:45
+cw_ref.json vs cw_t64.json: configs=36 (A=36 B=36) tokens_identical=36 tokens+scores_identical=36 max|dscore|=0 -> BITIDENTICAL
+cw_ref.json vs cw_tun.json: configs=36 (A=36 B=36) tokens_identical=36 tokens+scores_identical=36 max|dscore|=0 -> BITIDENTICAL
+tier transitions in cw_t64 / cw_tun summaries (expect only 0):
+cw_t64.json [0] max ntok 100 n_summaries 72
+cw_tun.json [0] max ntok 100 n_summaries 72
+=== G-short nsys: beam5 ts-on, 7 decodes 16:45:52
+[ref ]
+    cudaLaunchKernel calls=19197
+    cudaGraphLaunch calls=616
+    cudaMallocAsync calls=2460
+    cudaGraphInstantiate calls=14
+    cudaFreeAsync calls=2460
+[r3 CT2_CUDA_GRAPHS_TIERS=+64]
+    cudaLaunchKernel calls=19197
+    cudaGraphLaunch calls=616
+    cudaMallocAsync calls=2460
+    cudaGraphInstantiate calls=14
+    cudaFreeAsync calls=2460
+=== GSHORTDONE 16:46:05 ===

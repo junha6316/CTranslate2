@@ -1,0 +1,8 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gsc_R128 dense:1 b1: 199 tok score=-0.14000466 transitions=2 captures=3 replays=192 seg=[122, 62, 8] disabled=none
+gsc_R128 dense:1 b5: 199 tok score=-0.13583542 transitions=2 captures=6 replays=188 seg=[120, 61, 7] disabled=none
+gsc_R128 dense:4 b1: 204 tok score=-0.17167048 transitions=2 captures=3 replays=197 seg=[122, 62, 13] disabled=none
+gsc_R128 dense:4 b5: 204 tok score=-0.10929841 transitions=2 captures=6 replays=193 seg=[120, 61, 12] disabled=none
+gsc_R128 dense:5 b1: 196 tok score=-0.12619093 transitions=2 captures=3 replays=189 seg=[122, 62, 5] disabled=none
+gsc_R128 dense:5 b5: 198 tok score=-0.1467803 transitions=2 captures=6 replays=187 seg=[120, 61, 6] disabled=none
+wrote gsc_R128.json 6

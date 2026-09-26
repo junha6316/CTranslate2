@@ -1,0 +1,18 @@
+=== G-tokens 17:01:28
+--- R=64 TIERS=+64 [std:0]: CHECK mismatch lines (log): 0
+gt_t64s.json vs gt_t64s_chk.json: configs=2 (A=2 B=2) tokens_identical=2 tokens+scores_identical=2 max|dscore|=0 -> BITIDENTICAL
+   CHECK probe mismatches 0 transitions per row [('std:0', 1, 1), ('std:0', 5, 1)]
+gt_t64s_eager.json vs gt_t64s.json: rows=2 exact=2 timestamp-only=0 text-diff=0 max|dscore|=0.000207
+--- R=32 TIERS=+32 [std:0 std:1 std:2]: CHECK mismatch lines (log): 0
+gt_t32s.json vs gt_t32s_chk.json: configs=6 (A=6 B=6) tokens_identical=6 tokens+scores_identical=6 max|dscore|=0 -> BITIDENTICAL
+   CHECK probe mismatches 0 transitions per row [('std:0', 1, 2), ('std:0', 5, 2), ('std:1', 1, 2), ('std:1', 5, 2), ('std:2', 1, 2), ('std:2', 5, 2)]
+gt_t32s_eager.json vs gt_t32s.json: rows=6 exact=6 timestamp-only=0 text-diff=0 max|dscore|=0.000406
+--- R=128 TIERS=+64 [dense:0 dense:1 dense:2 dense:3 dense:4 dense:5 prev:64 prev:128 prev:192 prev:223]: CHECK mismatch lines (log): 0
+gt_t128l.json vs gt_t128l_chk.json: configs=20 (A=20 B=20) tokens_identical=20 tokens+scores_identical=20 max|dscore|=0 -> BITIDENTICAL
+   CHECK probe mismatches 0 transitions per row [('dense:0', 1, 1), ('dense:0', 5, 1), ('dense:1', 1, 2), ('dense:1', 5, 2), ('dense:2', 1, 2), ('dense:2', 5, 1), ('dense:3', 1, 1), ('dense:3', 5, 1), ('dense:4', 1, 2), ('dense:4', 5, 2), ('dense:5', 1, 2), ('dense:5', 5, 2), ('prev:64', 1, 1), ('prev:64', 5, 1), ('prev:128', 1, 1), ('prev:128', 5, 1), ('prev:192', 1, 1), ('prev:192', 5, 1), ('prev:223', 1, 1), ('prev:223', 5, 1)]
+  TS-ONLY ('dense:2', 5) ntok 169/169 |dscore|=0.000185
+  TEXT-DIFF ('dense:3', 1) ntok 178/183 text-token WER=0.0318 |dscore|=0.00602
+  TEXT-DIFF ('dense:3', 5) ntok 184/183 text-token WER=0.0061 |dscore|=0.00023
+  TS-ONLY ('prev:192', 5) ntok 84/82 |dscore|=0.00632
+gt_t128l_eager.json vs gt_t128l.json: rows=20 exact=16 timestamp-only=2 text-diff=2 max|dscore|=0.00632
+=== GTOKENSDONE 17:03:22 ===

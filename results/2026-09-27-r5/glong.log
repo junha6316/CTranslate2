@@ -1,0 +1,399 @@
+=== gl round 1 17:03:22 model=small
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_eager small dense:0 b5: 422.4 ms (min 420.9 max 423.9) 183 tok score=-0.120816 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:1 b5: 456.3 ms (min 455.2 max 460.1) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:2 b5: 389.0 ms (min 387.2 max 390.9) 169 tok score=-0.163739 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:3 b5: 422.4 ms (min 420.4 max 426.3) 184 tok score=-0.145465 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:4 b5: 465.4 ms (min 464.8 max 466.9) 204 tok score=-0.109298 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:5 b5: 453.0 ms (min 451.1 max 454.7) 198 tok score=-0.14678 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:64 b5: 212.6 ms (min 212.2 max 213.8) 84 tok score=-0.153274 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:128 b5: 222.5 ms (min 222.2 max 223.4) 86 tok score=-0.156523 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:192 b5: 228.8 ms (min 228.0 max 231.1) 84 tok score=-0.170387 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:223 b5: 224.7 ms (min 224.5 max 226.4) 82 tok score=-0.172351 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:0 b1: 330.6 ms (min 330.4 max 331.1) 182 tok score=-0.126264 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:1 b1: 359.5 ms (min 359.1 max 361.3) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:2 b1: 355.9 ms (min 355.7 max 356.3) 197 tok score=-0.190846 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:3 b1: 324.2 ms (min 323.7 max 324.4) 178 tok score=-0.153905 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:4 b1: 367.4 ms (min 367.2 max 367.7) 204 tok score=-0.171601 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:5 b1: 354.1 ms (min 353.6 max 354.5) 196 tok score=-0.126097 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:64 b1: 168.2 ms (min 168.0 max 170.0) 84 tok score=-0.153283 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:128 b1: 171.0 ms (min 170.9 max 171.3) 85 tok score=-0.168507 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:192 b1: 171.3 ms (min 171.2 max 171.4) 84 tok score=-0.170714 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:223 b1: 168.6 ms (min 168.4 max 170.5) 82 tok score=-0.172288 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote gl_eager_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc128 small dense:0 b5: 397.2 ms (min 396.6 max 399.4) 183 tok score=-0.120816 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:1 b5: 431.7 ms (min 430.6 max 433.4) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:2 b5: 363.6 ms (min 363.5 max 364.5) 169 tok score=-0.163739 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:3 b5: 396.9 ms (min 396.8 max 399.4) 184 tok score=-0.145126 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:4 b5: 443.1 ms (min 442.5 max 444.4) 204 tok score=-0.109222 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:5 b5: 429.1 ms (min 428.2 max 430.7) 198 tok score=-0.146859 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:64 b5: 202.6 ms (min 201.6 max 203.5) 84 tok score=-0.152902 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:128 b5: 219.4 ms (min 219.2 max 219.8) 86 tok score=-0.156432 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:192 b5: 220.8 ms (min 219.9 max 221.9) 82 tok score=-0.164253 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:223 b5: 220.7 ms (min 220.4 max 221.5) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:0 b1: 306.8 ms (min 305.6 max 308.7) 182 tok score=-0.126238 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:1 b1: 335.4 ms (min 334.6 max 335.5) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:2 b1: 331.7 ms (min 331.1 max 332.0) 197 tok score=-0.190864 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:3 b1: 308.1 ms (min 307.0 max 308.6) 183 tok score=-0.147889 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:4 b1: 343.8 ms (min 342.7 max 344.4) 204 tok score=-0.17167 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:5 b1: 330.2 ms (min 329.2 max 330.5) 196 tok score=-0.126191 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:64 b1: 156.9 ms (min 156.9 max 157.8) 84 tok score=-0.153316 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:128 b1: 167.9 ms (min 167.7 max 168.7) 85 tok score=-0.168203 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:192 b1: 168.7 ms (min 167.8 max 169.0) 84 tok score=-0.170523 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:223 b1: 164.8 ms (min 164.7 max 165.7) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gl_sc128_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_t64 small dense:0 b5: 384.5 ms (min 384.3 max 386.6) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64 small dense:1 b5: 417.6 ms (min 416.9 max 417.9) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:2 b5: 355.5 ms (min 355.1 max 356.7) 169 tok score=-0.163554 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->192@128] dis=none
+gl_t64 small dense:3 b5: 385.7 ms (min 384.9 max 386.4) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64 small dense:4 b5: 428.9 ms (min 428.0 max 430.2) 204 tok score=-0.109298 | tr=2 cap=6 rep=193 seg=[120, 61, 12] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:5 b5: 415.9 ms (min 414.7 max 416.7) 198 tok score=-0.14678 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small prev:64 b5: 198.5 ms (min 198.2 max 199.7) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->192@128] dis=none
+gl_t64 small prev:128 b5: 207.9 ms (min 207.4 max 208.4) 86 tok score=-0.156432 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->224@160] dis=none
+gl_t64 small prev:192 b5: 209.0 ms (min 208.0 max 209.9) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+gl_t64 small prev:223 b5: 209.2 ms (min 209.0 max 210.0) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->320@256] dis=none
+gl_t64 small dense:0 b1: 294.1 ms (min 293.8 max 294.8) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+gl_t64 small dense:1 b1: 321.0 ms (min 320.3 max 321.3) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:2 b1: 317.6 ms (min 317.3 max 318.3) 197 tok score=-0.190864 | tr=2 cap=3 rep=190 seg=[122, 62, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:3 b1: 296.0 ms (min 295.5 max 296.3) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+gl_t64 small dense:4 b1: 327.9 ms (min 327.5 max 328.5) 204 tok score=-0.17167 | tr=2 cap=3 rep=197 seg=[122, 62, 13] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:5 b1: 316.5 ms (min 315.9 max 316.8) 196 tok score=-0.126191 | tr=2 cap=3 rep=189 seg=[122, 62, 5] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small prev:64 b1: 153.0 ms (min 152.8 max 154.0) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->192@128] dis=none
+gl_t64 small prev:128 b1: 157.0 ms (min 155.9 max 157.3) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->224@160] dis=none
+gl_t64 small prev:192 b1: 156.6 ms (min 156.5 max 158.5) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+gl_t64 small prev:223 b1: 154.1 ms (min 154.0 max 155.1) 82 tok score=-0.172108 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->320@256] dis=none
+wrote gl_t64_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_t64w small dense:0 b5: 385.1 ms (min 384.8 max 387.3) 183 tok score=-0.120816 | tr=1 cap=4 rep=173 seg=[120, 53] tiers=[128->192@128] dis=none
+gl_t64w small dense:1 b5: 418.9 ms (min 418.6 max 419.1) 199 tok score=-0.135835 | tr=2 cap=6 rep=182 seg=[120, 58, 4] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:2 b5: 355.9 ms (min 355.6 max 357.2) 169 tok score=-0.163554 | tr=1 cap=4 rep=158 seg=[120, 38] tiers=[128->192@128] dis=none
+gl_t64w small dense:3 b5: 386.6 ms (min 385.2 max 387.5) 183 tok score=-0.145236 | tr=1 cap=4 rep=173 seg=[120, 53] tiers=[128->192@128] dis=none
+gl_t64w small dense:4 b5: 429.2 ms (min 428.5 max 430.8) 204 tok score=-0.109298 | tr=2 cap=6 rep=187 seg=[120, 58, 9] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:5 b5: 416.8 ms (min 416.5 max 417.9) 198 tok score=-0.14678 | tr=2 cap=6 rep=181 seg=[120, 58, 3] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small prev:64 b5: 199.4 ms (min 199.2 max 200.4) 84 tok score=-0.152902 | tr=1 cap=4 rep=75 seg=[55, 20] tiers=[128->192@128] dis=none
+gl_t64w small prev:128 b5: 208.7 ms (min 208.4 max 209.6) 86 tok score=-0.156432 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[160->224@160] dis=none
+gl_t64w small prev:192 b5: 210.2 ms (min 209.2 max 211.2) 82 tok score=-0.164062 | tr=1 cap=4 rep=73 seg=[23, 50] tiers=[224->288@224] dis=none
+gl_t64w small prev:223 b5: 210.2 ms (min 210.1 max 211.0) 82 tok score=-0.172161 | tr=1 cap=4 rep=72 seg=[24, 48] tiers=[256->320@256] dis=none
+gl_t64w small dense:0 b1: 294.8 ms (min 294.6 max 296.1) 182 tok score=-0.126238 | tr=1 cap=2 rep=175 seg=[122, 53] tiers=[128->192@128] dis=none
+gl_t64w small dense:1 b1: 322.5 ms (min 321.7 max 322.6) 199 tok score=-0.140005 | tr=2 cap=3 rep=188 seg=[122, 60, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:2 b1: 318.8 ms (min 318.8 max 319.7) 197 tok score=-0.190864 | tr=2 cap=3 rep=186 seg=[122, 60, 4] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:3 b1: 296.9 ms (min 296.2 max 297.1) 183 tok score=-0.147889 | tr=1 cap=2 rep=176 seg=[122, 54] tiers=[128->192@128] dis=none
+gl_t64w small dense:4 b1: 329.4 ms (min 328.9 max 329.9) 204 tok score=-0.17167 | tr=2 cap=3 rep=193 seg=[122, 60, 11] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:5 b1: 317.8 ms (min 317.2 max 318.2) 196 tok score=-0.126191 | tr=2 cap=3 rep=185 seg=[122, 60, 3] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small prev:64 b1: 153.8 ms (min 153.5 max 154.8) 84 tok score=-0.153316 | tr=1 cap=2 rep=77 seg=[57, 20] tiers=[128->192@128] dis=none
+gl_t64w small prev:128 b1: 157.6 ms (min 156.6 max 157.9) 85 tok score=-0.168203 | tr=1 cap=2 rep=78 seg=[25, 53] tiers=[160->224@160] dis=none
+gl_t64w small prev:192 b1: 157.4 ms (min 157.1 max 159.0) 84 tok score=-0.170418 | tr=1 cap=2 rep=77 seg=[25, 52] tiers=[224->288@224] dis=none
+gl_t64w small prev:223 b1: 154.8 ms (min 154.8 max 155.6) 82 tok score=-0.172108 | tr=1 cap=2 rep=75 seg=[26, 49] tiers=[256->320@256] dis=none
+wrote gl_t64w_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_lad small dense:0 b5: 389.0 ms (min 388.8 max 389.8) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->256@128] dis=none
+gl_lad small dense:1 b5: 419.3 ms (min 418.9 max 419.9) 199 tok score=-0.136071 | tr=1 cap=4 rep=191 seg=[120, 71] tiers=[128->256@128] dis=none
+gl_lad small dense:2 b5: 358.8 ms (min 358.4 max 361.9) 169 tok score=-0.163739 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->256@128] dis=none
+gl_lad small dense:3 b5: 388.7 ms (min 388.5 max 389.7) 184 tok score=-0.145126 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->256@128] dis=none
+gl_lad small dense:4 b5: 430.1 ms (min 429.5 max 431.7) 204 tok score=-0.109222 | tr=1 cap=4 rep=196 seg=[120, 76] tiers=[128->256@128] dis=none
+gl_lad small dense:5 b5: 417.4 ms (min 417.2 max 419.8) 198 tok score=-0.146622 | tr=1 cap=4 rep=190 seg=[120, 70] tiers=[128->256@128] dis=none
+gl_lad small prev:64 b5: 200.2 ms (min 200.0 max 202.2) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->256@128] dis=none
+gl_lad small prev:128 b5: 209.4 ms (min 209.1 max 209.6) 86 tok score=-0.156523 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->256@160] dis=none
+gl_lad small prev:192 b5: 214.4 ms (min 214.0 max 216.2) 82 tok score=-0.164062 | tr=2 cap=6 rep=73 seg=[23, 29, 21] tiers=[224->256@224,256->448@256] dis=none
+gl_lad small prev:223 b5: 216.6 ms (min 216.5 max 217.3) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->448@256] dis=none
+gl_lad small dense:0 b1: 294.7 ms (min 294.5 max 294.9) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->256@128] dis=none
+gl_lad small dense:1 b1: 319.5 ms (min 319.4 max 319.7) 199 tok score=-0.140005 | tr=1 cap=2 rep=194 seg=[122, 72] tiers=[128->256@128] dis=none
+gl_lad small dense:2 b1: 316.6 ms (min 316.4 max 316.9) 197 tok score=-0.190864 | tr=1 cap=2 rep=192 seg=[122, 70] tiers=[128->256@128] dis=none
+gl_lad small dense:3 b1: 296.2 ms (min 296.0 max 296.5) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->256@128] dis=none
+gl_lad small dense:4 b1: 326.8 ms (min 326.7 max 327.0) 204 tok score=-0.17167 | tr=1 cap=2 rep=199 seg=[122, 77] tiers=[128->256@128] dis=none
+gl_lad small dense:5 b1: 315.0 ms (min 314.9 max 315.4) 196 tok score=-0.126191 | tr=1 cap=2 rep=191 seg=[122, 69] tiers=[128->256@128] dis=none
+gl_lad small prev:64 b1: 153.2 ms (min 153.1 max 154.1) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->256@128] dis=none
+gl_lad small prev:128 b1: 156.2 ms (min 156.1 max 157.1) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->256@160] dis=none
+gl_lad small prev:192 b1: 158.7 ms (min 158.6 max 159.5) 84 tok score=-0.170606 | tr=2 cap=3 rep=77 seg=[25, 30, 22] tiers=[224->256@224,256->448@256] dis=none
+gl_lad small prev:223 b1: 155.2 ms (min 155.1 max 156.1) 82 tok score=-0.172293 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->448@256] dis=none
+wrote gl_lad_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc256 small dense:0 b5: 404.1 ms (min 403.3 max 405.4) 183 tok score=-0.120645 | tr=0 cap=2 rep=179 seg=[179] tiers=[] dis=none
+gl_sc256 small dense:1 b5: 435.1 ms (min 434.5 max 436.1) 199 tok score=-0.136071 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+gl_sc256 small dense:2 b5: 373.1 ms (min 372.9 max 374.3) 169 tok score=-0.163646 | tr=0 cap=2 rep=164 seg=[164] tiers=[] dis=none
+gl_sc256 small dense:3 b5: 403.8 ms (min 403.5 max 404.9) 183 tok score=-0.145492 | tr=0 cap=2 rep=179 seg=[179] tiers=[] dis=none
+gl_sc256 small dense:4 b5: 444.9 ms (min 444.1 max 445.7) 204 tok score=-0.109375 | tr=0 cap=2 rep=199 seg=[199] tiers=[] dis=none
+gl_sc256 small dense:5 b5: 432.8 ms (min 432.3 max 434.5) 198 tok score=-0.147254 | tr=0 cap=2 rep=193 seg=[193] tiers=[] dis=none
+gl_sc256 small prev:64 b5: 205.8 ms (min 205.7 max 206.7) 84 tok score=-0.153088 | tr=0 cap=2 rep=81 seg=[81] tiers=[] dis=none
+gl_sc256 small prev:128 b5: 209.3 ms (min 209.0 max 210.2) 86 tok score=-0.156613 | tr=0 cap=2 rep=82 seg=[82] tiers=[] dis=none
+gl_sc256 small prev:192 b5: 216.8 ms (min 216.7 max 219.7) 84 tok score=-0.170294 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+gl_sc256 small prev:223 b5: 221.8 ms (min 221.2 max 223.1) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gl_sc256 small dense:0 b1: 294.1 ms (min 293.9 max 295.3) 182 tok score=-0.126211 | tr=0 cap=1 rep=179 seg=[179] tiers=[] dis=none
+gl_sc256 small dense:1 b1: 318.8 ms (min 318.7 max 320.8) 199 tok score=-0.139889 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+gl_sc256 small dense:2 b1: 316.7 ms (min 316.5 max 318.4) 197 tok score=-0.190831 | tr=0 cap=1 rep=194 seg=[194] tiers=[] dis=none
+gl_sc256 small dense:3 b1: 296.2 ms (min 296.0 max 298.1) 183 tok score=-0.147702 | tr=0 cap=1 rep=180 seg=[180] tiers=[] dis=none
+gl_sc256 small dense:4 b1: 326.8 ms (min 326.6 max 328.7) 204 tok score=-0.171568 | tr=0 cap=1 rep=201 seg=[201] tiers=[] dis=none
+gl_sc256 small dense:5 b1: 315.1 ms (min 314.9 max 316.9) 196 tok score=-0.126071 | tr=0 cap=1 rep=193 seg=[193] tiers=[] dis=none
+gl_sc256 small prev:64 b1: 152.4 ms (min 152.2 max 152.5) 84 tok score=-0.153305 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gl_sc256 small prev:128 b1: 155.0 ms (min 154.7 max 156.7) 85 tok score=-0.168203 | tr=0 cap=1 rep=82 seg=[82] tiers=[] dis=none
+gl_sc256 small prev:192 b1: 160.9 ms (min 160.8 max 161.7) 84 tok score=-0.170523 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+gl_sc256 small prev:223 b1: 165.7 ms (min 165.3 max 166.6) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gl_sc256_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc448 small dense:0 b5: 439.1 ms (min 439.0 max 440.3) 183 tok score=-0.121072 | tr=0 cap=2 rep=178 seg=[178] tiers=[] dis=none
+gl_sc448 small dense:1 b5: 475.1 ms (min 474.6 max 476.1) 199 tok score=-0.135914 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+gl_sc448 small dense:2 b5: 409.1 ms (min 408.1 max 409.3) 169 tok score=-0.163554 | tr=0 cap=2 rep=164 seg=[164] tiers=[] dis=none
+gl_sc448 small dense:3 b5: 442.4 ms (min 441.6 max 443.2) 184 tok score=-0.14538 | tr=0 cap=2 rep=179 seg=[179] tiers=[] dis=none
+gl_sc448 small dense:4 b5: 487.5 ms (min 486.6 max 489.5) 204 tok score=-0.109222 | tr=0 cap=2 rep=199 seg=[199] tiers=[] dis=none
+gl_sc448 small dense:5 b5: 473.1 ms (min 472.8 max 475.3) 198 tok score=-0.147017 | tr=0 cap=2 rep=193 seg=[193] tiers=[] dis=none
+gl_sc448 small prev:64 b5: 223.3 ms (min 223.2 max 226.0) 84 tok score=-0.153274 | tr=0 cap=2 rep=81 seg=[81] tiers=[] dis=none
+gl_sc448 small prev:128 b5: 226.5 ms (min 226.4 max 226.8) 86 tok score=-0.156432 | tr=0 cap=2 rep=82 seg=[82] tiers=[] dis=none
+gl_sc448 small prev:192 b5: 228.0 ms (min 227.8 max 228.9) 84 tok score=-0.17048 | tr=0 cap=2 rep=82 seg=[82] tiers=[] dis=none
+gl_sc448 small prev:223 b5: 221.6 ms (min 221.4 max 222.6) 82 tok score=-0.172161 | tr=0 cap=2 rep=79 seg=[79] tiers=[] dis=none
+gl_sc448 small dense:0 b1: 299.5 ms (min 298.9 max 300.7) 182 tok score=-0.126364 | tr=0 cap=1 rep=179 seg=[179] tiers=[] dis=none
+gl_sc448 small dense:1 b1: 324.2 ms (min 324.1 max 325.0) 199 tok score=-0.14009 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+gl_sc448 small dense:2 b1: 321.6 ms (min 321.1 max 322.3) 197 tok score=-0.190861 | tr=0 cap=1 rep=194 seg=[194] tiers=[] dis=none
+gl_sc448 small dense:3 b1: 293.0 ms (min 292.9 max 293.9) 178 tok score=-0.1539 | tr=0 cap=1 rep=175 seg=[175] tiers=[] dis=none
+gl_sc448 small dense:4 b1: 332.1 ms (min 331.3 max 332.5) 204 tok score=-0.17159 | tr=0 cap=1 rep=201 seg=[201] tiers=[] dis=none
+gl_sc448 small dense:5 b1: 319.8 ms (min 319.6 max 320.5) 196 tok score=-0.126083 | tr=0 cap=1 rep=193 seg=[193] tiers=[] dis=none
+gl_sc448 small prev:64 b1: 155.0 ms (min 154.1 max 155.4) 84 tok score=-0.152993 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gl_sc448 small prev:128 b1: 156.7 ms (min 156.5 max 157.6) 85 tok score=-0.168237 | tr=0 cap=1 rep=82 seg=[82] tiers=[] dis=none
+gl_sc448 small prev:192 b1: 156.6 ms (min 156.4 max 158.4) 84 tok score=-0.170591 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gl_sc448 small prev:223 b1: 154.2 ms (min 153.9 max 155.9) 82 tok score=-0.172081 | tr=0 cap=1 rep=79 seg=[79] tiers=[] dis=none
+wrote gl_sc448_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_t64p small dense:0 b5: 384.5 ms (min 384.3 max 386.6) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64p small dense:1 b5: 417.7 ms (min 417.0 max 418.1) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:2 b5: 355.3 ms (min 354.8 max 356.6) 169 tok score=-0.163554 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->192@128] dis=none
+gl_t64p small dense:3 b5: 385.4 ms (min 384.3 max 386.3) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64p small dense:4 b5: 428.6 ms (min 426.9 max 429.7) 204 tok score=-0.109298 | tr=2 cap=6 rep=193 seg=[120, 61, 12] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:5 b5: 415.9 ms (min 415.2 max 416.7) 198 tok score=-0.14678 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small prev:64 b5: 198.6 ms (min 198.2 max 199.4) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->192@128] dis=none
+gl_t64p small prev:128 b5: 207.8 ms (min 207.3 max 208.3) 86 tok score=-0.156432 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->224@160] dis=none
+gl_t64p small prev:192 b5: 209.2 ms (min 208.3 max 210.1) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+gl_t64p small prev:223 b5: 209.2 ms (min 209.2 max 210.1) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->320@256] dis=none
+gl_t64p small dense:0 b1: 294.2 ms (min 293.9 max 294.8) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+gl_t64p small dense:1 b1: 321.0 ms (min 320.4 max 321.3) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:2 b1: 317.5 ms (min 317.4 max 318.2) 197 tok score=-0.190864 | tr=2 cap=3 rep=190 seg=[122, 62, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:3 b1: 296.0 ms (min 295.3 max 296.1) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+gl_t64p small dense:4 b1: 328.0 ms (min 327.7 max 328.7) 204 tok score=-0.17167 | tr=2 cap=3 rep=197 seg=[122, 62, 13] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:5 b1: 316.5 ms (min 315.9 max 316.8) 196 tok score=-0.126191 | tr=2 cap=3 rep=189 seg=[122, 62, 5] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small prev:64 b1: 153.1 ms (min 152.9 max 154.0) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->192@128] dis=none
+gl_t64p small prev:128 b1: 157.1 ms (min 156.0 max 157.5) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->224@160] dis=none
+gl_t64p small prev:192 b1: 156.6 ms (min 156.5 max 158.6) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+gl_t64p small prev:223 b1: 154.2 ms (min 154.1 max 155.1) 82 tok score=-0.172108 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->320@256] dis=none
+wrote gl_t64p_1.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc128p small dense:0 b5: 396.8 ms (min 396.2 max 399.6) 183 tok score=-0.120816 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:1 b5: 430.2 ms (min 429.5 max 432.5) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:2 b5: 363.2 ms (min 363.0 max 364.3) 169 tok score=-0.163739 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:3 b5: 396.8 ms (min 396.5 max 399.1) 184 tok score=-0.145126 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:4 b5: 441.8 ms (min 440.9 max 443.4) 204 tok score=-0.109222 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:5 b5: 428.0 ms (min 427.8 max 429.4) 198 tok score=-0.146859 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:64 b5: 202.4 ms (min 201.4 max 203.5) 84 tok score=-0.152902 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:128 b5: 219.1 ms (min 218.9 max 219.6) 86 tok score=-0.156432 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:192 b5: 219.9 ms (min 219.5 max 221.5) 82 tok score=-0.164253 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:223 b5: 220.3 ms (min 220.1 max 222.0) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:0 b1: 305.5 ms (min 305.2 max 305.6) 182 tok score=-0.126238 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:1 b1: 334.1 ms (min 333.9 max 334.7) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:2 b1: 330.8 ms (min 330.5 max 331.1) 197 tok score=-0.190864 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:3 b1: 306.9 ms (min 306.8 max 307.1) 183 tok score=-0.147889 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:4 b1: 342.4 ms (min 342.3 max 342.7) 204 tok score=-0.17167 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:5 b1: 329.0 ms (min 328.6 max 329.1) 196 tok score=-0.126191 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:64 b1: 156.7 ms (min 156.6 max 156.9) 84 tok score=-0.153316 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:128 b1: 167.5 ms (min 167.5 max 169.3) 85 tok score=-0.168203 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:192 b1: 167.7 ms (min 167.4 max 170.3) 84 tok score=-0.170523 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:223 b1: 165.0 ms (min 164.4 max 165.4) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gl_sc128p_1.json 20
+=== gl round 2 17:13:08 model=small
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc128p small dense:0 b5: 396.2 ms (min 395.7 max 398.6) 183 tok score=-0.120816 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:1 b5: 429.5 ms (min 429.1 max 431.8) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:2 b5: 362.4 ms (min 362.2 max 363.3) 169 tok score=-0.163739 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:3 b5: 395.6 ms (min 395.1 max 397.9) 184 tok score=-0.145126 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:4 b5: 441.1 ms (min 440.6 max 442.5) 204 tok score=-0.109222 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:5 b5: 427.3 ms (min 426.8 max 428.7) 198 tok score=-0.146859 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:64 b5: 202.3 ms (min 201.3 max 203.3) 84 tok score=-0.152902 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:128 b5: 218.7 ms (min 218.6 max 218.9) 86 tok score=-0.156432 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:192 b5: 220.0 ms (min 219.4 max 221.2) 82 tok score=-0.164253 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:223 b5: 219.9 ms (min 219.8 max 221.7) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:0 b1: 305.1 ms (min 305.0 max 305.4) 182 tok score=-0.126238 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:1 b1: 333.8 ms (min 333.5 max 333.9) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:2 b1: 330.4 ms (min 330.3 max 330.6) 197 tok score=-0.190864 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:3 b1: 306.7 ms (min 306.6 max 306.9) 183 tok score=-0.147889 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:4 b1: 342.1 ms (min 341.9 max 342.5) 204 tok score=-0.17167 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small dense:5 b1: 328.8 ms (min 328.3 max 328.9) 196 tok score=-0.126191 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:64 b1: 156.6 ms (min 156.5 max 156.8) 84 tok score=-0.153316 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:128 b1: 167.2 ms (min 167.1 max 169.1) 85 tok score=-0.168203 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:192 b1: 167.5 ms (min 167.2 max 170.2) 84 tok score=-0.170523 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128p small prev:223 b1: 164.5 ms (min 164.3 max 165.4) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gl_sc128p_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_t64p small dense:0 b5: 384.4 ms (min 384.2 max 386.5) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64p small dense:1 b5: 417.5 ms (min 417.0 max 417.7) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:2 b5: 355.1 ms (min 354.7 max 356.3) 169 tok score=-0.163554 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->192@128] dis=none
+gl_t64p small dense:3 b5: 385.5 ms (min 384.6 max 386.6) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64p small dense:4 b5: 428.0 ms (min 427.6 max 430.0) 204 tok score=-0.109298 | tr=2 cap=6 rep=193 seg=[120, 61, 12] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:5 b5: 415.7 ms (min 415.2 max 416.5) 198 tok score=-0.14678 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small prev:64 b5: 198.6 ms (min 198.4 max 199.9) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->192@128] dis=none
+gl_t64p small prev:128 b5: 207.8 ms (min 207.5 max 208.8) 86 tok score=-0.156432 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->224@160] dis=none
+gl_t64p small prev:192 b5: 209.1 ms (min 208.5 max 210.3) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+gl_t64p small prev:223 b5: 209.2 ms (min 209.1 max 210.2) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->320@256] dis=none
+gl_t64p small dense:0 b1: 294.0 ms (min 293.8 max 294.9) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+gl_t64p small dense:1 b1: 321.1 ms (min 320.4 max 321.2) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:2 b1: 317.5 ms (min 317.3 max 318.3) 197 tok score=-0.190864 | tr=2 cap=3 rep=190 seg=[122, 62, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:3 b1: 296.0 ms (min 295.4 max 296.3) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+gl_t64p small dense:4 b1: 327.8 ms (min 327.5 max 328.4) 204 tok score=-0.17167 | tr=2 cap=3 rep=197 seg=[122, 62, 13] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small dense:5 b1: 316.5 ms (min 316.0 max 316.8) 196 tok score=-0.126191 | tr=2 cap=3 rep=189 seg=[122, 62, 5] tiers=[128->192@128,192->256@192] dis=none
+gl_t64p small prev:64 b1: 153.1 ms (min 152.9 max 154.1) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->192@128] dis=none
+gl_t64p small prev:128 b1: 157.0 ms (min 155.9 max 157.3) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->224@160] dis=none
+gl_t64p small prev:192 b1: 156.7 ms (min 156.4 max 158.3) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+gl_t64p small prev:223 b1: 154.2 ms (min 154.0 max 155.3) 82 tok score=-0.172108 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->320@256] dis=none
+wrote gl_t64p_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc448 small dense:0 b5: 439.7 ms (min 439.4 max 440.9) 183 tok score=-0.121072 | tr=0 cap=2 rep=178 seg=[178] tiers=[] dis=none
+gl_sc448 small dense:1 b5: 475.4 ms (min 474.9 max 476.0) 199 tok score=-0.135914 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+gl_sc448 small dense:2 b5: 408.5 ms (min 408.3 max 409.3) 169 tok score=-0.163554 | tr=0 cap=2 rep=164 seg=[164] tiers=[] dis=none
+gl_sc448 small dense:3 b5: 442.3 ms (min 441.2 max 443.2) 184 tok score=-0.14538 | tr=0 cap=2 rep=179 seg=[179] tiers=[] dis=none
+gl_sc448 small dense:4 b5: 487.3 ms (min 486.3 max 488.1) 204 tok score=-0.109222 | tr=0 cap=2 rep=199 seg=[199] tiers=[] dis=none
+gl_sc448 small dense:5 b5: 473.2 ms (min 472.3 max 474.6) 198 tok score=-0.147017 | tr=0 cap=2 rep=193 seg=[193] tiers=[] dis=none
+gl_sc448 small prev:64 b5: 224.1 ms (min 223.1 max 225.8) 84 tok score=-0.153274 | tr=0 cap=2 rep=81 seg=[81] tiers=[] dis=none
+gl_sc448 small prev:128 b5: 226.8 ms (min 226.5 max 228.3) 86 tok score=-0.156432 | tr=0 cap=2 rep=82 seg=[82] tiers=[] dis=none
+gl_sc448 small prev:192 b5: 227.9 ms (min 227.7 max 229.8) 84 tok score=-0.17048 | tr=0 cap=2 rep=82 seg=[82] tiers=[] dis=none
+gl_sc448 small prev:223 b5: 221.5 ms (min 221.4 max 222.3) 82 tok score=-0.172161 | tr=0 cap=2 rep=79 seg=[79] tiers=[] dis=none
+gl_sc448 small dense:0 b1: 300.0 ms (min 298.9 max 300.4) 182 tok score=-0.126364 | tr=0 cap=1 rep=179 seg=[179] tiers=[] dis=none
+gl_sc448 small dense:1 b1: 325.1 ms (min 324.5 max 325.5) 199 tok score=-0.14009 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+gl_sc448 small dense:2 b1: 322.3 ms (min 321.5 max 322.7) 197 tok score=-0.190861 | tr=0 cap=1 rep=194 seg=[194] tiers=[] dis=none
+gl_sc448 small dense:3 b1: 293.8 ms (min 293.4 max 294.3) 178 tok score=-0.1539 | tr=0 cap=1 rep=175 seg=[175] tiers=[] dis=none
+gl_sc448 small dense:4 b1: 332.6 ms (min 332.1 max 333.2) 204 tok score=-0.17159 | tr=0 cap=1 rep=201 seg=[201] tiers=[] dis=none
+gl_sc448 small dense:5 b1: 320.6 ms (min 320.1 max 321.1) 196 tok score=-0.126083 | tr=0 cap=1 rep=193 seg=[193] tiers=[] dis=none
+gl_sc448 small prev:64 b1: 154.3 ms (min 154.1 max 156.2) 84 tok score=-0.152993 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gl_sc448 small prev:128 b1: 156.8 ms (min 156.6 max 159.6) 85 tok score=-0.168237 | tr=0 cap=1 rep=82 seg=[82] tiers=[] dis=none
+gl_sc448 small prev:192 b1: 156.7 ms (min 156.5 max 158.5) 84 tok score=-0.170591 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gl_sc448 small prev:223 b1: 154.2 ms (min 153.9 max 154.9) 82 tok score=-0.172081 | tr=0 cap=1 rep=79 seg=[79] tiers=[] dis=none
+wrote gl_sc448_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc256 small dense:0 b5: 403.7 ms (min 403.5 max 405.6) 183 tok score=-0.120645 | tr=0 cap=2 rep=179 seg=[179] tiers=[] dis=none
+gl_sc256 small dense:1 b5: 434.8 ms (min 433.7 max 435.9) 199 tok score=-0.136071 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+gl_sc256 small dense:2 b5: 373.4 ms (min 373.0 max 374.5) 169 tok score=-0.163646 | tr=0 cap=2 rep=164 seg=[164] tiers=[] dis=none
+gl_sc256 small dense:3 b5: 403.9 ms (min 403.7 max 405.2) 183 tok score=-0.145492 | tr=0 cap=2 rep=179 seg=[179] tiers=[] dis=none
+gl_sc256 small dense:4 b5: 445.3 ms (min 444.3 max 445.6) 204 tok score=-0.109375 | tr=0 cap=2 rep=199 seg=[199] tiers=[] dis=none
+gl_sc256 small dense:5 b5: 432.2 ms (min 431.8 max 434.0) 198 tok score=-0.147254 | tr=0 cap=2 rep=193 seg=[193] tiers=[] dis=none
+gl_sc256 small prev:64 b5: 205.9 ms (min 205.6 max 206.5) 84 tok score=-0.153088 | tr=0 cap=2 rep=81 seg=[81] tiers=[] dis=none
+gl_sc256 small prev:128 b5: 209.3 ms (min 209.0 max 210.2) 86 tok score=-0.156613 | tr=0 cap=2 rep=82 seg=[82] tiers=[] dis=none
+gl_sc256 small prev:192 b5: 216.9 ms (min 216.6 max 219.4) 84 tok score=-0.170294 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+gl_sc256 small prev:223 b5: 221.7 ms (min 220.5 max 222.9) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gl_sc256 small dense:0 b1: 294.4 ms (min 294.3 max 295.4) 182 tok score=-0.126211 | tr=0 cap=1 rep=179 seg=[179] tiers=[] dis=none
+gl_sc256 small dense:1 b1: 319.2 ms (min 319.0 max 321.1) 199 tok score=-0.139889 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+gl_sc256 small dense:2 b1: 316.4 ms (min 316.1 max 318.3) 197 tok score=-0.190831 | tr=0 cap=1 rep=194 seg=[194] tiers=[] dis=none
+gl_sc256 small dense:3 b1: 296.1 ms (min 295.7 max 297.6) 183 tok score=-0.147702 | tr=0 cap=1 rep=180 seg=[180] tiers=[] dis=none
+gl_sc256 small dense:4 b1: 326.7 ms (min 326.3 max 328.4) 204 tok score=-0.171568 | tr=0 cap=1 rep=201 seg=[201] tiers=[] dis=none
+gl_sc256 small dense:5 b1: 314.9 ms (min 314.7 max 316.5) 196 tok score=-0.126071 | tr=0 cap=1 rep=193 seg=[193] tiers=[] dis=none
+gl_sc256 small prev:64 b1: 152.2 ms (min 152.1 max 152.3) 84 tok score=-0.153305 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+gl_sc256 small prev:128 b1: 154.8 ms (min 154.6 max 156.5) 85 tok score=-0.168203 | tr=0 cap=1 rep=82 seg=[82] tiers=[] dis=none
+gl_sc256 small prev:192 b1: 160.5 ms (min 160.3 max 161.4) 84 tok score=-0.170523 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+gl_sc256 small prev:223 b1: 165.1 ms (min 164.9 max 166.0) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gl_sc256_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_lad small dense:0 b5: 388.5 ms (min 388.1 max 391.5) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->256@128] dis=none
+gl_lad small dense:1 b5: 418.4 ms (min 418.2 max 419.3) 199 tok score=-0.136071 | tr=1 cap=4 rep=191 seg=[120, 71] tiers=[128->256@128] dis=none
+gl_lad small dense:2 b5: 357.9 ms (min 357.7 max 358.9) 169 tok score=-0.163739 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->256@128] dis=none
+gl_lad small dense:3 b5: 388.4 ms (min 388.1 max 389.2) 184 tok score=-0.145126 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->256@128] dis=none
+gl_lad small dense:4 b5: 428.4 ms (min 428.3 max 428.8) 204 tok score=-0.109222 | tr=1 cap=4 rep=196 seg=[120, 76] tiers=[128->256@128] dis=none
+gl_lad small dense:5 b5: 417.1 ms (min 416.0 max 417.5) 198 tok score=-0.146622 | tr=1 cap=4 rep=190 seg=[120, 70] tiers=[128->256@128] dis=none
+gl_lad small prev:64 b5: 201.3 ms (min 200.1 max 202.5) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->256@128] dis=none
+gl_lad small prev:128 b5: 209.4 ms (min 209.1 max 209.6) 86 tok score=-0.156523 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->256@160] dis=none
+gl_lad small prev:192 b5: 214.8 ms (min 213.9 max 216.0) 82 tok score=-0.164062 | tr=2 cap=6 rep=73 seg=[23, 29, 21] tiers=[224->256@224,256->448@256] dis=none
+gl_lad small prev:223 b5: 216.6 ms (min 216.3 max 217.5) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->448@256] dis=none
+gl_lad small dense:0 b1: 294.6 ms (min 294.3 max 295.4) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->256@128] dis=none
+gl_lad small dense:1 b1: 319.2 ms (min 319.1 max 319.6) 199 tok score=-0.140005 | tr=1 cap=2 rep=194 seg=[122, 72] tiers=[128->256@128] dis=none
+gl_lad small dense:2 b1: 316.4 ms (min 316.1 max 316.6) 197 tok score=-0.190864 | tr=1 cap=2 rep=192 seg=[122, 70] tiers=[128->256@128] dis=none
+gl_lad small dense:3 b1: 295.9 ms (min 295.8 max 296.0) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->256@128] dis=none
+gl_lad small dense:4 b1: 326.5 ms (min 326.3 max 326.6) 204 tok score=-0.17167 | tr=1 cap=2 rep=199 seg=[122, 77] tiers=[128->256@128] dis=none
+gl_lad small dense:5 b1: 314.6 ms (min 314.4 max 314.6) 196 tok score=-0.126191 | tr=1 cap=2 rep=191 seg=[122, 69] tiers=[128->256@128] dis=none
+gl_lad small prev:64 b1: 152.9 ms (min 152.9 max 154.2) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->256@128] dis=none
+gl_lad small prev:128 b1: 156.2 ms (min 156.1 max 157.1) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->256@160] dis=none
+gl_lad small prev:192 b1: 158.5 ms (min 158.5 max 158.8) 84 tok score=-0.170606 | tr=2 cap=3 rep=77 seg=[25, 30, 22] tiers=[224->256@224,256->448@256] dis=none
+gl_lad small prev:223 b1: 155.2 ms (min 155.1 max 157.0) 82 tok score=-0.172293 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->448@256] dis=none
+wrote gl_lad_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_t64w small dense:0 b5: 385.0 ms (min 384.9 max 387.5) 183 tok score=-0.120816 | tr=1 cap=4 rep=173 seg=[120, 53] tiers=[128->192@128] dis=none
+gl_t64w small dense:1 b5: 419.4 ms (min 418.9 max 419.8) 199 tok score=-0.135835 | tr=2 cap=6 rep=182 seg=[120, 58, 4] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:2 b5: 356.3 ms (min 356.1 max 357.4) 169 tok score=-0.163554 | tr=1 cap=4 rep=158 seg=[120, 38] tiers=[128->192@128] dis=none
+gl_t64w small dense:3 b5: 386.7 ms (min 385.5 max 388.0) 183 tok score=-0.145236 | tr=1 cap=4 rep=173 seg=[120, 53] tiers=[128->192@128] dis=none
+gl_t64w small dense:4 b5: 429.3 ms (min 428.3 max 430.6) 204 tok score=-0.109298 | tr=2 cap=6 rep=187 seg=[120, 58, 9] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:5 b5: 417.0 ms (min 416.5 max 417.9) 198 tok score=-0.14678 | tr=2 cap=6 rep=181 seg=[120, 58, 3] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small prev:64 b5: 199.4 ms (min 199.2 max 200.1) 84 tok score=-0.152902 | tr=1 cap=4 rep=75 seg=[55, 20] tiers=[128->192@128] dis=none
+gl_t64w small prev:128 b5: 208.7 ms (min 208.1 max 209.2) 86 tok score=-0.156432 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[160->224@160] dis=none
+gl_t64w small prev:192 b5: 210.0 ms (min 209.0 max 210.8) 82 tok score=-0.164062 | tr=1 cap=4 rep=73 seg=[23, 50] tiers=[224->288@224] dis=none
+gl_t64w small prev:223 b5: 210.2 ms (min 210.1 max 211.0) 82 tok score=-0.172161 | tr=1 cap=4 rep=72 seg=[24, 48] tiers=[256->320@256] dis=none
+gl_t64w small dense:0 b1: 294.7 ms (min 294.3 max 295.4) 182 tok score=-0.126238 | tr=1 cap=2 rep=175 seg=[122, 53] tiers=[128->192@128] dis=none
+gl_t64w small dense:1 b1: 322.0 ms (min 321.3 max 322.2) 199 tok score=-0.140005 | tr=2 cap=3 rep=188 seg=[122, 60, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:2 b1: 318.4 ms (min 318.3 max 319.2) 197 tok score=-0.190864 | tr=2 cap=3 rep=186 seg=[122, 60, 4] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:3 b1: 296.5 ms (min 295.7 max 296.7) 183 tok score=-0.147889 | tr=1 cap=2 rep=176 seg=[122, 54] tiers=[128->192@128] dis=none
+gl_t64w small dense:4 b1: 328.7 ms (min 328.6 max 329.4) 204 tok score=-0.17167 | tr=2 cap=3 rep=193 seg=[122, 60, 11] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small dense:5 b1: 317.5 ms (min 316.9 max 317.7) 196 tok score=-0.126191 | tr=2 cap=3 rep=185 seg=[122, 60, 3] tiers=[128->192@128,192->256@192] dis=none
+gl_t64w small prev:64 b1: 153.4 ms (min 153.3 max 154.5) 84 tok score=-0.153316 | tr=1 cap=2 rep=77 seg=[57, 20] tiers=[128->192@128] dis=none
+gl_t64w small prev:128 b1: 157.6 ms (min 156.4 max 157.7) 85 tok score=-0.168203 | tr=1 cap=2 rep=78 seg=[25, 53] tiers=[160->224@160] dis=none
+gl_t64w small prev:192 b1: 157.1 ms (min 156.9 max 158.9) 84 tok score=-0.170418 | tr=1 cap=2 rep=77 seg=[25, 52] tiers=[224->288@224] dis=none
+gl_t64w small prev:223 b1: 154.6 ms (min 154.5 max 155.5) 82 tok score=-0.172108 | tr=1 cap=2 rep=75 seg=[26, 49] tiers=[256->320@256] dis=none
+wrote gl_t64w_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_t64 small dense:0 b5: 384.4 ms (min 384.2 max 386.9) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64 small dense:1 b5: 417.3 ms (min 416.8 max 417.6) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:2 b5: 355.2 ms (min 355.1 max 356.3) 169 tok score=-0.163554 | tr=1 cap=4 rep=161 seg=[120, 41] tiers=[128->192@128] dis=none
+gl_t64 small dense:3 b5: 385.3 ms (min 384.0 max 386.2) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+gl_t64 small dense:4 b5: 427.8 ms (min 426.7 max 429.5) 204 tok score=-0.109298 | tr=2 cap=6 rep=193 seg=[120, 61, 12] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:5 b5: 415.0 ms (min 414.3 max 415.7) 198 tok score=-0.14678 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small prev:64 b5: 198.6 ms (min 198.3 max 199.4) 84 tok score=-0.152902 | tr=1 cap=4 rep=78 seg=[55, 23] tiers=[128->192@128] dis=none
+gl_t64 small prev:128 b5: 207.7 ms (min 207.4 max 208.3) 86 tok score=-0.156432 | tr=1 cap=4 rep=79 seg=[23, 56] tiers=[160->224@160] dis=none
+gl_t64 small prev:192 b5: 209.0 ms (min 208.1 max 210.0) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+gl_t64 small prev:223 b5: 209.1 ms (min 209.0 max 210.1) 82 tok score=-0.172161 | tr=1 cap=4 rep=75 seg=[24, 51] tiers=[256->320@256] dis=none
+gl_t64 small dense:0 b1: 293.8 ms (min 293.8 max 295.0) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+gl_t64 small dense:1 b1: 321.0 ms (min 320.3 max 321.2) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:2 b1: 317.6 ms (min 317.3 max 318.2) 197 tok score=-0.190864 | tr=2 cap=3 rep=190 seg=[122, 62, 6] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:3 b1: 296.0 ms (min 295.4 max 296.5) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+gl_t64 small dense:4 b1: 327.8 ms (min 327.6 max 328.4) 204 tok score=-0.17167 | tr=2 cap=3 rep=197 seg=[122, 62, 13] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small dense:5 b1: 316.7 ms (min 315.9 max 316.9) 196 tok score=-0.126191 | tr=2 cap=3 rep=189 seg=[122, 62, 5] tiers=[128->192@128,192->256@192] dis=none
+gl_t64 small prev:64 b1: 152.9 ms (min 152.8 max 153.9) 84 tok score=-0.153316 | tr=1 cap=2 rep=79 seg=[57, 22] tiers=[128->192@128] dis=none
+gl_t64 small prev:128 b1: 157.0 ms (min 155.9 max 157.4) 85 tok score=-0.168203 | tr=1 cap=2 rep=80 seg=[25, 55] tiers=[160->224@160] dis=none
+gl_t64 small prev:192 b1: 156.6 ms (min 156.4 max 158.4) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+gl_t64 small prev:223 b1: 154.1 ms (min 154.0 max 155.0) 82 tok score=-0.172108 | tr=1 cap=2 rep=77 seg=[26, 51] tiers=[256->320@256] dis=none
+wrote gl_t64_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_sc128 small dense:0 b5: 396.5 ms (min 395.9 max 398.7) 183 tok score=-0.120816 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:1 b5: 430.0 ms (min 429.9 max 432.7) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:2 b5: 362.9 ms (min 362.8 max 363.8) 169 tok score=-0.163739 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:3 b5: 396.8 ms (min 396.4 max 398.9) 184 tok score=-0.145126 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:4 b5: 441.6 ms (min 441.0 max 443.4) 204 tok score=-0.109222 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:5 b5: 428.2 ms (min 427.6 max 429.3) 198 tok score=-0.146859 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:64 b5: 202.8 ms (min 201.9 max 204.1) 84 tok score=-0.152902 | tr=0 cap=2 rep=55 seg=[55] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:128 b5: 219.4 ms (min 219.2 max 219.6) 86 tok score=-0.156432 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:192 b5: 220.4 ms (min 219.9 max 221.8) 82 tok score=-0.164253 | tr=0 cap=2 rep=23 seg=[23] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:223 b5: 220.6 ms (min 220.4 max 222.4) 82 tok score=-0.172161 | tr=0 cap=2 rep=24 seg=[24] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:0 b1: 305.6 ms (min 305.4 max 305.7) 182 tok score=-0.126238 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:1 b1: 334.4 ms (min 334.2 max 334.6) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:2 b1: 331.1 ms (min 330.8 max 331.6) 197 tok score=-0.190864 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:3 b1: 307.2 ms (min 307.0 max 307.4) 183 tok score=-0.147889 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:4 b1: 342.7 ms (min 342.7 max 343.0) 204 tok score=-0.17167 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small dense:5 b1: 329.3 ms (min 328.9 max 329.4) 196 tok score=-0.126191 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:64 b1: 156.9 ms (min 156.8 max 157.1) 84 tok score=-0.153316 | tr=0 cap=1 rep=57 seg=[57] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:128 b1: 167.7 ms (min 167.6 max 169.6) 85 tok score=-0.168203 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:192 b1: 167.8 ms (min 167.7 max 170.6) 84 tok score=-0.170523 | tr=0 cap=1 rep=25 seg=[25] tiers=[] dis=ineligible step mid-decode
+gl_sc128 small prev:223 b1: 164.9 ms (min 164.7 max 165.9) 82 tok score=-0.172108 | tr=0 cap=1 rep=26 seg=[26] tiers=[] dis=ineligible step mid-decode
+wrote gl_sc128_2.json 20
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gl_eager small dense:0 b5: 423.1 ms (min 422.3 max 425.3) 183 tok score=-0.120816 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:1 b5: 460.8 ms (min 455.5 max 463.1) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:2 b5: 393.8 ms (min 392.5 max 395.2) 169 tok score=-0.163739 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:3 b5: 427.6 ms (min 424.7 max 429.7) 184 tok score=-0.145465 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:4 b5: 472.7 ms (min 471.9 max 474.2) 204 tok score=-0.109298 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:5 b5: 459.3 ms (min 453.4 max 460.5) 198 tok score=-0.14678 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:64 b5: 213.6 ms (min 212.7 max 214.1) 84 tok score=-0.153274 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:128 b5: 222.5 ms (min 222.5 max 223.4) 86 tok score=-0.156523 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:192 b5: 229.0 ms (min 228.1 max 231.0) 84 tok score=-0.170387 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:223 b5: 224.7 ms (min 224.6 max 226.5) 82 tok score=-0.172351 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:0 b1: 331.4 ms (min 330.9 max 332.1) 182 tok score=-0.126264 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:1 b1: 359.9 ms (min 359.7 max 360.7) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:2 b1: 356.7 ms (min 356.2 max 357.3) 197 tok score=-0.190846 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:3 b1: 324.6 ms (min 324.3 max 325.1) 178 tok score=-0.153905 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:4 b1: 368.5 ms (min 368.0 max 369.6) 204 tok score=-0.171601 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small dense:5 b1: 354.8 ms (min 354.4 max 355.0) 196 tok score=-0.126097 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:64 b1: 168.9 ms (min 168.3 max 170.6) 84 tok score=-0.153283 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:128 b1: 171.3 ms (min 171.2 max 171.4) 85 tok score=-0.168507 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:192 b1: 171.4 ms (min 171.1 max 171.5) 84 tok score=-0.170714 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gl_eager small prev:223 b1: 168.7 ms (min 168.6 max 170.6) 82 tok score=-0.172288 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote gl_eager_2.json 20
+=== gl DONE 17:22:53 ===

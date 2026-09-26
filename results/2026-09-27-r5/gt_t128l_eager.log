@@ -1,0 +1,22 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gt_t128l_eager dense:0 b1: 182 tok score=-0.12626369 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:0 b5: 183 tok score=-0.12081625 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:1 b1: 199 tok score=-0.13974449 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:1 b5: 199 tok score=-0.13599247 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:2 b1: 197 tok score=-0.19084586 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:2 b5: 169 tok score=-0.16373891 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:3 b1: 178 tok score=-0.1539049 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:3 b5: 184 tok score=-0.14546536 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:4 b1: 204 tok score=-0.17160094 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:4 b5: 204 tok score=-0.10929841 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:5 b1: 196 tok score=-0.12609661 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager dense:5 b5: 198 tok score=-0.1467803 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:64 b1: 84 tok score=-0.15328334 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:64 b5: 84 tok score=-0.15327381 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:128 b1: 85 tok score=-0.16850704 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:128 b5: 86 tok score=-0.15652253 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:192 b1: 84 tok score=-0.17071401 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:192 b5: 84 tok score=-0.17038691 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:223 b1: 82 tok score=-0.17228779 transitions=None captures=None replays=None seg=None disabled=None
+gt_t128l_eager prev:223 b5: 82 tok score=-0.17235138 transitions=None captures=None replays=None seg=None disabled=None
+wrote gt_t128l_eager.json 20

@@ -1,0 +1,18 @@
+=== G1.1 48-config matrix, all flags off (flash off / on), ref vs tip === 16:34:28
+./g1.sh: line 15: python: command not found
+./g1.sh: line 16: python: command not found
+=== G1.1b 48-config matrix, CT2_CUDA_GRAPHS=1 RESERVE=128, TIERS unset (flash off) === 16:40:15
+./g1.sh: line 21: python: command not found
+=== G1.2 RESERVE=64 without tiers: forced crossing, one decode, VERBOSE=2 === 16:43:11
+[ref] does-not-fit: 1  falling-back: 1  tier-lines: 0
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 16:43:12.658] [ctranslate2] [thread 44053] [debug] CUDA graphs: step 64 does not fit the captured shapes (cache capacity 64, position table 448), going eager
+[2026-09-26 16:43:12.658] [ctranslate2] [thread 44053] [debug] CUDA graphs: falling back to eager for this decode (ineligible step mid-decode)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19475447
+[r3] does-not-fit: 1  falling-back: 1  tier-lines: 0
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 16:43:14.482] [ctranslate2] [thread 44093] [debug] CUDA graphs: step 64 does not fit the captured shapes (cache capacity 64, position table 448), going eager
+[2026-09-26 16:43:14.482] [ctranslate2] [thread 44093] [debug] CUDA graphs: falling back to eager for this decode (ineligible step mid-decode)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19475447
+./g1.sh: line 28: python: command not found
+=== G1DONE 16:43:14 ===

@@ -1,0 +1,104 @@
+=== G-safety.1 CHECK dual-run (0 mismatches, >=1 replay after every transition) 16:48:16
+--- gsc_R32: mismatch lines in log: 0
+gsc_R32 std:0 b1: 84 tok score=-0.19522655 transitions=2 captures=3 replays=77 seg=[26, 30, 21] disabled=none
+gsc_R32 std:0 b5: 84 tok score=-0.19475447 transitions=2 captures=6 replays=80 seg=[24, 29, 27] disabled=none
+gsc_R32 std:1 b1: 77 tok score=-0.13622068 transitions=2 captures=3 replays=70 seg=[26, 30, 14] disabled=none
+gsc_R32 std:1 b5: 77 tok score=-0.13575487 transitions=2 captures=6 replays=68 seg=[24, 29, 15] disabled=none
+gsc_R32 std:2 b1: 89 tok score=-0.16145667 transitions=2 captures=3 replays=82 seg=[26, 30, 26] disabled=none
+gsc_R32 std:2 b5: 88 tok score=-0.14009233 transitions=2 captures=6 replays=77 seg=[24, 29, 24] disabled=none
+--- gsc_R128: mismatch lines in log: 0
+gsc_R128 dense:1 b1: 199 tok score=-0.14000466 transitions=2 captures=3 replays=192 seg=[122, 62, 8] disabled=none
+gsc_R128 dense:1 b5: 199 tok score=-0.13583542 transitions=2 captures=6 replays=188 seg=[120, 61, 7] disabled=none
+gsc_R128 dense:4 b1: 204 tok score=-0.17167048 transitions=2 captures=3 replays=197 seg=[122, 62, 13] disabled=none
+gsc_R128 dense:4 b5: 204 tok score=-0.10929841 transitions=2 captures=6 replays=193 seg=[120, 61, 12] disabled=none
+gsc_R128 dense:5 b1: 196 tok score=-0.12619093 transitions=2 captures=3 replays=189 seg=[122, 62, 5] disabled=none
+gsc_R128 dense:5 b5: 198 tok score=-0.1467803 transitions=2 captures=6 replays=187 seg=[120, 61, 6] disabled=none
+gsc_R32.json rows 6 transitions [2] probe mismatches 0 -> PASS
+gsc_R128.json rows 6 transitions [2] probe mismatches 0 -> PASS
+=== G-safety.2 phase coverage P=20..31 at R=32 +32 beam5 (CHECK=1, VERBOSE=2) 16:48:44
+mismatch lines: 0  falling-back: 0
+BEGIN pp:20 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:20) P=20 NTOK 84 SCORE -0.16415551
+BEGIN pp:21 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:21) P=21 NTOK 84 SCORE -0.1657366
+BEGIN pp:22 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:22) P=22 NTOK 84 SCORE -0.16582961
+BEGIN pp:23 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:23) P=23 NTOK 84 SCORE -0.16750371
+BEGIN pp:24 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:24) P=24 NTOK 84 SCORE -0.16294643
+BEGIN pp:25 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:25) P=25 NTOK 84 SCORE -0.16434152
+BEGIN pp:26 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:26) P=26 NTOK 84 SCORE -0.16341145
+BEGIN pp:27 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from CaptureSecond, fast re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:27) P=27 NTOK 84 SCORE -0.16443452
+BEGIN pp:28 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:28) P=28 NTOK 84 SCORE -0.16638765
+BEGIN pp:29 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:29) P=29 NTOK 84 SCORE -0.15997024
+BEGIN pp:30 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:30) P=30 NTOK 84 SCORE -0.16052827
+BEGIN pp:31 decode 0
+CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+DECODE 0 ENTRY 0 (pp:31) P=31 NTOK 84 SCORE -0.16341145
+phases at the transitions:       1 at step 32 (from CaptureSecond       7 at step 32 (from Ready       4 at step 32 (from Warmup 
+gsp_check.json vs gsp_nocheck.json: configs=12 (A=12 B=12) tokens_identical=12 tokens+scores_identical=12 max|dscore|=0 -> BITIDENTICAL
+=== G-safety.3 batch-2 early EOS (std:0 + std:7, R=64 +64, beam5) 16:48:54
+CUDA graphs: step 64 does not fit the captured shapes (cache capacity 64, position table 448), going eager
+CUDA graphs: falling back to eager for this decode (ineligible step mid-decode)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19494048
+DECODE 0 ENTRY 1 (std:7) P=2 NTOK 61 SCORE -0.10418801
+CUDA graphs: decode summary (steps=92, captures=2, replays=56, transitions=0, segment_replays=[56], tiers=[], phase=Disabled, disabled=ineligible step mid-decode)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19512649
+DECODE 0 ENTRY 1 (std:7) P=2 NTOK 61 SCORE -0.10418801
+batch2 tiers vs eager tokens identical: [True, True] scores [(-0.1949404776096344, -0.1951264888048172), (-0.10418801009654999, -0.10418801009654999)]
+=== G-safety.4 compute-sanitizer memcheck + stream-ordered races 16:48:58
+--- gss_R32_b5: ========= ERROR SUMMARY: 6534 errors
+========= ERROR SUMMARY: 6434 errors were not printed. Use --print-limit option to adjust the number of printed errors  tier-lines=0 falling-back=0 NTOK=
+    phases: 
+--- gss_R32_b1: ========= ERROR SUMMARY: 7359 errors
+========= ERROR SUMMARY: 7259 errors were not printed. Use --print-limit option to adjust the number of printed errors  tier-lines=0 falling-back=0 NTOK=
+    phases: 
+--- gss_R128_d1: ========= ERROR SUMMARY: 6843 errors
+========= ERROR SUMMARY: 6743 errors were not printed. Use --print-limit option to adjust the number of printed errors  tier-lines=0 falling-back=0 NTOK=
+    phases: 
+--- gss_pp: ========= ERROR SUMMARY: 6753 errors
+========= ERROR SUMMARY: 6653 errors were not printed. Use --print-limit option to adjust the number of printed errors  tier-lines=0 falling-back=0 NTOK=
+    phases: 
+=== GSAFETYDONE 16:49:53 ===

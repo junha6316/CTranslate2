@@ -1,0 +1,624 @@
+========= COMPUTE-SANITIZER
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - Selected ISA: AVX2
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - Use Intel MKL: false
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - Allow INT8: true
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 16:49:00.057] [ctranslate2] [thread 47144] [info]  - Allow BF16: true
+[2026-09-26 16:49:00.634] [ctranslate2] [thread 47144] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 16:49:00.755] [ctranslate2] [thread 47144] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 16:49:00.755] [ctranslate2] [thread 47144] [info]  - Binary version: 6
+[2026-09-26 16:49:00.755] [ctranslate2] [thread 47144] [info]  - Model specification revision: 3
+[2026-09-26 16:49:00.755] [ctranslate2] [thread 47144] [info]  - Selected compute type: float16
+BEGIN std:0 decode 0
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (96,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c12 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (97,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c14 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (98,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c16 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (64,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c0c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (65,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c0e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (66,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c10 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (128,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c18 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (129,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c1a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (130,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c1c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (160,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c1e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (161,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c20 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (162,0,0) in block (0,0,0)
+=========     Address 0xe26cc5c22 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (224,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cea is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (225,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cec is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (226,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cee is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (128,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cd8 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (129,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cda is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (130,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cdc is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (160,0,0) in block (0,1,0)
+=========     Address 0xe26cc5cde is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (161,0,0) in block (0,1,0)
+=========     Address 0xe26cc5ce0 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (162,0,0) in block (0,1,0)
+=========     Address 0xe26cc5ce2 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (32,0,0) in block (0,1,53)
+=========     Address 0xe26ccc026 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (33,0,0) in block (0,1,53)
+=========     Address 0xe26ccc028 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (34,0,0) in block (0,1,53)
+=========     Address 0xe26ccc02a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (64,0,0) in block (0,1,53)
+=========     Address 0xe26ccc02c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (65,0,0) in block (0,1,53)
+=========     Address 0xe26ccc02e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (66,0,0) in block (0,1,53)
+=========     Address 0xe26ccc030 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (0,0,0) in block (0,1,53)
+=========     Address 0xe26ccc020 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (1,0,0) in block (0,1,53)
+=========     Address 0xe26ccc022 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (2,0,0) in block (0,1,53)
+=========     Address 0xe26ccc024 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (160,0,0) in block (0,1,53)
+=========     Address 0xe26ccc03e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (161,0,0) in block (0,1,53)
+=========     Address 0xe26ccc040 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (162,0,0) in block (0,1,53)
+=========     Address 0xe26ccc042 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (224,0,0) in block (0,1,53)
+=========     Address 0xe26ccc04a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (225,0,0) in block (0,1,53)
+=========     Address 0xe26ccc04c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (226,0,0) in block (0,1,53)
+=========     Address 0xe26ccc04e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (128,0,0) in block (0,1,53)
+=========     Address 0xe26ccc038 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (129,0,0) in block (0,1,53)
+=========     Address 0xe26ccc03a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (130,0,0) in block (0,1,53)
+=========     Address 0xe26ccc03c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (0,0,0) in block (0,2,53)
+=========     Address 0xe26ccc110 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (1,0,0) in block (0,2,53)
+=========     Address 0xe26ccc112 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (2,0,0) in block (0,2,53)
+=========     Address 0xe26ccc114 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (32,0,0) in block (0,2,53)
+=========     Address 0xe26ccc116 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (33,0,0) in block (0,2,53)
+=========     Address 0xe26ccc118 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (34,0,0) in block (0,2,53)
+=========     Address 0xe26ccc11a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (64,0,0) in block (0,2,53)
+=========     Address 0xe26ccc11c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (65,0,0) in block (0,2,53)
+=========     Address 0xe26ccc11e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (66,0,0) in block (0,2,53)
+=========     Address 0xe26ccc120 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (128,0,0) in block (0,2,53)
+=========     Address 0xe26ccc128 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (129,0,0) in block (0,2,53)
+=========     Address 0xe26ccc12a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (130,0,0) in block (0,2,53)
+=========     Address 0xe26ccc12c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (192,0,0) in block (0,2,53)
+=========     Address 0xe26ccc134 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (193,0,0) in block (0,2,53)
+=========     Address 0xe26ccc136 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (194,0,0) in block (0,2,53)
+=========     Address 0xe26ccc138 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (224,0,0) in block (0,2,53)
+=========     Address 0xe26ccc13a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (225,0,0) in block (0,2,53)
+=========     Address 0xe26ccc13c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (226,0,0) in block (0,2,53)
+=========     Address 0xe26ccc13e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (0,0,0) in block (0,2,106)
+=========     Address 0xe26cd2470 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (1,0,0) in block (0,2,106)
+=========     Address 0xe26cd2472 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (2,0,0) in block (0,2,106)
+=========     Address 0xe26cd2474 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (32,0,0) in block (0,2,106)
+=========     Address 0xe26cd2476 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (33,0,0) in block (0,2,106)
+=========     Address 0xe26cd2478 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (34,0,0) in block (0,2,106)
+=========     Address 0xe26cd247a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (64,0,0) in block (0,2,106)
+=========     Address 0xe26cd247c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (65,0,0) in block (0,2,106)
+=========     Address 0xe26cd247e is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (66,0,0) in block (0,2,106)
+=========     Address 0xe26cd2480 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (192,0,0) in block (0,2,106)
+=========     Address 0xe26cd2494 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (193,0,0) in block (0,2,106)
+=========     Address 0xe26cd2496 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (194,0,0) in block (0,2,106)
+=========     Address 0xe26cd2498 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (64,0,0) in block (0,0,107)
+=========     Address 0xe26cd24ac is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (65,0,0) in block (0,0,107)
+=========     Address 0xe26cd24ae is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (66,0,0) in block (0,0,107)
+=========     Address 0xe26cd24b0 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (96,0,0) in block (0,0,107)
+=========     Address 0xe26cd24b2 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (97,0,0) in block (0,0,107)
+=========     Address 0xe26cd24b4 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (98,0,0) in block (0,0,107)
+=========     Address 0xe26cd24b6 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (32,0,0) in block (0,0,107)
+=========     Address 0xe26cd24a6 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (33,0,0) in block (0,0,107)
+=========     Address 0xe26cd24a8 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (34,0,0) in block (0,0,107)
+=========     Address 0xe26cd24aa is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (192,0,0) in block (0,0,107)
+=========     Address 0xe26cd24c4 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (193,0,0) in block (0,0,107)
+=========     Address 0xe26cd24c6 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (194,0,0) in block (0,0,107)
+=========     Address 0xe26cd24c8 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (224,0,0) in block (0,0,107)
+=========     Address 0xe26cd24ca is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (225,0,0) in block (0,0,107)
+=========     Address 0xe26cd24cc is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (226,0,0) in block (0,0,107)
+=========     Address 0xe26cd24ce is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (128,0,0) in block (0,0,107)
+=========     Address 0xe26cd24b8 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (129,0,0) in block (0,0,107)
+=========     Address 0xe26cd24ba is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (130,0,0) in block (0,0,107)
+=========     Address 0xe26cd24bc is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (96,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e82 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (97,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e84 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (98,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e86 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (128,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e88 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (129,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e8a is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (130,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e8c is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (192,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e94 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (193,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e96 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xd70
+=========     by thread (194,0,0) in block (0,2,26)
+=========     Address 0xe26cc8e98 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (32,0,0) in block (0,0,27)
+=========     Address 0xe26cc8ea6 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (33,0,0) in block (0,0,27)
+=========     Address 0xe26cc8ea8 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (34,0,0) in block (0,0,27)
+=========     Address 0xe26cc8eaa is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (64,0,0) in block (0,0,27)
+=========     Address 0xe26cc8eac is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5c00 of size 368640 bytes
+========= 
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  CUDA failed with error unspecified launch failure
+========= Error: process didn't terminate successfully
+========= Target application returned an error
+========= ERROR SUMMARY: 6534 errors
+========= ERROR SUMMARY: 6434 errors were not printed. Use --print-limit option to adjust the number of printed errors

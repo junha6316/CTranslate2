@@ -1,0 +1,12 @@
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+done ntok 84
+Collecting data...
+Generating '/tmp/nsys-report-5c63.qdstrm'
+[1/1] [0%                          ] gm_nsys_R64_b5.nsys-rep[1/1] [0%                          ] gm_nsys_R64_b5.nsys-rep[1/1] [0%                          ] gm_nsys_R64_b5.nsys-rep[1/1] [11%                         ] gm_nsys_R64_b5.nsys-rep[1/1] [==21%                       ] gm_nsys_R64_b5.nsys-rep[1/1] [=====31%                    ] gm_nsys_R64_b5.nsys-rep[1/1] [========42%                 ] gm_nsys_R64_b5.nsys-rep[1/1] [===========50%              ] gm_nsys_R64_b5.nsys-rep[1/1] [========================100%] gm_nsys_R64_b5.nsys-rep[1/1] [========================100%] gm_nsys_R64_b5.nsys-rep
+Generated:
+	/opt/real/r6/r5t/gm_nsys_R64_b5.nsys-rep

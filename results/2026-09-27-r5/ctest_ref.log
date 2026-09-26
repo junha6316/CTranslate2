@@ -1,0 +1,364 @@
+../../tests/attention_test.cc:118: Skipped
+The FlashAttention kernel requires CUDA
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -1.999006986618042,
+y[i] evaluates to -2.0702950954437256, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.7847235202789307,
+y[i] evaluates to -1.6643869876861572, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871950149536133, which exceeds abs_diff, where
+x[i] evaluates to 2.9744753837585449,
+y[i] evaluates to 3.4231948852539062, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601391077041626, which exceeds abs_diff, where
+x[i] evaluates to -0.41037410497665405,
+y[i] evaluates to -1.1863880157470703, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905343532562256, which exceeds abs_diff, where
+x[i] evaluates to -0.77877157926559448,
+y[i] evaluates to -0.94782501459121704, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113354802131653, which exceeds abs_diff, where
+x[i] evaluates to 0.84404247999191284,
+y[i] evaluates to -0.36729300022125244, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.7227072715759277,
+y[i] evaluates to -4.2431559562683105, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -1.999006986618042,
+y[i] evaluates to -2.0702950954437256, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.7847235202789307,
+y[i] evaluates to -1.6643869876861572, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871950149536133, which exceeds abs_diff, where
+x[i] evaluates to 2.9744753837585449,
+y[i] evaluates to 3.4231948852539062, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601391077041626, which exceeds abs_diff, where
+x[i] evaluates to -0.41037410497665405,
+y[i] evaluates to -1.1863880157470703, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905343532562256, which exceeds abs_diff, where
+x[i] evaluates to -0.77877157926559448,
+y[i] evaluates to -0.94782501459121704, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113354802131653, which exceeds abs_diff, where
+x[i] evaluates to 0.84404247999191284,
+y[i] evaluates to -0.36729300022125244, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.7227072715759277,
+y[i] evaluates to -4.2431559562683105, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -1.999006986618042,
+y[i] evaluates to -2.0702950954437256, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.7847235202789307,
+y[i] evaluates to -1.6643869876861572, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871950149536133, which exceeds abs_diff, where
+x[i] evaluates to 2.9744753837585449,
+y[i] evaluates to 3.4231948852539062, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601391077041626, which exceeds abs_diff, where
+x[i] evaluates to -0.41037410497665405,
+y[i] evaluates to -1.1863880157470703, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905343532562256, which exceeds abs_diff, where
+x[i] evaluates to -0.77877157926559448,
+y[i] evaluates to -0.94782501459121704, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113354802131653, which exceeds abs_diff, where
+x[i] evaluates to 0.84404247999191284,
+y[i] evaluates to -0.36729300022125244, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.7227072715759277,
+y[i] evaluates to -4.2431559562683105, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -1.999006986618042,
+y[i] evaluates to -2.0702950954437256, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.7847235202789307,
+y[i] evaluates to -1.6643869876861572, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871950149536133, which exceeds abs_diff, where
+x[i] evaluates to 2.9744753837585449,
+y[i] evaluates to 3.4231948852539062, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601391077041626, which exceeds abs_diff, where
+x[i] evaluates to -0.41037410497665405,
+y[i] evaluates to -1.1863880157470703, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905343532562256, which exceeds abs_diff, where
+x[i] evaluates to -0.77877157926559448,
+y[i] evaluates to -0.94782501459121704, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113354802131653, which exceeds abs_diff, where
+x[i] evaluates to 0.84404247999191284,
+y[i] evaluates to -0.36729300022125244, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.7227072715759277,
+y[i] evaluates to -4.2431559562683105, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+[  FAILED  ] CPU/OpDeviceFPTest.Gemm/float32, where GetParam() = 12-byte object <00-00 00-00 00-00 00-00 AC-C5 27-37> (0 ms)
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -2.0990068912506104,
+y[i] evaluates to -2.1702950000762939, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.2847235202789307,
+y[i] evaluates to -1.1643869876861572, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871950149536133, which exceeds abs_diff, where
+x[i] evaluates to 2.8744754791259766,
+y[i] evaluates to 3.3231949806213379, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601391077041626, which exceeds abs_diff, where
+x[i] evaluates to 0.089625895023345947,
+y[i] evaluates to -0.68638801574707031, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905337572097778, which exceeds abs_diff, where
+x[i] evaluates to -0.87877160310745239,
+y[i] evaluates to -1.0478249788284302, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113355398178101, which exceeds abs_diff, where
+x[i] evaluates to 1.3440425395965576,
+y[i] evaluates to 0.13270699977874756, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.8227071762084961,
+y[i] evaluates to -4.3431558609008789, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+[  FAILED  ] CPU/OpDeviceFPTest.GemmBias/float32, where GetParam() = 12-byte object <00-00 00-00 00-00 00-00 AC-C5 27-37> (0 ms)
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -1.4220279455184937,
+y[i] evaluates to -1.4933160543441772, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.3149715662002563,
+y[i] evaluates to -1.1946350336074829, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871997833251953, which exceeds abs_diff, where
+x[i] evaluates to 4.7778801918029785,
+y[i] evaluates to 5.226600170135498, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601394057273865, which exceeds abs_diff, where
+x[i] evaluates to 0.50630593299865723,
+y[i] evaluates to -0.26970800757408142, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905355453491211, which exceeds abs_diff, where
+x[i] evaluates to -1.4266254901885986,
+y[i] evaluates to -1.5956790447235107, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113355100154877, which exceeds abs_diff, where
+x[i] evaluates to 1.5648465156555176,
+y[i] evaluates to 0.35351100564002991, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.0590853691101074,
+y[i] evaluates to -3.5795340538024902, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.071288108825683594, which exceeds abs_diff, where
+x[i] evaluates to -2.0220279693603516,
+y[i] evaluates to -2.0933160781860352, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 1
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.12033653259277344, which exceeds abs_diff, where
+x[i] evaluates to -1.1149715185165405,
+y[i] evaluates to -0.99463498592376709, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 2
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.44871950149536133, which exceeds abs_diff, where
+x[i] evaluates to 4.1778802871704102,
+y[i] evaluates to 4.6265997886657715, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 3
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.77601391822099686, which exceeds abs_diff, where
+x[i] evaluates to 0.70630592107772827,
+y[i] evaluates to -0.069707997143268585, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 4
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 0.16905331611633301, which exceeds abs_diff, where
+x[i] evaluates to -2.0266256332397461,
+y[i] evaluates to -2.1956789493560791, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 5
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.2113355398178101, which exceeds abs_diff, where
+x[i] evaluates to 1.7648465633392334,
+y[i] evaluates to 0.55351102352142334, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 6
+
+../../tests/test_utils.h:43: Failure
+The difference between x[i] and y[i] is 1.5204486846923828, which exceeds abs_diff, where
+x[i] evaluates to -2.6590852737426758,
+y[i] evaluates to -4.1795339584350586, and
+abs_diff evaluates to 9.9999997473787516e-06.
+Absolute difference greater than 9.9999997473787516e-06 at index 7
+
+[  FAILED  ] CPU/OpDeviceFPTest.GemmResidual/float32, where GetParam() = 12-byte object <00-00 00-00 00-00 00-00 AC-C5 27-37> (0 ms)
+../../tests/ops_test.cc:1501: Skipped
+Dilated convolution is not implemented for CPU.
+
+../../tests/ops_test.cc:1568: Skipped
+Grouped quantized convolution is not implemented for CUDA.
+
+../../tests/ops_test.cc:1568: Skipped
+Grouped quantized convolution is not implemented for CUDA.
+
+../../tests/ops_test.cc:1568: Skipped
+Grouped quantized convolution is not implemented for CUDA.
+
+[==========] 422 tests from 29 test suites ran. (2132 ms total)
+[  PASSED  ] 414 tests.
+[  SKIPPED ] 5 tests.

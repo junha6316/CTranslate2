@@ -1,0 +1,55 @@
+=== G-memory small 17:22:53
+MEM t64 model=small env={'CT2_CUDA_GRAPHS': '1', 'CT2_CUDA_GRAPHS_RESERVE': '128', 'CT2_CUDA_GRAPHS_TIERS': '+64'} peak_used=1178 MB
+  running peak after dense:0 b5: 986 MB
+  running peak after dense:1 b5: 1082 MB
+  running peak after dense:2 b5: 1114 MB
+  running peak after dense:3 b5: 1178 MB
+  running peak after dense:4 b5: 1178 MB
+  running peak after dense:5 b5: 1178 MB
+  running peak after prev:64 b5: 1178 MB
+  running peak after prev:128 b5: 1178 MB
+  running peak after prev:192 b5: 1178 MB
+  running peak after prev:223 b5: 1178 MB
+  running peak after dense:0 b1: 1178 MB
+  running peak after dense:1 b1: 1178 MB
+  running peak after dense:2 b1: 1178 MB
+  running peak after dense:3 b1: 1178 MB
+  running peak after dense:4 b1: 1178 MB
+  running peak after dense:5 b1: 1178 MB
+  running peak after prev:64 b1: 1178 MB
+  running peak after prev:128 b1: 1178 MB
+  running peak after prev:192 b1: 1178 MB
+  running peak after prev:223 b1: 1178 MB
+MEM sc448 model=small env={'CT2_CUDA_GRAPHS': '1'} peak_used=1242 MB
+  running peak after dense:0 b5: 1082 MB
+  running peak after dense:1 b5: 1082 MB
+  running peak after dense:2 b5: 1146 MB
+  running peak after dense:3 b5: 1146 MB
+  running peak after dense:4 b5: 1146 MB
+  running peak after dense:5 b5: 1146 MB
+  running peak after prev:64 b5: 1146 MB
+  running peak after prev:128 b5: 1146 MB
+  running peak after prev:192 b5: 1178 MB
+  running peak after prev:223 b5: 1242 MB
+  running peak after dense:0 b1: 1242 MB
+  running peak after dense:1 b1: 1242 MB
+  running peak after dense:2 b1: 1242 MB
+  running peak after dense:3 b1: 1242 MB
+  running peak after dense:4 b1: 1242 MB
+  running peak after dense:5 b1: 1242 MB
+  running peak after prev:64 b1: 1242 MB
+  running peak after prev:128 b1: 1242 MB
+  running peak after prev:192 b1: 1242 MB
+  running peak after prev:223 b1: 1242 MB
+MEM sc128 model=small env={'CT2_CUDA_GRAPHS': '1', 'CT2_CUDA_GRAPHS_RESERVE': '128'} peak_used=1178 MB
+=== G-memory large-v3 (W_prev 128/223 + dense:1/dense:4) 17:23:35
+MEM t64 model=large-v3 env={'CT2_CUDA_GRAPHS': '1', 'CT2_CUDA_GRAPHS_RESERVE': '128', 'CT2_CUDA_GRAPHS_TIERS': '+64'} peak_used=4158 MB
+MEM sc448 model=large-v3 env={'CT2_CUDA_GRAPHS': '1'} peak_used=4446 MB
+=== G-gather nsys gather_rows_kernel, pad@128 vs pad@448 (small beam5 std:0, 7 decodes) 17:24:13
+[pad@128]
+Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
+4.1,57092642,637,89627.4,93248.0,55008,95296,7829.6,"ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)"
+[pad@448]
+Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
+12.8,206951710,637,324884.9,335136.0,203328,340192,24762.8,"ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)"
+=== GMEMGATHERDONE 17:24:38 ===

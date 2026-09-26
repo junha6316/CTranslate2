@@ -1,0 +1,55 @@
+# TRIMMED (full log on the box at /opt/real/r6/r5t/gsanA_ref_g128.log,  1169338 bytes): first 45 lines + every ERROR SUMMARY / graph / decode / exit line
+========= COMPUTE-SANITIZER
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - Selected ISA: AVX2
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - Use Intel MKL: false
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - Allow INT8: true
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 17:33:06.463] [ctranslate2] [thread 53285] [info]  - Allow BF16: true
+[2026-09-26 17:33:06.859] [ctranslate2] [thread 53285] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 17:33:06.982] [ctranslate2] [thread 53285] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 17:33:06.982] [ctranslate2] [thread 53285] [info]  - Binary version: 6
+[2026-09-26 17:33:06.982] [ctranslate2] [thread 53285] [info]  - Model specification revision: 3
+[2026-09-26 17:33:06.982] [ctranslate2] [thread 53285] [info]  - Selected compute type: float16
+BEGIN std:0 decode 0
+========= Invalid __global__ read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::binary_transform_f<thrust::THRUST_200700_860_NS::permutation_iterator<const __half *, thrust::THRUST_200700_860_NS::transform_iterator<ctranslate2::cuda::repeat_vec<unsigned int>, thrust::THRUST_200700_860_NS::counting_iterator<unsigned int, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>>, const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::plus<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x440
+=========     by thread (0,0,0) in block (0,0,0)
+=========     Address 0xe0a000000 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe0a000000 of size 2304000 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::binary_transform_f<thrust::THRUST_200700_860_NS::permutation_iterator<const __half *, thrust::THRUST_200700_860_NS::transform_iterator<ctranslate2::cuda::repeat_vec<unsigned int>, thrust::THRUST_200700_860_NS::counting_iterator<unsigned int, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>>, const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::plus<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x440
+=========     by thread (1,0,0) in block (0,0,0)
+=========     Address 0xe0a000002 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe0a000000 of size 2304000 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::binary_transform_f<thrust::THRUST_200700_860_NS::permutation_iterator<const __half *, thrust::THRUST_200700_860_NS::transform_iterator<ctranslate2::cuda::repeat_vec<unsigned int>, thrust::THRUST_200700_860_NS::counting_iterator<unsigned int, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>>, const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::plus<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x440
+=========     by thread (2,0,0) in block (0,0,0)
+=========     Address 0xe0a000004 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe0a000000 of size 2304000 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::binary_transform_f<thrust::THRUST_200700_860_NS::permutation_iterator<const __half *, thrust::THRUST_200700_860_NS::transform_iterator<ctranslate2::cuda::repeat_vec<unsigned int>, thrust::THRUST_200700_860_NS::counting_iterator<unsigned int, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>>, const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::plus<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x440
+=========     by thread (3,0,0) in block (0,0,0)
+=========     Address 0xe0a000006 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe0a000000 of size 2304000 bytes
+========= 
+========= Invalid __global__ read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::binary_transform_f<thrust::THRUST_200700_860_NS::permutation_iterator<const __half *, thrust::THRUST_200700_860_NS::transform_iterator<ctranslate2::cuda::repeat_vec<unsigned int>, thrust::THRUST_200700_860_NS::counting_iterator<unsigned int, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>, thrust::THRUST_200700_860_NS::use_default, thrust::THRUST_200700_860_NS::use_default>>, const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::plus<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x440
+=========     by thread (4,0,0) in block (0,0,0)
+# ...
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+BEGIN std:0 decode 0
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  CUDA failed with error unspecified launch failure
+========= Error: process didn't terminate successfully
+========= Target application returned an error
+========= ERROR SUMMARY: 66787 errors
+========= ERROR SUMMARY: 65787 errors were not printed. Use --print-limit option to adjust the number of printed errors

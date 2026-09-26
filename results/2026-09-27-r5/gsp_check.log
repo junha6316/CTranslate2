@@ -1,0 +1,187 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - Selected ISA: AVX2
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - Use Intel MKL: false
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - Allow INT8: true
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 16:48:44.865] [ctranslate2] [thread 46919] [info]  - Allow BF16: true
+[2026-09-26 16:48:45.244] [ctranslate2] [thread 46919] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 16:48:45.344] [ctranslate2] [thread 46919] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 16:48:45.344] [ctranslate2] [thread 46919] [info]  - Binary version: 6
+[2026-09-26 16:48:45.344] [ctranslate2] [thread 46919] [info]  - Model specification revision: 3
+[2026-09-26 16:48:45.344] [ctranslate2] [thread 46919] [info]  - Selected compute type: float16
+BEGIN pp:20 decode 0
+[2026-09-26 16:48:46.038] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 24 into slot 0 (initial)
+[2026-09-26 16:48:46.043] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 25 into slot 1 (initial)
+[2026-09-26 16:48:46.069] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.073] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:46.077] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:46.194] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.198] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:46.201] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:46.319] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.323] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:46.327] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:20) P=20 NTOK 84 SCORE -0.16415551
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50664, 50664, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:21 decode 0
+[2026-09-26 16:48:46.362] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[6,29,29,8], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:46.398] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 25 into slot 1 (initial)
+[2026-09-26 16:48:46.401] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 26 into slot 0 (initial)
+[2026-09-26 16:48:46.423] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.427] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:46.430] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:46.548] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.551] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:46.555] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:46.673] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.677] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:46.680] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:21) P=21 NTOK 84 SCORE -0.1657366
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:22 decode 0
+[2026-09-26 16:48:46.719] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[5,29,29,9], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:46.755] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 26 into slot 0 (initial)
+[2026-09-26 16:48:46.758] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 27 into slot 1 (initial)
+[2026-09-26 16:48:46.776] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.780] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:46.783] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:46.900] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:46.904] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:46.907] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:47.025] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.029] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:47.032] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:22) P=22 NTOK 84 SCORE -0.16582961
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50664, 50664, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:23 decode 0
+[2026-09-26 16:48:47.075] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[4,29,29,10], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:47.111] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 27 into slot 1 (initial)
+[2026-09-26 16:48:47.115] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 28 into slot 0 (initial)
+[2026-09-26 16:48:47.128] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.132] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:47.135] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:47.253] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.257] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:47.260] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:47.378] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.382] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:47.386] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:23) P=23 NTOK 84 SCORE -0.16750371
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50664, 50664, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:24 decode 0
+[2026-09-26 16:48:47.433] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[3,29,29,11], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:47.469] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 28 into slot 0 (initial)
+[2026-09-26 16:48:47.472] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 29 into slot 1 (initial)
+[2026-09-26 16:48:47.482] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.486] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:47.489] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:47.606] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.610] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:47.613] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:47.731] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.735] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:47.738] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:24) P=24 NTOK 84 SCORE -0.16294643
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:25 decode 0
+[2026-09-26 16:48:47.790] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[2,29,29,12], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:47.825] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 29 into slot 1 (initial)
+[2026-09-26 16:48:47.829] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 30 into slot 0 (initial)
+[2026-09-26 16:48:47.835] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.838] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:47.842] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:47.959] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:47.962] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:47.966] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:48.084] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:48.088] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:48.091] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:25) P=25 NTOK 84 SCORE -0.16434152
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50664, 50664, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:26 decode 0
+[2026-09-26 16:48:48.147] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[1,29,29,13], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:48.183] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 30 into slot 0 (initial)
+[2026-09-26 16:48:48.186] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 31 into slot 1 (initial)
+[2026-09-26 16:48:48.188] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Ready, fast re-entry)
+[2026-09-26 16:48:48.192] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:48.195] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:48.312] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:48.316] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:48.319] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:48.437] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:48.441] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:48.444] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:26) P=26 NTOK 84 SCORE -0.16341145
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50664, 50664, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:27 decode 0
+[2026-09-26 16:48:48.504] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=8, replays=72, transitions=3, segment_replays=[0,29,29,14], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:48.539] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 31 into slot 1 (initial)
+[2026-09-26 16:48:48.541] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from CaptureSecond, fast re-entry)
+[2026-09-26 16:48:48.545] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 33 into slot 1 (re-entry)
+[2026-09-26 16:48:48.548] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 34 into slot 0 (re-entry)
+[2026-09-26 16:48:48.666] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:48.670] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:48.673] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:48.791] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:48.795] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:48.798] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:27) P=27 NTOK 84 SCORE -0.16443452
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:28 decode 0
+[2026-09-26 16:48:48.863] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=7, replays=73, transitions=3, segment_replays=[0,29,29,15], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:48.897] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+[2026-09-26 16:48:48.908] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 36 into slot 0 (re-entry)
+[2026-09-26 16:48:48.911] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 37 into slot 1 (re-entry)
+[2026-09-26 16:48:49.016] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:49.020] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:49.023] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:49.141] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:49.145] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:49.148] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:28) P=28 NTOK 84 SCORE -0.16638765
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:29 decode 0
+[2026-09-26 16:48:49.216] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=6, replays=71, transitions=3, segment_replays=[0,26,29,16], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:49.248] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+[2026-09-26 16:48:49.258] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 36 into slot 0 (re-entry)
+[2026-09-26 16:48:49.261] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 37 into slot 1 (re-entry)
+[2026-09-26 16:48:49.367] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:49.370] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:49.374] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:49.492] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:49.496] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:49.499] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:29) P=29 NTOK 84 SCORE -0.15997024
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:30 decode 0
+[2026-09-26 16:48:49.571] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=6, replays=72, transitions=3, segment_replays=[0,26,29,17], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:49.601] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+[2026-09-26 16:48:49.611] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 36 into slot 0 (re-entry)
+[2026-09-26 16:48:49.614] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 37 into slot 1 (re-entry)
+[2026-09-26 16:48:49.720] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:49.723] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:49.727] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:49.845] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:49.849] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:49.852] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:30) P=30 NTOK 84 SCORE -0.16052827
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN pp:31 decode 0
+[2026-09-26 16:48:49.924] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=86, captures=6, replays=72, transitions=3, segment_replays=[0,26,29,17], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)
+[2026-09-26 16:48:49.952] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 32 -> 64 at step 32 (from Warmup, warmup re-entry)
+[2026-09-26 16:48:49.963] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 36 into slot 0 (re-entry)
+[2026-09-26 16:48:49.966] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 37 into slot 1 (re-entry)
+[2026-09-26 16:48:50.071] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 64 -> 96 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:48:50.075] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:48:50.078] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+[2026-09-26 16:48:50.196] [ctranslate2] [thread 46933] [debug] CUDA graphs: tier 96 -> 128 at step 96 (from Ready, fast re-entry)
+[2026-09-26 16:48:50.200] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 97 into slot 1 (re-entry)
+[2026-09-26 16:48:50.203] [ctranslate2] [thread 46933] [debug] CUDA graphs: captured step 98 into slot 0 (re-entry)
+DECODE 0 ENTRY 0 (pp:31) P=31 NTOK 84 SCORE -0.16341145
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+[2026-09-26 16:48:50.288] [ctranslate2] [thread 46933] [debug] CUDA graphs: decode summary (steps=87, captures=6, replays=74, transitions=3, segment_replays=[0,26,29,19], tiers=[32->64@32,64->96@64,96->128@96], phase=Ready, disabled=none)

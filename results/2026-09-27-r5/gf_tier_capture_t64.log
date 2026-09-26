@@ -1,0 +1,33 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - Selected ISA: AVX2
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - Use Intel MKL: false
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - Allow INT8: true
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 16:47:47.762] [ctranslate2] [thread 46236] [info]  - Allow BF16: true
+[2026-09-26 16:47:48.139] [ctranslate2] [thread 46236] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 16:47:48.239] [ctranslate2] [thread 46236] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 16:47:48.239] [ctranslate2] [thread 46236] [info]  - Binary version: 6
+[2026-09-26 16:47:48.239] [ctranslate2] [thread 46236] [info]  - Model specification revision: 3
+[2026-09-26 16:47:48.239] [ctranslate2] [thread 46236] [info]  - Selected compute type: float16
+BEGIN std:0 decode 0
+[2026-09-26 16:47:48.948] [ctranslate2] [thread 46250] [debug] CUDA graphs: captured step 6 into slot 0 (initial)
+[2026-09-26 16:47:48.952] [ctranslate2] [thread 46250] [debug] CUDA graphs: captured step 7 into slot 1 (initial)
+[2026-09-26 16:47:49.055] [ctranslate2] [thread 46250] [debug] CUDA graphs: tier 64 -> 128 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:47:49.057] [ctranslate2] [thread 46250] [debug] CUDA graphs: falling back to eager for this decode (injected capture failure)
+DECODE 0 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19494048
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+BEGIN std:0 decode 1
+[2026-09-26 16:47:49.120] [ctranslate2] [thread 46250] [debug] CUDA graphs: decode summary (steps=92, captures=2, replays=56, transitions=1, segment_replays=[56,0], tiers=[64->128@64], phase=Disabled, disabled=injected capture failure)
+[2026-09-26 16:47:49.155] [ctranslate2] [thread 46250] [debug] CUDA graphs: captured step 6 into slot 0 (initial)
+[2026-09-26 16:47:49.159] [ctranslate2] [thread 46250] [debug] CUDA graphs: captured step 7 into slot 1 (initial)
+[2026-09-26 16:47:49.261] [ctranslate2] [thread 46250] [debug] CUDA graphs: tier 64 -> 128 at step 64 (from Ready, fast re-entry)
+[2026-09-26 16:47:49.265] [ctranslate2] [thread 46250] [debug] CUDA graphs: captured step 65 into slot 1 (re-entry)
+[2026-09-26 16:47:49.268] [ctranslate2] [thread 46250] [debug] CUDA graphs: captured step 66 into slot 0 (re-entry)
+DECODE 1 ENTRY 0 (std:0) P=2 NTOK 84 SCORE -0.19494048
+TOKS [50364, 639, 307, 257, 15834, 470, 53, 5230, 6613, 13, 1057, 15834, 470, 53, 5230, 25162, 366, 294, 264, 1908, 9274, 13, 50714, 50714, 1171, 544, 1589, 293, 281, 915, 484, 577, 291, 393, 13835, 11, 1767, 3441, 15834, 470, 53, 5230, 13, 4646, 13, 51014, 51014, 9647, 3357, 538, 3335, 4271, 479, 664, 446, 88, 13, 440, 5735, 295, 3630, 538, 6163, 314, 11728, 11, 16805, 538, 21704, 338, 460, 4680, 13, 51414, 51414, 4100, 502, 13, 20084, 278, 2149, 599, 51614, 51614]
+[2026-09-26 16:47:49.326] [ctranslate2] [thread 46250] [debug] CUDA graphs: decode summary (steps=92, captures=4, replays=83, transitions=1, segment_replays=[56,27], tiers=[64->128@64], phase=Ready, disabled=none)

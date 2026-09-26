@@ -1,0 +1,28 @@
+=== sanitizer all-races, excluding cuDNN-internal kernels (regex=cudnn) 17:32:44
+--- gsanA_ref_eager: ========= ERROR SUMMARY: 74339 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_ref_g128: ========= ERROR SUMMARY: 66787 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_R32_b5: ========= ERROR SUMMARY: 40419 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_R32_b1: ========= ERROR SUMMARY: 59907 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_R128_d1: ========= ERROR SUMMARY: 55555 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+--- gsanA_pp: ========= ERROR SUMMARY: 61539 errors  exit-errors=1 tier-lines=0 falling-back=0 NTOK=
+    phases: 
+    error kinds:       1 ========= Error: process didn't terminate successfully    1000 ========= Invalid __global__ read       1 ========= Target application returned an error 
+=== small beam5 padding tax b (std:0): eager / pad@128 / pad@448, two rounds 17:34:33
+gb_eager small std:0 b5: 216.5 ms (min 216.2 max 218.5) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad128 small std:0 b5: 221.2 ms (min 221.1 max 221.3) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad448 small std:0 b5: 254.2 ms (min 253.7 max 255.1) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_eager small std:0 b5: 219.1 ms (min 216.5 max 221.4) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad128 small std:0 b5: 221.7 ms (min 221.4 max 222.2) 84 tok score=-0.195126 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+gb_pad448 small std:0 b5: 254.3 ms (min 254.2 max 255.1) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+eager 217.84 pad@128 221.47 pad@448 254.26 ms; pad@448 - pad@128 = 32.80 ms over 28800 extra slot-steps -> b = 1.139 us/slot/step
+=== GSANALLDONE 17:34:55 ===

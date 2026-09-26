@@ -1,0 +1,77 @@
+=== G-large.1 x and b: eager / pad@128 / graphs@128 on std:0..2, beam5, two rounds 17:24:38
+glx_eager large-v3 std:0 b5: 406.4 ms (min 404.4 max 407.1) 35 tok score=-0.468304 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_eager large-v3 std:1 b5: 760.3 ms (min 760.1 max 761.3) 79 tok score=-0.124604 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_eager large-v3 std:2 b5: 867.6 ms (min 866.6 max 869.8) 92 tok score=-0.203635 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote glx_eager_1.json 3
+glx_pad128 large-v3 std:0 b5: 423.0 ms (min 422.4 max 426.6) 35 tok score=-0.468304 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_pad128 large-v3 std:1 b5: 790.6 ms (min 790.1 max 791.4) 79 tok score=-0.124703 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_pad128 large-v3 std:2 b5: 900.2 ms (min 899.5 max 902.4) 92 tok score=-0.203295 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote glx_pad128_1.json 3
+glx_g128 large-v3 std:0 b5: 405.8 ms (min 405.5 max 409.2) 35 tok score=-0.468304 | tr=0 cap=2 rep=30 seg=[30] tiers=[] dis=none
+glx_g128 large-v3 std:1 b5: 738.2 ms (min 738.0 max 739.4) 79 tok score=-0.124703 | tr=0 cap=2 rep=74 seg=[74] tiers=[] dis=none
+glx_g128 large-v3 std:2 b5: 838.0 ms (min 836.2 max 840.0) 92 tok score=-0.203295 | tr=0 cap=2 rep=87 seg=[87] tiers=[] dis=none
+wrote glx_g128_1.json 3
+glx_eager large-v3 std:0 b5: 406.5 ms (min 404.9 max 406.8) 35 tok score=-0.468304 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_eager large-v3 std:1 b5: 761.4 ms (min 759.9 max 762.8) 79 tok score=-0.124604 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_eager large-v3 std:2 b5: 867.6 ms (min 867.3 max 870.5) 92 tok score=-0.203635 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote glx_eager_2.json 3
+glx_pad128 large-v3 std:0 b5: 422.4 ms (min 422.2 max 425.9) 35 tok score=-0.468304 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_pad128 large-v3 std:1 b5: 789.8 ms (min 789.7 max 791.8) 79 tok score=-0.124703 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+glx_pad128 large-v3 std:2 b5: 899.7 ms (min 899.0 max 901.7) 92 tok score=-0.203295 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote glx_pad128_2.json 3
+glx_g128 large-v3 std:0 b5: 406.2 ms (min 405.5 max 409.6) 35 tok score=-0.468304 | tr=0 cap=2 rep=30 seg=[30] tiers=[] dis=none
+glx_g128 large-v3 std:1 b5: 738.4 ms (min 738.2 max 739.4) 79 tok score=-0.124703 | tr=0 cap=2 rep=74 seg=[74] tiers=[] dis=none
+glx_g128 large-v3 std:2 b5: 838.3 ms (min 836.7 max 840.3) 92 tok score=-0.203295 | tr=0 cap=2 rep=87 seg=[87] tiers=[] dis=none
+wrote glx_g128_2.json 3
+std:0: ntok 35 eager 406.4 pad@128 422.7 graphs@128 406.0 | tax +16.3 ms, replay saving +16.7 ms | x=0.429 ms/step b=3.904 us/slot/step
+std:1: ntok 79 eager 760.8 pad@128 790.2 graphs@128 738.3 | tax +29.3 ms, replay saving +51.9 ms | x=0.625 ms/step b=4.159 us/slot/step
+std:2: ntok 92 eager 867.6 pad@128 899.9 graphs@128 838.2 | tax +32.3 ms, replay saving +61.8 ms | x=0.643 ms/step b=4.289 us/slot/step
+large-v3 beam5: mean x=0.566 ms/step, mean b=4.117 us/slot/step -> model stride sqrt(2K/b) needs K (see G-mech)
+=== G-large.2 W_prev k=128,223 + dense:1, dense:4: tiers vs single cap, two rounds 17:26:58
+=== glg round 1 17:26:58 model=large-v3
+glg_sc128 large-v3 prev:128 b5: 312.6 ms (min 311.6 max 314.6) 20 tok score=-0.37793 | tr=0 cap=2 rep=16 seg=[16] tiers=[] dis=none
+glg_sc128 large-v3 prev:223 b5: 318.6 ms (min 317.5 max 319.6) 20 tok score=-0.3875 | tr=0 cap=2 rep=15 seg=[15] tiers=[] dis=none
+glg_sc128 large-v3 dense:1 b5: 1729.0 ms (min 1725.4 max 1729.3) 198 tok score=-0.131787 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+glg_sc128 large-v3 dense:4 b5: 1385.8 ms (min 1384.0 max 1387.3) 159 tok score=-0.0297268 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+wrote glg_sc128_1.json 4
+glg_t64 large-v3 prev:128 b5: 313.3 ms (min 311.7 max 314.4) 20 tok score=-0.37793 | tr=0 cap=2 rep=16 seg=[16] tiers=[] dis=none
+glg_t64 large-v3 prev:223 b5: 318.7 ms (min 317.7 max 319.7) 20 tok score=-0.3875 | tr=0 cap=2 rep=15 seg=[15] tiers=[] dis=none
+glg_t64 large-v3 dense:1 b5: 1692.9 ms (min 1691.1 max 1693.7) 198 tok score=-0.131787 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+glg_t64 large-v3 dense:4 b5: 1369.8 ms (min 1368.0 max 1372.1) 159 tok score=-0.0297759 | tr=1 cap=4 rep=151 seg=[120, 31] tiers=[128->192@128] dis=none
+wrote glg_t64_1.json 4
+=== glg round 2 17:28:28 model=large-v3
+glg_t64 large-v3 prev:128 b5: 312.7 ms (min 311.7 max 314.5) 20 tok score=-0.37793 | tr=0 cap=2 rep=16 seg=[16] tiers=[] dis=none
+glg_t64 large-v3 prev:223 b5: 318.6 ms (min 317.5 max 319.5) 20 tok score=-0.3875 | tr=0 cap=2 rep=15 seg=[15] tiers=[] dis=none
+glg_t64 large-v3 dense:1 b5: 1691.8 ms (min 1689.7 max 1692.8) 198 tok score=-0.131787 | tr=2 cap=6 rep=187 seg=[120, 61, 6] tiers=[128->192@128,192->256@192] dis=none
+glg_t64 large-v3 dense:4 b5: 1369.1 ms (min 1367.8 max 1370.0) 159 tok score=-0.0297759 | tr=1 cap=4 rep=151 seg=[120, 31] tiers=[128->192@128] dis=none
+wrote glg_t64_2.json 4
+glg_sc128 large-v3 prev:128 b5: 312.8 ms (min 311.6 max 314.6) 20 tok score=-0.37793 | tr=0 cap=2 rep=16 seg=[16] tiers=[] dis=none
+glg_sc128 large-v3 prev:223 b5: 318.7 ms (min 317.5 max 319.8) 20 tok score=-0.3875 | tr=0 cap=2 rep=15 seg=[15] tiers=[] dis=none
+glg_sc128 large-v3 dense:1 b5: 1729.2 ms (min 1727.4 max 1731.1) 198 tok score=-0.131787 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+glg_sc128 large-v3 dense:4 b5: 1383.7 ms (min 1383.1 max 1385.8) 159 tok score=-0.0297268 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+wrote glg_sc128_2.json 4
+=== glg DONE 17:29:57 ===
+
+### beam 5: median ms (delta vs sc128, + = faster)
+workload      ntok(e/sc/t64) P             sc128            t64
+dense:1       -1/198/198    2   1729.1( +0.0)  1692.3(+36.8)
+dense:4       -1/159/159    2   1384.8( +0.0)  1369.5(+15.3)
+prev:128      -1/ 20/ 20  131    312.7( +0.0)   313.0( -0.3)
+prev:223      -1/ 20/ 20  226    318.6( +0.0)   318.7( -0.0)
+   t64    dense:1    b5: tr=[2] cap=[6] seg=[120, 61, 6] tiers=[128->192@128,192->256@192]
+   t64    dense:4    b5: tr=[1] cap=[4] seg=[120, 31] tiers=[128->192@128]
+   t64    prev:128   b5: tr=[0] cap=[2] seg=[16] tiers=[]
+   t64    prev:223   b5: tr=[0] cap=[2] seg=[15] tiers=[]
+
+### criteria
+[pool unset] 1. beam5 W_dense mean +26.02 ms, per-window {'dense:1': 36.76, 'dense:4': 15.29} -> PASS
+[pool unset] 2. beam5 W_prev mean -0.15 ms, per-k {'prev:128': -0.29, 'prev:223': -0.01} -> FAIL
+[pool unset] 3. greedy W_dense mean +nan ms, per-window {} -> FAIL
+[pool unset] 4. worst row -0.29 ms (need >= -3) -> PASS
+
+### vs eager (mean ms delta, + = faster than eager)
+
+### token identity vs sc128 and vs eager (per row)
+  sc128 : rows 4, tokens == sc128 4, == eager 0
+  t64   : rows 4, tokens == sc128 4, == eager 0
+=== GLARGEDONE 17:29:57 ===

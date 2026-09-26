@@ -1,0 +1,22 @@
+workload     beam     sc128      t64     t64w      lad    sc256    sc448     t64p   sc128p
+dense:0      b5     =0e+00    =0e+00    =0e+00    =0e+00    =2e-4    =3e-4    =0e+00    =0e+00 
+dense:1      b5     =0e+00    =2e-4    =2e-4    =8e-5    =8e-5    =8e-5    =2e-4    =0e+00 
+dense:2      b5    ts0e+00   ts2e-4   ts2e-4   ts0e+00    =9e-5   ts2e-4   ts2e-4   ts0e+00 
+dense:3      b5     =3e-4 TEXT2e-4 TEXT2e-4    =3e-4 TEXT3e-5    =8e-5 TEXT2e-4    =3e-4 
+dense:4      b5     =8e-5    =0e+00    =0e+00 TEXT8e-5    =8e-5 TEXT8e-5    =0e+00    =8e-5 
+dense:5      b5     =8e-5    =0e+00    =0e+00    =2e-4    =5e-4    =2e-4    =0e+00    =8e-5 
+prev:128     b5     =9e-5    =9e-5    =9e-5    =0e+00    =9e-5    =9e-5    =9e-5    =9e-5 
+prev:192     b5    ts6e-3   ts6e-3   ts6e-3   ts6e-3    =9e-5    =9e-5   ts6e-3   ts6e-3 
+prev:223     b5     =2e-4    =2e-4    =2e-4    =2e-4    =2e-4    =2e-4    =2e-4    =2e-4 
+prev:64      b5     =4e-4    =4e-4    =4e-4    =4e-4    =2e-4    =0e+00    =4e-4    =4e-4 
+dense:0      b1     =3e-5    =3e-5    =3e-5    =3e-5    =5e-5    =1e-4    =3e-5    =3e-5 
+dense:1      b1     =3e-4    =3e-4    =3e-4    =3e-4    =1e-4    =3e-4    =3e-4    =3e-4 
+dense:2      b1     =2e-5    =2e-5    =2e-5    =2e-5    =2e-5    =2e-5    =2e-5    =2e-5 
+dense:3      b1  TEXT6e-3 TEXT6e-3 TEXT6e-3 TEXT6e-3 TEXT6e-3    =5e-6 TEXT6e-3 TEXT6e-3 
+dense:4      b1     =7e-5    =7e-5    =7e-5    =7e-5    =3e-5    =1e-5    =7e-5    =7e-5 
+dense:5      b1     =9e-5    =9e-5    =9e-5    =9e-5    =3e-5    =1e-5    =9e-5    =9e-5 
+prev:128     b1     =3e-4    =3e-4    =3e-4    =3e-4    =3e-4    =3e-4    =3e-4    =3e-4 
+prev:192     b1     =2e-4    =3e-4    =3e-4    =1e-4    =2e-4    =1e-4    =3e-4    =2e-4 
+prev:223     b1     =2e-4    =2e-4    =2e-4    =5e-6    =2e-4    =2e-4    =2e-4    =2e-4 
+prev:64      b1     =3e-5    =3e-5    =3e-5    =3e-5    =2e-5    =3e-4    =3e-5    =3e-5 
+(= identical ids; ts = timestamp-only diff; TEXT = text-token diff; number = |dscore| vs eager)

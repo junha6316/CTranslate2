@@ -1,0 +1,10 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+window 1: 77 tok, 68 text tok
+window 2: 88 tok, 77 text tok
+window 3: 100 tok, 85 text tok
+window 4: 95 tok, 82 text tok
+window 5: 88 tok, 77 text tok
+window 6: 79 tok, 67 text tok
+window 7: 61 tok, 52 text tok
+window 8: 75 tok, 61 text tok
+wrote prev_prompts.json with 569 text tokens

@@ -1,0 +1,22 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gt_t128l dense:0 b1: 182 tok score=-0.12623799 transitions=1 captures=2 replays=177 seg=[122, 55] disabled=none
+gt_t128l dense:0 b5: 183 tok score=-0.12081625 transitions=1 captures=4 replays=176 seg=[120, 56] disabled=none
+gt_t128l dense:1 b1: 199 tok score=-0.14000466 transitions=2 captures=3 replays=192 seg=[122, 62, 8] disabled=none
+gt_t128l dense:1 b5: 199 tok score=-0.13583542 transitions=2 captures=6 replays=188 seg=[120, 61, 7] disabled=none
+gt_t128l dense:2 b1: 197 tok score=-0.19086386 transitions=2 captures=3 replays=190 seg=[122, 62, 6] disabled=none
+gt_t128l dense:2 b5: 169 tok score=-0.163554 transitions=1 captures=4 replays=161 seg=[120, 41] disabled=none
+gt_t128l dense:3 b1: 183 tok score=-0.14788926 transitions=1 captures=2 replays=178 seg=[122, 56] disabled=none
+gt_t128l dense:3 b5: 183 tok score=-0.14523566 transitions=1 captures=4 replays=176 seg=[120, 56] disabled=none
+gt_t128l dense:4 b1: 204 tok score=-0.17167048 transitions=2 captures=3 replays=197 seg=[122, 62, 13] disabled=none
+gt_t128l dense:4 b5: 204 tok score=-0.10929841 transitions=2 captures=6 replays=193 seg=[120, 61, 12] disabled=none
+gt_t128l dense:5 b1: 196 tok score=-0.12619093 transitions=2 captures=3 replays=189 seg=[122, 62, 5] disabled=none
+gt_t128l dense:5 b5: 198 tok score=-0.1467803 transitions=2 captures=6 replays=187 seg=[120, 61, 6] disabled=none
+gt_t128l prev:64 b1: 84 tok score=-0.15331602 transitions=1 captures=2 replays=79 seg=[57, 22] disabled=none
+gt_t128l prev:64 b5: 84 tok score=-0.15290178 transitions=1 captures=4 replays=78 seg=[55, 23] disabled=none
+gt_t128l prev:128 b1: 85 tok score=-0.16820256 transitions=1 captures=2 replays=80 seg=[25, 55] disabled=none
+gt_t128l prev:128 b5: 86 tok score=-0.15643169 transitions=1 captures=4 replays=79 seg=[23, 56] disabled=none
+gt_t128l prev:192 b1: 84 tok score=-0.17041847 transitions=1 captures=2 replays=79 seg=[25, 54] disabled=none
+gt_t128l prev:192 b5: 82 tok score=-0.1640625 transitions=1 captures=4 replays=76 seg=[23, 53] disabled=none
+gt_t128l prev:223 b1: 82 tok score=-0.17210785 transitions=1 captures=2 replays=77 seg=[26, 51] disabled=none
+gt_t128l prev:223 b5: 82 tok score=-0.17216082 transitions=1 captures=4 replays=75 seg=[24, 51] disabled=none
+wrote gt_t128l.json 20

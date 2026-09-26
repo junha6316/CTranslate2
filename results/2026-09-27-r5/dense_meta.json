@@ -1,0 +1,203 @@
+{
+ "candidates": [
+  {
+   "label": "pw000-060@2.0",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     0,
+     60
+    ]
+   ],
+   "tempo": 2.0,
+   "dur": 30.0138125,
+   "ntok": 183,
+   "kept": true
+  },
+  {
+   "label": "pw060-120@2.0",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     60,
+     60
+    ]
+   ],
+   "tempo": 2.0,
+   "dur": 29.9955,
+   "ntok": 199,
+   "kept": true
+  },
+  {
+   "label": "pw120-180@2.0",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     120,
+     60
+    ]
+   ],
+   "tempo": 2.0,
+   "dur": 30.0035,
+   "ntok": 169,
+   "kept": true
+  },
+  {
+   "label": "pw030-090@2.0",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     30,
+     60
+    ]
+   ],
+   "tempo": 2.0,
+   "dur": 30.00825,
+   "ntok": 184,
+   "kept": true
+  },
+  {
+   "label": "pw090-150@2.0",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     90,
+     60
+    ]
+   ],
+   "tempo": 2.0,
+   "dur": 29.9989375,
+   "ntok": 204,
+   "kept": true
+  },
+  {
+   "label": "pw143-203@2.0",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     143,
+     60
+    ]
+   ],
+   "tempo": 2.0,
+   "dur": 30.0134375,
+   "ntok": 188,
+   "kept": true
+  },
+  {
+   "label": "jfk000-055@1.84",
+   "parts": [
+    [
+     "/opt/audio/jfk_x5.flac",
+     0,
+     55
+    ]
+   ],
+   "tempo": 1.84,
+   "dur": 29.9103125,
+   "ntok": 109,
+   "kept": false
+  },
+  {
+   "label": "pw000-056@1.87",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     0,
+     56
+    ]
+   ],
+   "tempo": 1.87,
+   "dur": 29.9435625,
+   "ntok": 189,
+   "kept": true
+  },
+  {
+   "label": "pw100-157@1.9",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     100,
+     57
+    ]
+   ],
+   "tempo": 1.9,
+   "dur": 30.007,
+   "ntok": 185,
+   "kept": true
+  },
+  {
+   "label": "pw180-203+jfk000-033@1.87",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     180,
+     23
+    ],
+    [
+     "/opt/audio/jfk_x5.flac",
+     0,
+     33
+    ]
+   ],
+   "tempo": 1.87,
+   "dur": 29.95225,
+   "ntok": 143,
+   "kept": false
+  },
+  {
+   "label": "pw045-100@1.84",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     45,
+     55
+    ]
+   ],
+   "tempo": 1.84,
+   "dur": 29.888,
+   "ntok": 141,
+   "kept": false
+  },
+  {
+   "label": "pw150-208@1.94",
+   "parts": [
+    [
+     "/opt/audio/physicsworks.wav",
+     145,
+     58
+    ]
+   ],
+   "tempo": 1.94,
+   "dur": 29.9046875,
+   "ntok": 198,
+   "kept": true
+  }
+ ],
+ "kept": [
+  {
+   "label": "pw000-060@2.0",
+   "ntok": 183
+  },
+  {
+   "label": "pw060-120@2.0",
+   "ntok": 199
+  },
+  {
+   "label": "pw120-180@2.0",
+   "ntok": 169
+  },
+  {
+   "label": "pw030-090@2.0",
+   "ntok": 184
+  },
+  {
+   "label": "pw090-150@2.0",
+   "ntok": 204
+  },
+  {
+   "label": "pw150-208@1.94",
+   "ntok": 198
+  }
+ ]
+}

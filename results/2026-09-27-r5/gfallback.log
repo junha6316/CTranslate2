@@ -1,0 +1,19 @@
+=== G-fallback references (no fault) 16:47:39
+tier_capture      R=64 +64: decode0 tier=1 fb=1 order=['T', 'F'] reason=['(injected capture failure)'] | decode1 tier=1 fb=0 | NTOK 84/84 score -0.19494048 (no-fault -0.19494048) -> PASS
+tier_instantiate  R=64 +64: decode0 tier=1 fb=1 order=['T', 'F'] reason=['(instantiate failed)'] | decode1 tier=1 fb=0 | NTOK 84/84 score -0.19494048 (no-fault -0.19494048) -> PASS
+tier_replay       R=64 +64: decode0 tier=1 fb=1 order=['T', 'F'] reason=['(injected replay failure)'] | decode1 tier=1 fb=0 | NTOK 84/84 score -0.19494048 (no-fault -0.19494048) -> PASS
+tier_alloc        R=64 +64: decode0 tier=1 fb=1 order=['T', 'F'] reason=['(ct2_graph_capture_allocation)'] | decode1 tier=1 fb=0 | NTOK 84/84 score -0.19494048 (no-fault -0.19494048) -> PASS
+capture      r128: decode0 tier=0 fb=1 reason=['(injected capture failure)'] | decode1 tier=0 fb=1 | NTOK 84 tok==eager True score -0.19512649 -> PASS
+capture      t64 : decode0 tier=0 fb=1 reason=['(injected capture failure)'] | decode1 tier=0 fb=1 | NTOK 84 tok==eager True score -0.19475447 -> PASS
+instantiate  r128: decode0 tier=0 fb=1 reason=['(instantiate failed)'] | decode1 tier=0 fb=1 | NTOK 84 tok==eager True score -0.19512649 -> PASS
+instantiate  t64 : decode0 tier=0 fb=1 reason=['(instantiate failed)'] | decode1 tier=0 fb=1 | NTOK 84 tok==eager True score -0.19475447 -> PASS
+replay       r128: decode0 tier=0 fb=1 reason=['(injected replay failure)'] | decode1 tier=0 fb=0 | NTOK 84 tok==eager True score -0.19512649 -> PASS
+replay       t64 : decode0 tier=0 fb=1 reason=['(injected replay failure)'] | decode1 tier=1 fb=0 | NTOK 84 tok==eager True score -0.19475447 -> PASS
+fingerprint  r128: decode0 tier=0 fb=1 reason=['(pointer fingerprint changed)'] | decode1 tier=0 fb=0 | NTOK 84 tok==eager True score -0.19512649 -> PASS
+fingerprint  t64 : decode0 tier=0 fb=1 reason=['(pointer fingerprint changed)'] | decode1 tier=1 fb=0 | NTOK 84 tok==eager True score -0.19475447 -> PASS
+alloc        r128: decode0 tier=0 fb=1 reason=['(ct2_graph_capture_allocation)'] | decode1 tier=0 fb=1 | NTOK 84 tok==eager True score -0.19512649 -> PASS
+alloc        t64 : decode0 tier=0 fb=1 reason=['(ct2_graph_capture_allocation)'] | decode1 tier=0 fb=1 | NTOK 84 tok==eager True score -0.19475447 -> PASS
+single-cap@64 score -0.1947544664144516 tiers score -0.1949404776096344 eager score -0.1949404776096344 tiers tok==eager True
+G-fallback verdict: PASS
+CUDA graphs: step 64 does not fit the captured shapes (cache capacity 64, position table 448), going eager
+=== GFALLBACKDONE 16:48:16 ===

@@ -1,0 +1,55 @@
+# TRIMMED (full log on the box at /opt/real/r6/r5t/san_kns/gsanA_pp.log,   448647 bytes): first 45 lines + every ERROR SUMMARY / graph / decode / exit line
+========= COMPUTE-SANITIZER
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info] CPU: AuthenticAMD (SSE4.1=true, AVX=true, AVX2=true, AVX512=false)
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - Selected ISA: AVX2
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - Use Intel MKL: false
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - SGEMM backend: Ruy (packed: false)
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - GEMM_S16 backend: none (packed: false)
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - GEMM_S8 backend: Ruy (packed: false, u8s8 preferred: false)
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info] GPU #0: NVIDIA A10G (CC=8.6)
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - Allow INT8: true
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - Allow FP16: true (with Tensor Cores: true)
+[2026-09-26 17:31:57.665] [ctranslate2] [thread 52576] [info]  - Allow BF16: true
+[2026-09-26 17:31:58.061] [ctranslate2] [thread 52576] [info] Using CUDA allocator: cuda_malloc_async
+[2026-09-26 17:31:58.182] [ctranslate2] [thread 52576] [info] Loaded model /opt/models/faster-whisper-small on device cuda:0
+[2026-09-26 17:31:58.182] [ctranslate2] [thread 52576] [info]  - Binary version: 6
+[2026-09-26 17:31:58.182] [ctranslate2] [thread 52576] [info]  - Model specification revision: 3
+[2026-09-26 17:31:58.182] [ctranslate2] [thread 52576] [info]  - Selected compute type: float16
+BEGIN pp:20 decode 0
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (0,0,0) in block (0,0,0)
+=========     Address 0xe26cc5000 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (1,0,0) in block (0,0,0)
+=========     Address 0xe26cc5010 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (2,0,0) in block (0,0,0)
+=========     Address 0xe26cc5020 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (3,0,0) in block (0,0,0)
+=========     Address 0xe26cc5030 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (4,0,0) in block (0,0,0)
+# ...
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+BEGIN pp:20 decode 0
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  CUDA failed with error unspecified launch failure
+========= Error: process didn't terminate successfully
+========= Target application returned an error
+========= ERROR SUMMARY: 12067 errors
+========= ERROR SUMMARY: 11067 errors were not printed. Use --print-limit option to adjust the number of printed errors

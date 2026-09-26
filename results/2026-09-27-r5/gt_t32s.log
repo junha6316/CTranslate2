@@ -1,0 +1,8 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gt_t32s std:0 b1: 84 tok score=-0.19522655 transitions=2 captures=3 replays=77 seg=[26, 30, 21] disabled=none
+gt_t32s std:0 b5: 84 tok score=-0.19475447 transitions=2 captures=6 replays=80 seg=[24, 29, 27] disabled=none
+gt_t32s std:1 b1: 77 tok score=-0.13622068 transitions=2 captures=3 replays=70 seg=[26, 30, 14] disabled=none
+gt_t32s std:1 b5: 77 tok score=-0.13575487 transitions=2 captures=6 replays=68 seg=[24, 29, 15] disabled=none
+gt_t32s std:2 b1: 89 tok score=-0.16145667 transitions=2 captures=3 replays=82 seg=[26, 30, 26] disabled=none
+gt_t32s std:2 b5: 88 tok score=-0.14009233 transitions=2 captures=6 replays=77 seg=[24, 29, 24] disabled=none
+wrote gt_t32s.json 6

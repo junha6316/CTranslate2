@@ -1,0 +1,4 @@
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r3/install/lib/libctranslate2.so.4.8.2
+gt_t64s_eager std:0 b1: 84 tok score=-0.19501965 transitions=None captures=None replays=None seg=None disabled=None
+gt_t64s_eager std:0 b5: 84 tok score=-0.19494048 transitions=None captures=None replays=None seg=None disabled=None
+wrote gt_t64s_eager.json 2

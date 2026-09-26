@@ -1,0 +1,55 @@
+# TRIMMED (full log on the box at /opt/real/r6/r5t/san_kns/gsanA_ref_eager.log,   447164 bytes): first 45 lines + every ERROR SUMMARY / graph / decode / exit line
+========= COMPUTE-SANITIZER
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+BEGIN std:0 decode 0
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (0,0,0) in block (0,0,0)
+=========     Address 0xe26cc5000 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (1,0,0) in block (0,0,0)
+=========     Address 0xe26cc5010 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (2,0,0) in block (0,0,0)
+=========     Address 0xe26cc5020 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (3,0,0) in block (0,0,0)
+=========     Address 0xe26cc5030 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (4,0,0) in block (0,0,0)
+=========     Address 0xe26cc5040 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (5,0,0) in block (0,0,0)
+=========     Address 0xe26cc5050 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+========= Invalid __global__ read of size 16 bytes
+=========     at sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn+0x4070
+=========     by thread (6,0,0) in block (0,0,0)
+=========     Address 0xe26cc5060 is potentially accessed before it is allocated
+=========     and is inside the nearest allocation at 0xe26cc5000 of size 1536 bytes
+========= 
+# ...
+ctranslate2.__file__ = /home/ubuntu/w/r3/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/ref/install/lib/libctranslate2.so.4.8.2
+BEGIN std:0 decode 0
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  CUDA failed with error unspecified launch failure
+========= Error: process didn't terminate successfully
+========= Target application returned an error
+========= ERROR SUMMARY: 14275 errors
+========= ERROR SUMMARY: 13275 errors were not printed. Use --print-limit option to adjust the number of printed errors

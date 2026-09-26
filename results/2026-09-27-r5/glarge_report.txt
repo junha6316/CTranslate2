@@ -1,0 +1,23 @@
+
+### beam 5: median ms (delta vs sc128, + = faster)
+workload      ntok(e/sc/t64) P             sc128            t64
+dense:1       -1/198/198    2   1729.1( +0.0)  1692.3(+36.8)
+dense:4       -1/159/159    2   1384.8( +0.0)  1369.5(+15.3)
+prev:128      -1/ 20/ 20  131    312.7( +0.0)   313.0( -0.3)
+prev:223      -1/ 20/ 20  226    318.6( +0.0)   318.7( -0.0)
+   t64    dense:1    b5: tr=[2] cap=[6] seg=[120, 61, 6] tiers=[128->192@128,192->256@192]
+   t64    dense:4    b5: tr=[1] cap=[4] seg=[120, 31] tiers=[128->192@128]
+   t64    prev:128   b5: tr=[0] cap=[2] seg=[16] tiers=[]
+   t64    prev:223   b5: tr=[0] cap=[2] seg=[15] tiers=[]
+
+### criteria
+[pool unset] 1. beam5 W_dense mean +26.02 ms, per-window {'dense:1': 36.76, 'dense:4': 15.29} -> PASS
+[pool unset] 2. beam5 W_prev mean -0.15 ms, per-k {'prev:128': -0.29, 'prev:223': -0.01} -> FAIL
+[pool unset] 3. greedy W_dense mean +nan ms, per-window {} -> FAIL
+[pool unset] 4. worst row -0.29 ms (need >= -3) -> PASS
+
+### vs eager (mean ms delta, + = faster than eager)
+
+### token identity vs sc128 and vs eager (per row)
+  sc128 : rows 4, tokens == sc128 4, == eager 0
+  t64   : rows 4, tokens == sc128 4, == eager 0

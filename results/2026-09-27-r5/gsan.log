@@ -1,0 +1,21 @@
+=== sanitizer mode=uaf: /usr/local/cuda-12.8/bin/compute-sanitizer --tool memcheck --track-stream-ordered-races use-after-free 16:51:21
+--- gsan_uaf_ref_eager: ========= ERROR SUMMARY: 395 errors  tier-lines=0 falling-back=0 NTOK=NTOK 84 
+    phases: 
+--- gsan_uaf_R32_b5: ========= ERROR SUMMARY: 395 errors  tier-lines=2 falling-back=0 NTOK=NTOK 84 
+    phases:       2 (from Ready 
+--- gsan_uaf_R32_b1: ========= ERROR SUMMARY: 395 errors  tier-lines=2 falling-back=0 NTOK=NTOK 84 
+    phases:       2 (from Ready 
+--- gsan_uaf_R128_d1: ========= ERROR SUMMARY: 395 errors  tier-lines=2 falling-back=0 NTOK=NTOK 199 
+    phases:       2 (from Ready 
+--- gsan_uaf_pp: ========= ERROR SUMMARY: 395 errors  tier-lines=36 falling-back=0 NTOK=NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 
+    phases:       1 (from CaptureSecond      31 (from Ready       4 (from Warmup 
+=== sanitizer mode=plain: /usr/local/cuda-12.8/bin/compute-sanitizer --tool memcheck 16:57:10
+--- gsan_plain_R32_b5: ========= ERROR SUMMARY: 0 errors  tier-lines=2 falling-back=0 NTOK=NTOK 84 
+    phases:       2 (from Ready 
+--- gsan_plain_R32_b1: ========= ERROR SUMMARY: 0 errors  tier-lines=2 falling-back=0 NTOK=NTOK 84 
+    phases:       2 (from Ready 
+--- gsan_plain_R128_d1: ========= ERROR SUMMARY: 0 errors  tier-lines=2 falling-back=0 NTOK=NTOK 199 
+    phases:       2 (from Ready 
+--- gsan_plain_pp: ========= ERROR SUMMARY: 0 errors  tier-lines=36 falling-back=0 NTOK=NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 NTOK 84 
+    phases:       1 (from CaptureSecond      31 (from Ready       4 (from Warmup 
+=== GSANDONE 17:00:50 ===
