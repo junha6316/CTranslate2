@@ -51,6 +51,18 @@ export CT2_CUDA_CACHING_ALLOCATOR_CONFIG=8,3,7,6291455
 
 See the description of each parameter in the [allocator implementation](https://github.com/NVIDIA/cub/blob/main/cub/util_allocator.cuh).
 
+## `CT2_CUDA_POOL_RELEASE_THRESHOLD`
+
+Release threshold of the memory pool used by the `cuda_malloc_async` allocator: the number of bytes (in use plus cached) the pool keeps across synchronizations instead of returning them to the device. The value is a byte count with an optional `K`, `M` or `G` suffix (binary multiples), or `max` to never shrink the pool on synchronization.
+
+By default (unset or `0`) the pool keeps nothing: every synchronization, including the one a worker makes when its job queue runs empty, releases all unused memory, and the next job maps it back. With large decoder caches (e.g. flash attention) or batch sizes that vary between requests, this release and remap is a measurable part of each request. Raising the threshold removes it at the cost of keeping up to that much GPU memory reserved between requests. The kept memory is returned when the model is unloaded with `unload_model()`.
+
+```bash
+export CT2_CUDA_POOL_RELEASE_THRESHOLD=8G
+```
+
+The threshold applies to the device's current memory pool, which is shared with any other library using `cudaMallocAsync` in the same process.
+
 ## `CT2_FORCE_CPU_ISA`
 
 Force CTranslate2 to select a specific instruction set architecture (ISA). Possible values are:
