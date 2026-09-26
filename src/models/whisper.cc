@@ -18,6 +18,13 @@
 namespace ctranslate2 {
   namespace models {
 
+    dim_t clamp_cache_reserve_steps(dim_t max_length, int reserve_knob) {
+      dim_t reserve = max_length;
+      if (reserve_knob > 0)
+        reserve = std::min<dim_t>(max_length, reserve_knob);
+      return reserve;
+    }
+
     const Vocabulary& WhisperModel::get_vocabulary() const {
       return *_vocabulary;
     }
@@ -259,8 +266,20 @@ namespace ctranslate2 {
       static const bool prealloc_kv = read_bool_from_env("CT2_CUDA_PREALLOC_KV")
                                       || read_bool_from_env("CT2_CUDA_PAD_KV")
                                       || read_bool_from_env("CT2_CUDA_GRAPHS");
-      if (prealloc_kv)
-        _decoder->set_cache_reserve_steps(options.max_length);
+      if (prealloc_kv) {
+        // Opt-in cap on how far ahead the caches are reserved. Unset (0) keeps the full
+        // decode length so the path stays bit-identical; a positive knob reserves only
+        // min(max_length, knob) steps, front-loading less KV memory and shrinking the
+        // captured GEMM/softmax leading dimensions (dim(2)=C) the graph runner bakes into
+        // its fingerprint. append_to_cache rounds the reserve up to a 32-step block
+        // (attention.cc), so e.g. knob=100 still reserves 128. A window longer than the
+        // cap grows the cache in 32-blocks past it and, under CUDA graphs, the host guard
+        // (transformer.cc) turns that step ineligible so the tail runs eager -- correct,
+        // just without the replay win. Independent of CT2_CUDA_GRAPHS and CT2_CUDA_PAD_KV.
+        static const int reserve_knob = read_int_from_env("CT2_CUDA_GRAPHS_RESERVE", 0);
+        _decoder->set_cache_reserve_steps(
+          clamp_cache_reserve_steps(options.max_length, reserve_knob));
+      }
 
       layers::DecoderState state = _decoder->initial_state();
       state.emplace("memory", maybe_encode(std::move(features)));

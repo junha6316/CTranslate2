@@ -2,6 +2,7 @@
 #include <ctranslate2/translator.h>
 #include <ctranslate2/decoding.h>
 #include <ctranslate2/layers/transformer.h>
+#include <ctranslate2/models/whisper.h>
 
 #include <algorithm>
 #include <unordered_set>
@@ -1252,9 +1253,11 @@ TEST_F(TransformerDecoderTest, AlignmentHeadsDeviceMemo) {
 }
 
 TEST_F(TransformerDecoderTest, CacheReservePreallocatesUpFront) {
-  // Reserve above one kv_cache_block (32): the cache must be sized once at step 0, the
-  // mid-capacity offsets of later steps must pass the relaxed block guard, and the
-  // logits must stay identical to an unreserved decoder at every step.
+  // Capped reserve (the CT2_CUDA_GRAPHS_RESERVE case where the knob < max_length): the
+  // cache must be sized once at step 0 to the block-rounded cap and stay there for every
+  // step that fits under it -- it is preallocated up front, not grown block by block --
+  // while the logits stay identical to an unreserved decoder at every step. dim(2) holding
+  // constant is exactly the property the graph runner's capacity fingerprint depends on.
   layers::TransformerDecoder reference(*_model, "decoder");
   _decoder.set_cache_reserve_steps(40);
 
@@ -1262,17 +1265,30 @@ TEST_F(TransformerDecoderTest, CacheReservePreallocatesUpFront) {
   auto ref_state = make_state();
   StorageView tok({1}, int32_t(1));
 
-  for (dim_t step = 0; step < 6; ++step) {
+  // Step 0 allocates the whole reserve up front: round_up(40, 32) = 64. The unreserved
+  // reference, in contrast, is still at one block (32) after the same first step -- it only
+  // grows later, block by block. This up-front-vs-incremental gap is the whole point.
+  {
+    StorageView logits;
+    StorageView ref_logits;
+    _decoder(0, tok, state, &logits);
+    reference(0, tok, ref_state, &ref_logits);
+    expect_storage_eq(logits, ref_logits);
+  }
+  EXPECT_EQ(state.at("self_keys_0").dim(2), 64);
+  EXPECT_EQ(ref_state.at("self_keys_0").dim(2), 32);
+
+  // Every later step under the cap reuses that capacity: the reserved cache's dim(2) never
+  // changes while the window (40 steps) fits, and the logits stay identical to the reference
+  // at each step (the reference grows to 64 on its own around step 32 -- also correct).
+  for (dim_t step = 1; step < 40; ++step) {
     StorageView logits;
     StorageView ref_logits;
     _decoder(step, tok, state, &logits);
     reference(step, tok, ref_state, &ref_logits);
     expect_storage_eq(logits, ref_logits);
+    EXPECT_EQ(state.at("self_keys_0").dim(2), 64) << "cap must hold at step " << step;
   }
-
-  // round_up(40, 32) = 64 from the first append; unreserved stays at one block.
-  EXPECT_EQ(state.at("self_keys_0").dim(2), 64);
-  EXPECT_EQ(ref_state.at("self_keys_0").dim(2), 32);
   // The self_length record mirrors the reserve.
   EXPECT_GE(state.at("self_length").reserved_memory(), dim_t(40 * 16));
 
@@ -1282,24 +1298,115 @@ TEST_F(TransformerDecoderTest, CacheReservePreallocatesUpFront) {
 }
 
 TEST_F(TransformerDecoderTest, CacheReserveGrowthFallback) {
-  // Decoding past the reserve must fall back to block growth and stay correct.
+  // A window longer than the cap (the CT2_CUDA_GRAPHS_RESERVE crossing case): once the
+  // reserved capacity is exhausted the cache falls back to 32-block growth, one block at a
+  // time, and every step -- before and after each crossing -- stays bit-identical to an
+  // unreserved decoder. This is what makes the single-cap graph policy safe: past the cap
+  // the tail simply grows the cache the ordinary way (under CUDA graphs the host guard then
+  // turns that step ineligible and the tail runs eager).
   layers::TransformerDecoder reference(*_model, "decoder");
-  _decoder.set_cache_reserve_steps(40);
+  _decoder.set_cache_reserve_steps(40);  // cap = round_up(40, 32) = 64
 
   auto state = make_state();
   auto ref_state = make_state();
   StorageView tok({1}, int32_t(1));
 
-  for (dim_t step = 0; step < 70; ++step) {
+  dim_t last_capacity = 0;
+  for (dim_t step = 0; step < 100; ++step) {
     StorageView logits;
     StorageView ref_logits;
     _decoder(step, tok, state, &logits);
     reference(step, tok, ref_state, &ref_logits);
     expect_storage_eq(logits, ref_logits);
+
+    const dim_t capacity = state.at("self_keys_0").dim(2);
+    EXPECT_EQ(capacity % 32, 0) << "growth must stay 32-block aligned at step " << step;
+    if (capacity != last_capacity) {
+      if (last_capacity != 0) {
+        EXPECT_EQ(capacity, last_capacity + 32) << "one block at a time at step " << step;
+      }
+      last_capacity = capacity;
+    }
   }
 
-  EXPECT_EQ(state.at("self_keys_0").dim(2), 96);  // 64 exceeded at step 64 -> one block more.
-  EXPECT_EQ(state.at("self_length").dim(1), 70);
+  // Two crossings past the cap: 64 -> 96 (capacity exceeded at step 64) -> 128 (step 96).
+  EXPECT_EQ(state.at("self_keys_0").dim(2), 128);
+  EXPECT_EQ(state.at("self_length").dim(1), 100);
+}
+
+TEST_F(TransformerDecoderTest, CacheCapacityIsWitnessedByDim2) {
+  // The CUDA-graph fingerprint (transformer.cc, guarded by CT2_WITH_CUDA) bakes each KV
+  // cache's time capacity dim(2) alongside its buffer address, because both CUDA allocators
+  // deterministically recycle freed blocks: a later, smaller-cap decode can be handed the
+  // same buffer back at a different capacity, and a captured GEMM/softmax leading dimension
+  // would then silently disagree with the new layout. That backstop is only sound if dim(2)
+  // is a faithful witness of the capacity -- the field that distinguishes two otherwise
+  // identically shaped caches. This pins that invariant on the CPU build (the fingerprint
+  // push itself is CUDA-only, inspected at transformer.cc and dual-run-checked by Gate G3):
+  // the reserve is the only thing changed, and it moves dim(2) alone.
+  _decoder.set_cache_reserve_steps(40);       // -> round_up(40, 32) = 64
+  layers::TransformerDecoder big_reserve(*_model, "decoder");
+  big_reserve.set_cache_reserve_steps(200);   // -> round_up(200, 32) = 224
+
+  auto small_state = make_state();
+  auto big_state = make_state();
+  StorageView tok({1}, int32_t(1));
+  StorageView small_logits;
+  StorageView big_logits;
+  _decoder(0, tok, small_state, &small_logits);
+  big_reserve(0, tok, big_state, &big_logits);
+
+  const StorageView& a = small_state.at("self_keys_0");
+  const StorageView& b = big_state.at("self_keys_0");
+  ASSERT_EQ(a.rank(), 4);
+  ASSERT_EQ(b.rank(), 4);
+  // Batch, heads and depth are identical; the capacity (dim 2) is the sole differentiator,
+  // so it must be part of the fingerprint or a recycled buffer would masquerade as a match.
+  EXPECT_EQ(a.dim(0), b.dim(0));
+  EXPECT_EQ(a.dim(1), b.dim(1));
+  EXPECT_EQ(a.dim(3), b.dim(3));
+  EXPECT_NE(a.dim(2), b.dim(2));
+  EXPECT_EQ(a.dim(2), 64);
+  EXPECT_EQ(b.dim(2), 224);
+}
+
+TEST_F(TransformerDecoderTest, CacheReserveKnobClampAndBlockRounding) {
+  // The CT2_CUDA_GRAPHS_RESERVE clamp -- reserve = knob > 0 ? min(max_length, knob)
+  // : max_length -- is applied by WhisperReplica::generate through the free function
+  // models::clamp_cache_reserve_steps (whisper.cc). Driving generate() directly would
+  // need a WhisperModel fixture the CPU test data does not ship (the env-gated wiring is
+  // additionally covered end-to-end on the A10G box by Gate G1, RESERVE=128 -> measured
+  // cache capacity 128), so here we call the SAME production function -- not a copy of it
+  // -- and pin the two behaviours the knob relies on: the clamp arithmetic itself, and
+  // that the clamped value block-rounds through append_to_cache to dim(2) = round_up(reserve, 32).
+  const dim_t max_length = 448;  // whisper-small options.max_length
+  EXPECT_EQ(models::clamp_cache_reserve_steps(max_length, 0), 448);    // unset -> full max_length (bit-identical path)
+  EXPECT_EQ(models::clamp_cache_reserve_steps(max_length, -1), 448);   // negative treated as unset
+  EXPECT_EQ(models::clamp_cache_reserve_steps(max_length, 512), 448);  // above max_length -> clamped down
+  EXPECT_EQ(models::clamp_cache_reserve_steps(max_length, 448), 448);  // exactly max_length -> unchanged
+  EXPECT_EQ(models::clamp_cache_reserve_steps(max_length, 128), 128);  // below max_length -> the knob
+  EXPECT_EQ(models::clamp_cache_reserve_steps(max_length, 96), 96);
+
+  // knob -> the block-rounded capacity the first append allocates for the clamped reserve.
+  const std::vector<std::pair<int, dim_t>> knob_to_dim2 = {
+    {0, 448},    // unset: no cap, full max_length (already a 32 multiple)
+    {128, 128},  // 4 blocks exactly
+    {96, 96},    // 3 blocks exactly
+    {160, 160},  // 5 blocks exactly
+    {100, 128},  // block rounding: round_up(100, 32) = 128
+  };
+  for (const auto& knob_dim2 : knob_to_dim2) {
+    const int knob = knob_dim2.first;
+    const dim_t expected_dim2 = knob_dim2.second;
+    const dim_t reserve = models::clamp_cache_reserve_steps(max_length, knob);
+    _decoder.set_cache_reserve_steps(reserve);
+    auto state = make_state();
+    StorageView tok({1}, int32_t(1));
+    StorageView logits;
+    _decoder(0, tok, state, &logits);
+    EXPECT_EQ(state.at("self_keys_0").dim(2), expected_dim2)
+        << "knob=" << knob << " reserve=" << reserve;
+  }
 }
 
 TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {

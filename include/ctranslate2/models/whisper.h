@@ -58,6 +58,13 @@ namespace ctranslate2 {
       std::vector<int> suppress_tokens = {-1};
     };
 
+    // Resolve how many decode steps the KV caches are reserved for under the opt-in
+    // preallocation path, given the CT2_CUDA_GRAPHS_RESERVE knob. An unset knob (<= 0)
+    // keeps the full decode length so the path stays bit-identical; a positive knob
+    // reserves only min(max_length, knob) steps. This is the exact clamp applied by
+    // WhisperReplica::generate, factored out here so it is directly unit-testable.
+    dim_t clamp_cache_reserve_steps(dim_t max_length, int reserve_knob);
+
     struct WhisperGenerationResult {
       std::vector<std::vector<std::string>> sequences;
       std::vector<std::vector<size_t>> sequences_ids;
