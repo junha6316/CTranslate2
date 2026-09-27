@@ -1,0 +1,340 @@
+PKG /home/ubuntu/w/r6/python/ctranslate2/__init__.py /home/ubuntu/w/r6s2/install/lib/libctranslate2.so.4.8.2
+========= COMPUTE-SANITIZER
+SANCELL flash_b5 [84] [-0.19494]
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (0,0,0) in block (3,16,0)
+=========     Address 0xe31802600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (1,0,0) in block (3,16,0)
+=========     Address 0xe31802610
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (2,0,0) in block (3,16,0)
+=========     Address 0xe31802620
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (3,0,0) in block (3,16,0)
+=========     Address 0xe31802630
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (0,0,0) in block (0,0,0)
+=========     Address 0xe271eb600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (4,0,0) in block (3,16,0)
+=========     Address 0xe31802640
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (1,0,0) in block (0,0,0)
+=========     Address 0xe271eb610
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (5,0,0) in block (3,16,0)
+=========     Address 0xe31802650
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (6,0,0) in block (3,16,0)
+=========     Address 0xe31802660
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (2,0,0) in block (0,0,0)
+=========     Address 0xe271eb620
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (3,0,0) in block (0,0,0)
+=========     Address 0xe271eb600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (7,0,0) in block (3,16,0)
+=========     Address 0xe31802670
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (4,0,0) in block (0,0,0)
+=========     Address 0xe271eb610
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (0,0,0) in block (1,23,0)
+=========     Address 0xe30533a00
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (5,0,0) in block (0,0,0)
+=========     Address 0xe271eb620
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (8,0,0) in block (3,16,0)
+=========     Address 0xe31802680
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (6,0,0) in block (0,0,0)
+=========     Address 0xe271eb600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (1,0,0) in block (1,23,0)
+=========     Address 0xe30533a10
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (7,0,0) in block (0,0,0)
+=========     Address 0xe271eb610
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (9,0,0) in block (3,16,0)
+=========     Address 0xe31802690
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (8,0,0) in block (0,0,0)
+=========     Address 0xe271eb620
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (2,0,0) in block (1,23,0)
+=========     Address 0xe30533a20
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (9,0,0) in block (0,0,0)
+=========     Address 0xe271eb600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (10,0,0) in block (3,16,0)
+=========     Address 0xe318026a0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (10,0,0) in block (0,0,0)
+=========     Address 0xe271eb610
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (3,0,0) in block (1,23,0)
+=========     Address 0xe30533a30
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (11,0,0) in block (0,0,0)
+=========     Address 0xe271eb620
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (11,0,0) in block (3,16,0)
+=========     Address 0xe318026b0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (12,0,0) in block (0,0,0)
+=========     Address 0xe271eb600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x670
+=========     by thread (4,0,0) in block (1,23,0)
+=========     Address 0xe30533a40
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= ERROR SUMMARY: 23387 errors
+========= ERROR SUMMARY: 23266 errors were not printed. Use --print-limit option to adjust the number of printed errors
+========= 
+========= 1048904 errors were skipped (error buffer overflow).
+rc=0

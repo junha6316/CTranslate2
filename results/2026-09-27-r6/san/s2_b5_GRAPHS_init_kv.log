@@ -1,0 +1,902 @@
+========= COMPUTE-SANITIZER
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (64,0,0) in block (0,0,0)
+=========     Address 0xe2742d200
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (65,0,0) in block (0,0,0)
+=========     Address 0xe2742d210
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (66,0,0) in block (0,0,0)
+=========     Address 0xe2742d220
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (67,0,0) in block (0,0,0)
+=========     Address 0xe2742d230
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (68,0,0) in block (0,0,0)
+=========     Address 0xe2742d240
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (69,0,0) in block (0,0,0)
+=========     Address 0xe2742d250
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (70,0,0) in block (0,0,0)
+=========     Address 0xe2742d260
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (71,0,0) in block (0,0,0)
+=========     Address 0xe2742d270
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (72,0,0) in block (0,0,0)
+=========     Address 0xe2742d280
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (73,0,0) in block (0,0,0)
+=========     Address 0xe2742d290
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (74,0,0) in block (0,0,0)
+=========     Address 0xe2742d2a0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (75,0,0) in block (0,0,0)
+=========     Address 0xe2742d2b0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (76,0,0) in block (0,0,0)
+=========     Address 0xe2742d2c0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (77,0,0) in block (0,0,0)
+=========     Address 0xe2742d2d0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (78,0,0) in block (0,0,0)
+=========     Address 0xe2742d2e0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (79,0,0) in block (0,0,0)
+=========     Address 0xe2742d2f0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (80,0,0) in block (0,0,0)
+=========     Address 0xe2742d300
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (81,0,0) in block (0,0,0)
+=========     Address 0xe2742d310
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (82,0,0) in block (0,0,0)
+=========     Address 0xe2742d320
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (83,0,0) in block (0,0,0)
+=========     Address 0xe2742d330
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (84,0,0) in block (0,0,0)
+=========     Address 0xe2742d340
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (85,0,0) in block (0,0,0)
+=========     Address 0xe2742d350
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (86,0,0) in block (0,0,0)
+=========     Address 0xe2742d360
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (87,0,0) in block (0,0,0)
+=========     Address 0xe2742d370
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (88,0,0) in block (0,0,0)
+=========     Address 0xe2742d380
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (89,0,0) in block (0,0,0)
+=========     Address 0xe2742d390
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (90,0,0) in block (0,0,0)
+=========     Address 0xe2742d3a0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (91,0,0) in block (0,0,0)
+=========     Address 0xe2742d3b0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (92,0,0) in block (0,0,0)
+=========     Address 0xe2742d3c0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 4 bytes
+=========     at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>(T1::Params)+0x700
+=========     by thread (93,0,0) in block (0,0,0)
+=========     Address 0xe2742d3d0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x3325646] in libcublasLt.so.12
+=========         Host Frame:  [0x1d1880f] in libcublasLt.so.12
+=========         Host Frame:  [0xf8199d] in libcublasLt.so.12
+=========         Host Frame:  [0x10c1258] in libcublasLt.so.12
+=========         Host Frame: cublasLtHSHMatmul [0x10ce1c3] in libcublasLt.so.12
+=========         Host Frame:  [0x1b74c9] in libcublas.so.12
+=========         Host Frame:  [0x1b8e83] in libcublas.so.12
+=========         Host Frame:  [0x19d141] in libcublas.so.12
+=========         Host Frame:  [0x19fb1d] in libcublas.so.12
+=========         Host Frame: cublasGemmStridedBatchedEx [0xe99e4] in libcublas.so.12
+=========         Host Frame: void ctranslate2::primitives<(ctranslate2::Device)1>::gemm_batch_strided<half_float::half, half_float::half>(bool, bool, long, long, long, float, half_float::half const*, long, long, half_float::half const*, long, long, float, half_float::half*, long, long, long) [0x6c2eb9] in libctranslate2.so.4
+=========         Host Frame: void ctranslate2::ops::MatMul::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView&, long) const [0x3f9f98] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::MultiHeadAttention::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::StorageView*, ctranslate2::Padder const*, ctranslate2::Padder const*, bool, ctranslate2::StorageView*, long, ctranslate2::layers::DecodeWorkspace*) const [0x341ff0] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::TransformerEncoderLayer::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::Padder const*, ctranslate2::StorageView*) const [0x355958] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c5e6] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca649] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2732] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4739] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4862] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427542] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+rc=124

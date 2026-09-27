@@ -1,0 +1,164 @@
+PKG /opt/real/r6/pybase/ctranslate2/__init__.py /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+========= COMPUTE-SANITIZER
+SANCELL dense1 [199] [-0.135835]
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (0,0,0) in block (106,2,0)
+=========     Address 0xe272f4600
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (1,0,0) in block (106,2,0)
+=========     Address 0xe272f4610
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (2,0,0) in block (106,2,0)
+=========     Address 0xe272f4620
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (3,0,0) in block (106,2,0)
+=========     Address 0xe272f4630
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (4,0,0) in block (106,2,0)
+=========     Address 0xe272f4640
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (5,0,0) in block (106,2,0)
+=========     Address 0xe272f4650
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (6,0,0) in block (106,2,0)
+=========     Address 0xe272f4660
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (7,0,0) in block (106,2,0)
+=========     Address 0xe272f4670
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (8,0,0) in block (106,2,0)
+=========     Address 0xe272f4680
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (9,0,0) in block (106,2,0)
+=========     Address 0xe272f4690
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (10,0,0) in block (106,2,0)
+=========     Address 0xe272f46a0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (11,0,0) in block (106,2,0)
+=========     Address 0xe272f46b0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (12,0,0) in block (106,2,0)
+=========     Address 0xe272f46c0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (13,0,0) in block (106,2,0)
+=========     Address 0xe272f46d0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (14,0,0) in block (106,2,0)
+=========     Address 0xe272f46e0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (15,0,0) in block (106,2,0)
+=========     Address 0xe272f46f0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (16,0,0) in block (106,2,0)
+=========     Address 0xe272f4700
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (17,0,0) in block (106,2,0)
+=========     Address 0xe272f4710
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (18,0,0) in block (106,2,0)
+=========     Address 0xe272f4720
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (19,0,0) in block (106,2,0)
+=========     Address 0xe272f4730
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (20,0,0) in block (106,2,0)
+=========     Address 0xe272f4740
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (21,0,0) in block (106,2,0)
+=========     Address 0xe272f4750
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (22,0,0) in block (106,2,0)
+=========     Address 0xe272f4760
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (23,0,0) in block (106,2,0)
+=========     Address 0xe272f4770
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (24,0,0) in block (106,2,0)
+=========     Address 0xe272f4780
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (25,0,0) in block (106,2,0)
+=========     Address 0xe272f4790
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (26,0,0) in block (106,2,0)
+=========     Address 0xe272f47a0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (27,0,0) in block (106,2,0)
+=========     Address 0xe272f47b0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (28,0,0) in block (106,2,0)
+=========     Address 0xe272f47c0
+========= 
+========= Uninitialized __global__ memory read of size 16 bytes
+=========     at ctranslate2::ops::gather_rows_kernel(ctranslate2::ops::GatherRowsArgs, const int *, unsigned int)+0x280
+=========     by thread (29,0,0) in block (106,2,0)
+=========     Address 0xe272f47d0
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= ERROR SUMMARY: 1696 errors
+========= ERROR SUMMARY: 1663 errors were not printed. Use --print-limit option to adjust the number of printed errors
+========= 
+========= 6636377 errors were skipped (error buffer overflow).
+rc=0

@@ -1,0 +1,7 @@
+s2 b4 writers+attn total=312067766 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0 gather_printed=0
+base b4 writers+attn total=312067766 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0 gather_printed=0
+s2 dense1 writers+attn total=43404956 SANCELL dense1 [199] [-0.135835] rc=0 gather_printed=0
+base dense1 writers+attn total=43404956 SANCELL dense1 [199] [-0.135835] rc=0 gather_printed=0
+s2 b5 writers+attn total=43404666 SANCELL b5 [84] [-0.195126] rc=0 gather_printed=0
+base b5 writers+attn total=43404666 SANCELL b5 [84] [-0.195126] rc=0 gather_printed=0
+WRALL_DONE

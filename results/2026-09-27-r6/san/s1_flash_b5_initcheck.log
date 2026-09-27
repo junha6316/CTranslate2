@@ -1,0 +1,641 @@
+========= COMPUTE-SANITIZER
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (64,0,0) in block (0,0,0)
+=========     Address 0xe26d984e0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (65,0,0) in block (0,0,0)
+=========     Address 0xe26d984e2
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (66,0,0) in block (0,0,0)
+=========     Address 0xe26d984e4
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (67,0,0) in block (0,0,0)
+=========     Address 0xe26d984e6
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (68,0,0) in block (0,0,0)
+=========     Address 0xe26d984e8
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (69,0,0) in block (0,0,0)
+=========     Address 0xe26d984ea
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (70,0,0) in block (0,0,0)
+=========     Address 0xe26d984ec
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (71,0,0) in block (0,0,0)
+=========     Address 0xe26d984ee
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (72,0,0) in block (0,0,0)
+=========     Address 0xe26d984f0
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (73,0,0) in block (0,0,0)
+=========     Address 0xe26d984f2
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (74,0,0) in block (0,0,0)
+=========     Address 0xe26d984f4
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (75,0,0) in block (0,0,0)
+=========     Address 0xe26d984f6
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (76,0,0) in block (0,0,0)
+=========     Address 0xe26d984f8
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (77,0,0) in block (0,0,0)
+=========     Address 0xe26d984fa
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (78,0,0) in block (0,0,0)
+=========     Address 0xe26d984fc
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (79,0,0) in block (0,0,0)
+=========     Address 0xe26d984fe
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (80,0,0) in block (0,0,0)
+=========     Address 0xe26d98500
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (81,0,0) in block (0,0,0)
+=========     Address 0xe26d98502
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (82,0,0) in block (0,0,0)
+=========     Address 0xe26d98504
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, (bool)0, (bool)1, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<T3>, const T1 *, T2 *)+0xe70
+=========     by thread (83,0,0) in block (0,0,0)
+=========     Address 0xe26d98506
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: cuLaunchKernel [0x367aaa] in libcuda.so.1
+=========         Host Frame:  [0x31cf835] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x3237797] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa37794] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa2b3f9] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa13c9a] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0xa200bf] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e80ff] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e82a4] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5e902b] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame:  [0x5f6b68] in libcudnn_engines_precompiled.so.9.10.2
+=========         Host Frame: cudnn::cnn::EngineInterface::execute(cudnn::backend::VariantPack const&, CUstream_st*) const [0x1caf8f] in libcudnn_graph.so.9
+=========         Host Frame: cudnn::backend::execute(cudnnContext*, cudnn::backend::ExecutionPlan const&, cudnn::backend::VariantPack&) [0x171db6] in libcudnn_graph.so.9
+=========         Host Frame:  [0x37bd4] in libcudnn_cnn.so.9.10.2
+=========         Host Frame:  [0x23f31] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: cudnnConvolutionBiasActivationForward [0x57b07] in libcudnn_cnn.so.9.10.2
+=========         Host Frame: void ctranslate2::ops::Conv1D::compute<(ctranslate2::Device)1, half_float::half>(ctranslate2::StorageView const&, ctranslate2::StorageView const&, ctranslate2::StorageView const*, ctranslate2::StorageView&, ctranslate2::StorageView const*) const [0x78e8c4] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::layers::WhisperEncoder::operator()(ctranslate2::StorageView const&, ctranslate2::StorageView&) [0x36c55b] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::maybe_encode(ctranslate2::StorageView) [0x3ca619] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<unsigned long, std::allocator<unsigned long> >, std::allocator<std::vector<unsigned long, std::allocator<unsigned long> > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d2702] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::models::WhisperReplica::generate(ctranslate2::StorageView, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&, ctranslate2::models::WhisperOptions const&) [0x3d4709] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::BatchJob<ctranslate2::models::WhisperGenerationResult, ctranslate2::ReplicaPool<ctranslate2::models::WhisperReplica>::post_batch<ctranslate2::models::WhisperGenerationResult, ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}>(ctranslate2::models::Whisper::generate(ctranslate2::StorageView const&, std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >, ctranslate2::models::WhisperOptions)::{lambda(ctranslate2::models::WhisperReplica&)#1}, std::vector<std::promise<ctranslate2::models::WhisperGenerationResult>, std::allocator<ctranslate2::models::WhisperGenerationResult> >)::{lambda()#1}>::run() [0x3d4832] in libctranslate2.so.4
+=========         Host Frame: ctranslate2::Worker::run(ctranslate2::JobQueue&) [0x427512] in libctranslate2.so.4
+=========         Host Frame:  [0xdc252] in libstdc++.so.6
+=========         Host Frame:  [0x94a82] in libc.so.6
+=========         Host Frame:  [0x1268df] in libc.so.6
+========= 

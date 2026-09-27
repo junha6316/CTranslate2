@@ -1,0 +1,22 @@
+s1 flash_b5 init_gather  total=1072291 SANCELL flash_b5 [84] [-0.19494] rc=0
+s2 flash_b5 init_gather  total=1072291 SANCELL flash_b5 [84] [-0.19494] rc=0
+base flash_b5 init_gather  total=5922122 SANCELL flash_b5 [84] [-0.19494] rc=0
+s1 flash_b4 init_gather  total=10247392 SANCELL flash_b4 [84, 77, 88, 98] [-0.194754, -0.135349, -0.140359, -0.132573] rc=0
+s2 flash_b4 init_gather  total=10247392 SANCELL flash_b4 [84, 77, 88, 98] [-0.194754, -0.135349, -0.140359, -0.132573] rc=0
+base flash_b4 init_gather  total=59218820 SANCELL flash_b4 [84, 77, 88, 98] [-0.194754, -0.135349, -0.140359, -0.132573] rc=0
+s1 b5 init_gather  total=1474931 SANCELL b5 [84] [-0.195126] rc=0
+s2 b5 init_gather  total=1993376 SANCELL b5 [84] [-0.195126] rc=0
+base b5 init_gather  total=1474931 SANCELL b5 [84] [-0.195126] rc=0
+s1 b4 init_gather  total=51613668 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0
+s2 b4 init_gather  total=53410827 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0
+base b4 init_gather  total=51613668 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0
+s1 dense1 init_gather  total=6638073 SANCELL dense1 [199] [-0.135835] rc=0
+s2 dense1 init_gather  total=7755610 SANCELL dense1 [199] [-0.135835] rc=0
+base dense1 init_gather  total=6638073 SANCELL dense1 [199] [-0.135835] rc=0
+s2 b5 init_kv regex=gather_rows_kernel|s161616gemm|s16816gemm_fp16|SoftMax total=1989579073 SANCELL b5 [84] [-0.195126] rc=0
+base b5 init_kv regex=gather_rows_kernel|s161616gemm|s16816gemm_fp16|SoftMax total=1968324088 SANCELL b5 [84] [-0.195126] rc=0
+s2 b4 init_kv regex=gather_rows_kernel|s161616gemm|s16816gemm_fp16|SoftMax total=6646174849 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0
+base b4 init_kv regex=gather_rows_kernel|s161616gemm|s16816gemm_fp16|SoftMax total=5914746034 SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] rc=0
+s2 dense1 init_kv regex=gather_rows_kernel|s161616gemm|s16816gemm_fp16|SoftMax total=3538001859 SANCELL dense1 [199] [-0.135835] rc=0
+base dense1 init_kv regex=gather_rows_kernel|s161616gemm|s16816gemm_fp16|SoftMax total=3507311318 SANCELL dense1 [199] [-0.135835] rc=0
+INITALL_DONE

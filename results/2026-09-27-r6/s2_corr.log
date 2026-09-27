@@ -1,0 +1,12 @@
+/home/ubuntu/w/r6/python/ctranslate2/__init__.py /home/ubuntu/w/r6s2/install/lib/libctranslate2.so.4.8.2
+wrote s2_sc_off.json 48
+wrote s2_sc_on.json 48
+wrote s2p0_sc_off.json 48
+wrote s2p0_sc_on.json 48
+base_sc_off.json vs s2_sc_off.json: 48 cfgs, diffs 0 []
+base_sc_off.json vs s2p0_sc_off.json: 48 cfgs, diffs 0 []
+base_sc_on.json vs s2_sc_on.json: 48 cfgs, diffs 0 []
+base_sc_on.json vs s2p0_sc_on.json: 48 cfgs, diffs 0 []
+G2 diffs: 0
+63
+S2CORR_DONE

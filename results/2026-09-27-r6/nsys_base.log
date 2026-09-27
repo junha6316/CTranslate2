@@ -1,0 +1,18 @@
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+HEAD: 90f72436
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+Capture range started in the application.
+Capture range ended in the application.
+Generating '/tmp/nsys-report-d284.qdstrm'
+[1/1] [0%                          ] nsys_N_base.nsys-repProcessing events...
+[1/1] [0%                          ] nsys_N_base.nsys-rep[1/1] [5%                          ] nsys_N_base.nsys-rep[1/1] [10%                         ] nsys_N_base.nsys-rep[1/1] [=16%                        ] nsys_N_base.nsys-rep[1/1] [==21%                       ] nsys_N_base.nsys-rep[1/1] [====26%                     ] nsys_N_base.nsys-rep[1/1] [=====31%                    ] nsys_N_base.nsys-rep[1/1] [=======37%                  ] nsys_N_base.nsys-rep[1/1] [========42%                 ] nsys_N_base.nsys-rep[1/1] [==========47%               ] nsys_N_base.nsys-rep[1/1] [===========50%              ] nsys_N_base.nsys-rep[1/1] [========================100%] nsys_N_base.nsys-rep[1/1] [========================100%] nsys_N_base.nsys-rep
+# N_base small float16 poisoned: median 70.7 ms IQR 0.24 ntok 16
+{"label": "N_base", "model": "small", "ctype": "float16", "file": "/home/ubuntu/w/r6/python/ctranslate2/__init__.py", "version": "4.8.2", "n_windows": 9, "pool_threshold_env": null, "flash": 1, "poisoned": {"median_ms": 70.7, "iqr_ms": 0.24, "q1": 70.58, "q3": 70.82, "min_ms": 69.86, "ntok": 16, "tok_ids": [6163, 314, 11728, 848, 264, 1523, 295, 1516, 307, 295, 11707, 7379, 281, 264, 1785, 13], "all_ms": [70.47, 71.5, 70.7, 72.12, 69.86, 70.58, 70.74, 70.74, 70.82, 70.69, 70.67], "pool": {"thr": 0, "reserved_cur_mb": 800.0, "reserved_high_mb": 2624.0, "used_high_mb": 2530.3}}}
+Generated:
+	/opt/real/r6/nsys_N_base.nsys-rep
+-rw-rw-r-- 1 ubuntu ubuntu   755 Sep 27 09:53 /opt/real/r6/nsys_N_base_cuda_api_sum.csv
+-rw-rw-r-- 1 ubuntu ubuntu 14121 Sep 27 09:53 /opt/real/r6/nsys_N_base_cuda_gpu_kern_sum.csv

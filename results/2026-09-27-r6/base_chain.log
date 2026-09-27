@@ -1,0 +1,90 @@
+-rw-rw-r-- 1 ubuntu ubuntu 7680128 Sep 27 09:55 /opt/real/r6/r5t/dense_128.npy
+-rw-rw-r-- 1 ubuntu ubuntu 4800128 Sep 27 09:55 /opt/real/r6/r5t/dense_80.npy
+-rw-rw-r-- 1 ubuntu ubuntu   10749 Sep 27 09:55 /opt/real/r6/r5t/prev_prompts.json
+wrote base_sc_off.json 48
+wrote base_sc_on.json 48
+CT2_CUDA_PREALLOC_KV=1 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+base_prealloc small std:0 b5: 240.9 ms (min 240.7 max 241.1) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:1 b5: 212.9 ms (min 212.5 max 213.5) 77 tok score=-0.135349 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:2 b5: 235.1 ms (min 234.2 max 235.4) 88 tok score=-0.140447 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:3 b5: 263.3 ms (min 262.6 max 264.2) 100 tok score=-0.126484 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:0:nots b5: 64.6 ms (min 64.4 max 65.5) 16 tok score=-0.333984 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:0 b1: 167.7 ms (min 165.8 max 168.9) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:1 b1: 156.1 ms (min 153.9 max 157.3) 77 tok score=-0.136456 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:2 b1: 173.8 ms (min 173.8 max 176.0) 89 tok score=-0.161274 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:3 b1: 168.7 ms (min 168.6 max 168.9) 86 tok score=-0.139691 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_prealloc small std:0:nots b1: 35.3 ms (min 35.2 max 35.3) 5 tok score=-0.656738 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote /opt/real/r6/g2/base_prealloc.json 10
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+base_prealloc_b4 475.38 [84, 77, 88, 98]
+CT2_CUDA_PAD_KV=1 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+base_padkv small std:0 b5: 254.2 ms (min 254.0 max 255.3) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:1 b5: 224.6 ms (min 224.4 max 225.5) 77 tok score=-0.135248 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:2 b5: 250.5 ms (min 249.5 max 250.5) 88 tok score=-0.140359 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:3 b5: 277.9 ms (min 276.7 max 279.0) 100 tok score=-0.126328 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:0:nots b5: 67.5 ms (min 67.4 max 68.5) 16 tok score=-0.333984 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:0 b1: 169.8 ms (min 168.9 max 169.9) 84 tok score=-0.195211 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:1 b1: 157.9 ms (min 157.1 max 158.2) 77 tok score=-0.136467 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:2 b1: 177.4 ms (min 177.3 max 178.3) 89 tok score=-0.161223 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:3 b1: 173.1 ms (min 172.2 max 173.2) 86 tok score=-0.139884 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+base_padkv small std:0:nots b1: 35.6 ms (min 35.5 max 36.5) 5 tok score=-0.654736 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote /opt/real/r6/g2/base_padkv.json 10
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+base_padkv_b4 528.99 [84, 77, 88, 98]
+CT2_CUDA_GRAPHS=1 CT2_CUDA_GRAPHS_RESERVE=128 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+base_g128 small std:0 b5: 201.6 ms (min 201.5 max 201.8) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+base_g128 small std:1 b5: 179.2 ms (min 179.2 max 179.4) 77 tok score=-0.135552 | tr=0 cap=2 rep=74 seg=[74] tiers=[] dis=none
+base_g128 small std:2 b5: 196.2 ms (min 196.1 max 198.2) 88 tok score=-0.140625 | tr=0 cap=2 rep=83 seg=[83] tiers=[] dis=none
+base_g128 small std:3 b5: 219.2 ms (min 218.8 max 220.0) 100 tok score=-0.126328 | tr=0 cap=2 rep=95 seg=[95] tiers=[] dis=none
+base_g128 small std:0:nots b5: 61.1 ms (min 61.1 max 63.0) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+base_g128 small std:0 b1: 150.0 ms (min 150.0 max 150.1) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+base_g128 small std:1 b1: 139.9 ms (min 139.8 max 140.1) 77 tok score=-0.136456 | tr=0 cap=1 rep=74 seg=[74] tiers=[] dis=none
+base_g128 small std:2 b1: 157.3 ms (min 157.2 max 157.5) 89 tok score=-0.161394 | tr=0 cap=1 rep=86 seg=[86] tiers=[] dis=none
+base_g128 small std:3 b1: 153.0 ms (min 152.9 max 153.0) 86 tok score=-0.139724 | tr=0 cap=1 rep=83 seg=[83] tiers=[] dis=none
+base_g128 small std:0:nots b1: 36.8 ms (min 35.9 max 36.9) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote /opt/real/r6/g2/base_g128.json 10
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+base_g128_b4 383.44 [84, 77, 88, 100]
+CT2_CUDA_GRAPHS=1 CT2_CUDA_GRAPHS_RESERVE=448 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+base_g448 small std:0 b5: 233.8 ms (min 233.6 max 234.8) 84 tok score=-0.19494 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+base_g448 small std:1 b5: 207.3 ms (min 207.3 max 208.3) 77 tok score=-0.135248 | tr=0 cap=2 rep=74 seg=[74] tiers=[] dis=none
+base_g448 small std:2 b5: 230.8 ms (min 229.7 max 231.1) 88 tok score=-0.140359 | tr=0 cap=2 rep=84 seg=[84] tiers=[] dis=none
+base_g448 small std:3 b5: 255.3 ms (min 254.3 max 256.0) 100 tok score=-0.126328 | tr=0 cap=2 rep=95 seg=[95] tiers=[] dis=none
+base_g448 small std:0:nots b5: 66.7 ms (min 66.6 max 68.7) 16 tok score=-0.333984 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+base_g448 small std:0 b1: 154.7 ms (min 153.7 max 154.9) 84 tok score=-0.195211 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+base_g448 small std:1 b1: 143.4 ms (min 143.2 max 144.5) 77 tok score=-0.136467 | tr=0 cap=1 rep=74 seg=[74] tiers=[] dis=none
+base_g448 small std:2 b1: 162.2 ms (min 161.0 max 162.3) 89 tok score=-0.161223 | tr=0 cap=1 rep=86 seg=[86] tiers=[] dis=none
+base_g448 small std:3 b1: 156.7 ms (min 156.5 max 157.8) 86 tok score=-0.139884 | tr=0 cap=1 rep=83 seg=[83] tiers=[] dis=none
+base_g448 small std:0:nots b1: 37.2 ms (min 36.3 max 39.1) 5 tok score=-0.654736 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+wrote /opt/real/r6/g2/base_g448.json 10
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+base_g448_b4 509.3 [84, 77, 88, 98]
+CT2_CUDA_GRAPHS=1 CT2_CUDA_GRAPHS_RESERVE=128 CT2_CUDA_GRAPHS_TIERS=+64 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+base_tiers small std:0 b5: 201.6 ms (min 201.5 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+base_tiers small std:1 b5: 179.3 ms (min 179.1 max 179.3) 77 tok score=-0.135552 | tr=0 cap=2 rep=74 seg=[74] tiers=[] dis=none
+base_tiers small std:2 b5: 196.5 ms (min 196.1 max 198.7) 88 tok score=-0.140625 | tr=0 cap=2 rep=83 seg=[83] tiers=[] dis=none
+base_tiers small std:3 b5: 219.0 ms (min 218.7 max 219.7) 100 tok score=-0.126328 | tr=0 cap=2 rep=95 seg=[95] tiers=[] dis=none
+base_tiers small std:0:nots b5: 61.2 ms (min 61.1 max 63.0) 16 tok score=-0.334717 | tr=0 cap=2 rep=11 seg=[11] tiers=[] dis=none
+base_tiers small dense:0 b5: 384.7 ms (min 384.4 max 387.2) 183 tok score=-0.120816 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+base_tiers small dense:1 b5: 417.1 ms (min 416.5 max 417.8) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+base_tiers small dense:3 b5: 384.3 ms (min 384.2 max 386.4) 183 tok score=-0.145236 | tr=1 cap=4 rep=176 seg=[120, 56] tiers=[128->192@128] dis=none
+base_tiers small prev:192 b5: 208.7 ms (min 208.5 max 210.6) 82 tok score=-0.164062 | tr=1 cap=4 rep=76 seg=[23, 53] tiers=[224->288@224] dis=none
+base_tiers small std:0 b1: 150.3 ms (min 150.1 max 150.6) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+base_tiers small std:1 b1: 140.1 ms (min 140.0 max 140.2) 77 tok score=-0.136456 | tr=0 cap=1 rep=74 seg=[74] tiers=[] dis=none
+base_tiers small std:2 b1: 157.5 ms (min 157.4 max 158.1) 89 tok score=-0.161394 | tr=0 cap=1 rep=86 seg=[86] tiers=[] dis=none
+base_tiers small std:3 b1: 153.0 ms (min 153.0 max 153.1) 86 tok score=-0.139724 | tr=0 cap=1 rep=83 seg=[83] tiers=[] dis=none
+base_tiers small std:0:nots b1: 36.0 ms (min 36.0 max 36.0) 5 tok score=-0.656738 | tr=0 cap=1 rep=2 seg=[2] tiers=[] dis=none
+base_tiers small dense:0 b1: 294.0 ms (min 293.8 max 294.2) 182 tok score=-0.126238 | tr=1 cap=2 rep=177 seg=[122, 55] tiers=[128->192@128] dis=none
+base_tiers small dense:1 b1: 320.4 ms (min 320.4 max 320.6) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+base_tiers small dense:3 b1: 295.4 ms (min 295.1 max 295.5) 183 tok score=-0.147889 | tr=1 cap=2 rep=178 seg=[122, 56] tiers=[128->192@128] dis=none
+base_tiers small prev:192 b1: 156.5 ms (min 156.3 max 158.2) 84 tok score=-0.170418 | tr=1 cap=2 rep=79 seg=[25, 54] tiers=[224->288@224] dis=none
+wrote /opt/real/r6/g2/base_tiers.json 18
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+base_tiers_b4 378.49 [84, 77, 88, 100]
+G2DONE base
+BASECHAIN_DONE

@@ -1,0 +1,5 @@
+s1 [gather_rows_kernel] total=1072291 SANCELL flash_b5 [84] [-0.19494] rc=0 kernels:     100 at ctranslate 
+s1 [gather_rows_kernel|flash_fwd] total=53323442 SANCELL flash_b5 [84] [-0.19494] rc=0 kernels:     100 at void 
+base [gather_rows_kernel] total=5922122 SANCELL flash_b5 [84] [-0.19494] rc=0 kernels:     100 at ctranslate 
+base [gather_rows_kernel|flash_fwd] total=59210162 SANCELL flash_b5 [84] [-0.19494] rc=0 kernels:     100 at void 
+FA2DONE

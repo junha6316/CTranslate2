@@ -1,0 +1,177 @@
+# TRIMMED for git: original 153105351 bytes; head 150 + ERROR SUMMARY/SANCELL/rc lines + tail 20
+PKG /opt/real/r6/pybase/ctranslate2/__init__.py /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+========= COMPUTE-SANITIZER
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (160,0,0) in block (295,0,0)
+=========     Address 0xe26ddf340
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (161,0,0) in block (295,0,0)
+=========     Address 0xe26ddf342
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (162,0,0) in block (295,0,0)
+=========     Address 0xe26ddf344
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (163,0,0) in block (295,0,0)
+=========     Address 0xe26ddf346
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (164,0,0) in block (295,0,0)
+=========     Address 0xe26ddf348
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (32,0,0) in block (372,0,0)
+=========     Address 0xe26df2640
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (33,0,0) in block (372,0,0)
+=========     Address 0xe26df2642
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (34,0,0) in block (372,0,0)
+=========     Address 0xe26df2644
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (35,0,0) in block (372,0,0)
+=========     Address 0xe26df2646
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (36,0,0) in block (372,0,0)
+=========     Address 0xe26df2648
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (37,0,0) in block (372,0,0)
+=========     Address 0xe26df264a
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (38,0,0) in block (372,0,0)
+=========     Address 0xe26df264c
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (39,0,0) in block (372,0,0)
+=========     Address 0xe26df264e
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (40,0,0) in block (372,0,0)
+=========     Address 0xe26df2650
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (41,0,0) in block (372,0,0)
+=========     Address 0xe26df2652
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (42,0,0) in block (372,0,0)
+=========     Address 0xe26df2654
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (43,0,0) in block (372,0,0)
+=========     Address 0xe26df2656
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (44,0,0) in block (372,0,0)
+=========     Address 0xe26df2658
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (45,0,0) in block (372,0,0)
+=========     Address 0xe26df265a
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (46,0,0) in block (372,0,0)
+=========     Address 0xe26df265c
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (47,0,0) in block (372,0,0)
+=========     Address 0xe26df265e
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (48,0,0) in block (372,0,0)
+=========     Address 0xe26df2660
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (49,0,0) in block (372,0,0)
+=========     Address 0xe26df2662
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (165,0,0) in block (295,0,0)
+=========     Address 0xe26ddf34a
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (50,0,0) in block (372,0,0)
+=========     Address 0xe26df2664
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (51,0,0) in block (372,0,0)
+=========     Address 0xe26df2666
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (52,0,0) in block (372,0,0)
+=========     Address 0xe26df2668
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (53,0,0) in block (372,0,0)
+=========     Address 0xe26df266a
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (54,0,0) in block (372,0,0)
+=========     Address 0xe26df266c
+========= 
+========= Uninitialized __global__ memory read of size 2 bytes
+=========     at void cub::CUB_200700_860_NS::detail::for_each::static_kernel<cub::CUB_200700_860_NS::detail::for_each::policy_hub_t::policy_350_t, long, thrust::THRUST_200700_860_NS::cuda_cub::__transform::unary_transform_f<const __half *, __half *, thrust::THRUST_200700_860_NS::cuda_cub::__transform::no_stencil_tag, ctranslate2::cuda::gelu_func<__half>, thrust::THRUST_200700_860_NS::cuda_cub::__transform::always_true_predicate>>(T2, T3)+0x680
+=========     by thread (55,0,0) in block (372,0,0)
+# ...
+SANCELL b5 [84] [-0.195126]
+========= ERROR SUMMARY: 2300303 errors
+========= ERROR SUMMARY: 2092130 errors were not printed. Use --print-limit option to adjust the number of printed errors
+========= 389984770 errors were skipped (error buffer overflow).
+rc=0
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= Warning: Error buffer overflow has been detected. Some records have been dropped
+========= 
+========= ERROR SUMMARY: 2300303 errors
+========= ERROR SUMMARY: 2092130 errors were not printed. Use --print-limit option to adjust the number of printed errors
+========= 
+========= 389984770 errors were skipped (error buffer overflow).
+rc=0

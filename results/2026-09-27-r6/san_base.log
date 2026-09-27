@@ -1,0 +1,13 @@
+base flash_b5 memcheck total=0 (14s): ========= ERROR SUMMARY: 0 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 | 
+base flash_b5 init_gather total=5922122 (7s): ========= ERROR SUMMARY: 1014 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+base flash_b5 init_kv total=59210162 (42s): ========= ERROR SUMMARY: 290910 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 |      30 at void flash_fwd_kernel<Flash_fwd_kernel_traits<;
+base flash_b4 memcheck total=0 (25s): ========= ERROR SUMMARY: 0 errors | SANCELL flash_b4 [84, 77, 88, 98] [-0.194754, -0.135349, -0.140359, -0.132573] | rc=0 | 
+base flash_b4 init_gather total=59218820 (16s): ========= ERROR SUMMARY: 2896 errors | SANCELL flash_b4 [84, 77, 88, 98] [-0.194754, -0.135349, -0.140359, -0.132573] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+base flash_b4 init_kv total=271601600 (54s): ========= ERROR SUMMARY: 314380 errors | SANCELL flash_b4 [84, 77, 88, 98] [-0.194754, -0.135349, -0.140359, -0.132573] | rc=0 |      30 at void flash_fwd_kernel<Flash_fwd_kernel_traits<;
+base b5_GRAPHS memcheck total=0 (16s): ========= ERROR SUMMARY: 0 errors | SANCELL b5 [84] [-0.195126] | rc=0 | 
+base b5_GRAPHS init_gather total=1474931 (8s): ========= ERROR SUMMARY: 612 errors | SANCELL b5 [84] [-0.195126] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+base b4_PADKV memcheck total=0 (35s): ========= ERROR SUMMARY: 0 errors | SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] | rc=0 | 
+base b4_PADKV init_gather total=51613668 (23s): ========= ERROR SUMMARY: 2402 errors | SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+base dense1_TIERS memcheck total=0 (29s): ========= ERROR SUMMARY: 0 errors | SANCELL dense1 [199] [-0.135835] | rc=0 | 
+base dense1_TIERS init_gather total=6638073 (11s): ========= ERROR SUMMARY: 1696 errors | SANCELL dense1 [199] [-0.135835] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+SANDONE base

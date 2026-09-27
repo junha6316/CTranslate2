@@ -1,0 +1,18 @@
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+HEAD: 90f72436
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+Capture range started in the application.
+Capture range ended in the application.
+Generating '/tmp/nsys-report-1f19.qdstrm'
+[1/1] [0%                          ] nsys_N_s1.nsys-repProcessing events...
+[1/1] [0%                          ] nsys_N_s1.nsys-rep[1/1] [0%                          ] nsys_N_s1.nsys-rep[1/1] [10%                         ] nsys_N_s1.nsys-rep[1/1] [8%                          ] nsys_N_s1.nsys-rep[1/1] [7%                          ] nsys_N_s1.nsys-rep[1/1] [6%                          ] nsys_N_s1.nsys-rep[1/1] [5%                          ] nsys_N_s1.nsys-rep[1/1] [11%                         ] nsys_N_s1.nsys-rep[1/1] [10%                         ] nsys_N_s1.nsys-rep[1/1] [=16%                        ] nsys_N_s1.nsys-rep[1/1] [==21%                       ] nsys_N_s1.nsys-rep[1/1] [====26%                     ] nsys_N_s1.nsys-rep[1/1] [=====31%                    ] nsys_N_s1.nsys-rep[1/1] [=======37%                  ] nsys_N_s1.nsys-rep[1/1] [========42%                 ] nsys_N_s1.nsys-rep[1/1] [==========47%               ] nsys_N_s1.nsys-rep[1/1] [===========50%              ] nsys_N_s1.nsys-rep[1/1] [========================100%] nsys_N_s1.nsys-rep[1/1] [========================100%] nsys_N_s1.nsys-rep
+# N_s1 small float16 poisoned: median 71.08 ms IQR 0.32 ntok 16
+{"label": "N_s1", "model": "small", "ctype": "float16", "file": "/home/ubuntu/w/r6/python/ctranslate2/__init__.py", "version": "4.8.2", "n_windows": 9, "pool_threshold_env": null, "flash": 1, "poisoned": {"median_ms": 71.08, "iqr_ms": 0.32, "q1": 71.01, "q3": 71.33, "min_ms": 70.25, "ntok": 16, "tok_ids": [6163, 314, 11728, 848, 264, 1523, 295, 1516, 307, 295, 11707, 7379, 281, 264, 1785, 13], "all_ms": [70.25, 72.26, 71.33, 72.97, 70.32, 71.2, 71.08, 71.06, 71.14, 71.03, 71.01], "pool": {"thr": 0, "reserved_cur_mb": 800.0, "reserved_high_mb": 2624.0, "used_high_mb": 2530.3}}}
+Generated:
+	/opt/real/r6/nsys_N_s1.nsys-rep
+-rw-rw-r-- 1 ubuntu ubuntu   757 Sep 27 10:14 /opt/real/r6/nsys_N_s1_cuda_api_sum.csv
+-rw-rw-r-- 1 ubuntu ubuntu 14111 Sep 27 10:14 /opt/real/r6/nsys_N_s1_cuda_gpu_kern_sum.csv

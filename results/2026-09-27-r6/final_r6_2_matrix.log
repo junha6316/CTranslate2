@@ -1,0 +1,114 @@
+== final_r6_2 start 18:22:37 tree=r6 env: 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+-rw-r--r-- 1 ubuntu ubuntu 168297360 17:55 /home/ubuntu/w/r6/install/lib/libctranslate2.so.4.8.2
+90f72436 docs: round-5 review caveats, post-review fixes and final bench artifacts
+ M include/ctranslate2/layers/attention.h
+ M include/ctranslate2/layers/attention_layer.h
+ M include/ctranslate2/layers/decoder.h
+ M include/ctranslate2/layers/flash_attention.h
+ M include/ctranslate2/layers/transformer.h
+ M include/ctranslate2/ops/gather.h
+ M src/layers/decoder.cc
+ M src/layers/transformer.cc
+ M src/ops/gather.cc
+ M src/ops/gather_gpu.cu
+final_r6_2_off small float16 ts=True b1 n=1: 163.9 ms, 163.9 ms/window, 84 tok
+final_r6_2_off small float16 ts=True b1 n=4: 291.4 ms, 72.9 ms/window, 336 tok
+final_r6_2_off small float16 ts=True b1 n=8: 455.4 ms, 56.9 ms/window, 667 tok
+final_r6_2_off small float16 ts=True b5 n=1: 217.0 ms, 217.0 ms/window, 84 tok
+final_r6_2_off small float16 ts=True b5 n=4: 365.2 ms, 91.3 ms/window, 347 tok
+final_r6_2_off small float16 ts=True b5 n=8: 567.4 ms, 70.9 ms/window, 672 tok
+final_r6_2_off small float16 ts=False b1 n=1: 35.3 ms, 35.3 ms/window, 5 tok
+final_r6_2_off small float16 ts=False b1 n=4: 269.9 ms, 67.5 ms/window, 249 tok
+final_r6_2_off small float16 ts=False b1 n=8: 411.5 ms, 51.4 ms/window, 506 tok
+final_r6_2_off small float16 ts=False b5 n=1: 60.9 ms, 60.9 ms/window, 16 tok
+final_r6_2_off small float16 ts=False b5 n=4: 295.3 ms, 73.8 ms/window, 173 tok
+final_r6_2_off small float16 ts=False b5 n=8: 432.4 ms, 54.1 ms/window, 329 tok
+final_r6_2_off small int8_float16 ts=True b1 n=1: 252.4 ms, 252.4 ms/window, 84 tok
+final_r6_2_off small int8_float16 ts=True b1 n=4: 390.2 ms, 97.6 ms/window, 355 tok
+final_r6_2_off small int8_float16 ts=True b1 n=8: 524.5 ms, 65.6 ms/window, 663 tok
+final_r6_2_off small int8_float16 ts=True b5 n=1: 286.4 ms, 286.4 ms/window, 84 tok
+final_r6_2_off small int8_float16 ts=True b5 n=4: 473.9 ms, 118.5 ms/window, 343 tok
+final_r6_2_off small int8_float16 ts=True b5 n=8: 669.8 ms, 83.7 ms/window, 673 tok
+final_r6_2_off small int8_float16 ts=False b1 n=1: 42.6 ms, 42.6 ms/window, 5 tok
+final_r6_2_off small int8_float16 ts=False b1 n=4: 339.3 ms, 84.8 ms/window, 187 tok
+final_r6_2_off small int8_float16 ts=False b1 n=8: 450.0 ms, 56.2 ms/window, 492 tok
+final_r6_2_off small int8_float16 ts=False b5 n=1: 78.4 ms, 78.4 ms/window, 17 tok
+final_r6_2_off small int8_float16 ts=False b5 n=4: 371.3 ms, 92.8 ms/window, 178 tok
+final_r6_2_off small int8_float16 ts=False b5 n=8: 517.4 ms, 64.7 ms/window, 358 tok
+final_r6_2_off large-v3 float16 ts=True b1 n=1: 202.4 ms, 202.4 ms/window, 11 tok
+final_r6_2_off large-v3 float16 ts=True b1 n=4: 1207.0 ms, 301.8 ms/window, 252 tok
+final_r6_2_off large-v3 float16 ts=True b1 n=8: 1916.7 ms, 239.6 ms/window, 568 tok
+final_r6_2_off large-v3 float16 ts=True b5 n=1: 407.3 ms, 407.3 ms/window, 35 tok
+final_r6_2_off large-v3 float16 ts=True b5 n=4: 1379.6 ms, 344.9 ms/window, 276 tok
+final_r6_2_off large-v3 float16 ts=True b5 n=8: 2255.4 ms, 281.9 ms/window, 592 tok
+final_r6_2_off large-v3 float16 ts=False b1 n=1: 293.1 ms, 293.1 ms/window, 26 tok
+final_r6_2_off large-v3 float16 ts=False b1 n=4: 1166.3 ms, 291.6 ms/window, 255 tok
+final_r6_2_off large-v3 float16 ts=False b1 n=8: 1832.6 ms, 229.1 ms/window, 555 tok
+final_r6_2_off large-v3 float16 ts=False b5 n=1: 325.4 ms, 325.4 ms/window, 23 tok
+final_r6_2_off large-v3 float16 ts=False b5 n=4: 1301.8 ms, 325.4 ms/window, 236 tok
+final_r6_2_off large-v3 float16 ts=False b5 n=8: 2094.8 ms, 261.9 ms/window, 515 tok
+final_r6_2_off large-v3 int8_float16 ts=True b1 n=1: 210.7 ms, 210.7 ms/window, 11 tok
+final_r6_2_off large-v3 int8_float16 ts=True b1 n=4: 1218.1 ms, 304.5 ms/window, 252 tok
+final_r6_2_off large-v3 int8_float16 ts=True b1 n=8: 1932.5 ms, 241.6 ms/window, 573 tok
+final_r6_2_off large-v3 int8_float16 ts=True b5 n=1: 454.3 ms, 454.3 ms/window, 41 tok
+final_r6_2_off large-v3 int8_float16 ts=True b5 n=4: 1478.0 ms, 369.5 ms/window, 252 tok
+final_r6_2_off large-v3 int8_float16 ts=True b5 n=8: 2386.3 ms, 298.3 ms/window, 592 tok
+final_r6_2_off large-v3 int8_float16 ts=False b1 n=1: 311.0 ms, 311.0 ms/window, 26 tok
+final_r6_2_off large-v3 int8_float16 ts=False b1 n=4: 1168.3 ms, 292.1 ms/window, 255 tok
+final_r6_2_off large-v3 int8_float16 ts=False b1 n=8: 1840.2 ms, 230.0 ms/window, 557 tok
+final_r6_2_off large-v3 int8_float16 ts=False b5 n=1: 325.6 ms, 325.6 ms/window, 25 tok
+final_r6_2_off large-v3 int8_float16 ts=False b5 n=4: 1416.4 ms, 354.1 ms/window, 237 tok
+final_r6_2_off large-v3 int8_float16 ts=False b5 n=8: 2209.9 ms, 276.2 ms/window, 516 tok
+wrote /opt/real/r6/final_r6_2_off.json 48
+== final_r6_2 off done 18:28:22
+final_r6_2_on small float16 ts=True b1 n=1: 166.9 ms, 166.9 ms/window, 84 tok
+final_r6_2_on small float16 ts=True b1 n=4: 259.5 ms, 64.9 ms/window, 336 tok
+final_r6_2_on small float16 ts=True b1 n=8: 380.8 ms, 47.6 ms/window, 667 tok
+final_r6_2_on small float16 ts=True b5 n=1: 218.8 ms, 218.8 ms/window, 84 tok
+final_r6_2_on small float16 ts=True b5 n=4: 352.2 ms, 88.1 ms/window, 347 tok
+final_r6_2_on small float16 ts=True b5 n=8: 533.5 ms, 66.7 ms/window, 670 tok
+final_r6_2_on small float16 ts=False b1 n=1: 23.9 ms, 23.9 ms/window, 5 tok
+final_r6_2_on small float16 ts=False b1 n=4: 234.1 ms, 58.5 ms/window, 249 tok
+final_r6_2_on small float16 ts=False b1 n=8: 330.9 ms, 41.4 ms/window, 506 tok
+final_r6_2_on small float16 ts=False b5 n=1: 52.2 ms, 52.2 ms/window, 16 tok
+final_r6_2_on small float16 ts=False b5 n=4: 274.1 ms, 68.5 ms/window, 173 tok
+final_r6_2_on small float16 ts=False b5 n=8: 378.8 ms, 47.4 ms/window, 329 tok
+final_r6_2_on small int8_float16 ts=True b1 n=1: 232.1 ms, 232.1 ms/window, 85 tok
+final_r6_2_on small int8_float16 ts=True b1 n=4: 336.5 ms, 84.1 ms/window, 335 tok
+final_r6_2_on small int8_float16 ts=True b1 n=8: 420.0 ms, 52.5 ms/window, 666 tok
+final_r6_2_on small int8_float16 ts=True b5 n=1: 257.7 ms, 257.7 ms/window, 84 tok
+final_r6_2_on small int8_float16 ts=True b5 n=4: 444.9 ms, 111.2 ms/window, 353 tok
+final_r6_2_on small int8_float16 ts=True b5 n=8: 635.4 ms, 79.4 ms/window, 676 tok
+final_r6_2_on small int8_float16 ts=False b1 n=1: 29.2 ms, 29.2 ms/window, 5 tok
+final_r6_2_on small int8_float16 ts=False b1 n=4: 278.1 ms, 69.5 ms/window, 249 tok
+final_r6_2_on small int8_float16 ts=False b1 n=8: 367.4 ms, 45.9 ms/window, 508 tok
+final_r6_2_on small int8_float16 ts=False b5 n=1: 74.5 ms, 74.5 ms/window, 21 tok
+final_r6_2_on small int8_float16 ts=False b5 n=4: 363.0 ms, 90.8 ms/window, 262 tok
+final_r6_2_on small int8_float16 ts=False b5 n=8: 460.8 ms, 57.6 ms/window, 386 tok
+final_r6_2_on large-v3 float16 ts=True b1 n=1: 152.4 ms, 152.4 ms/window, 11 tok
+final_r6_2_on large-v3 float16 ts=True b1 n=4: 1033.7 ms, 258.4 ms/window, 252 tok
+final_r6_2_on large-v3 float16 ts=True b1 n=8: 1559.1 ms, 194.9 ms/window, 568 tok
+final_r6_2_on large-v3 float16 ts=True b5 n=1: 387.2 ms, 387.2 ms/window, 35 tok
+final_r6_2_on large-v3 float16 ts=True b5 n=4: 1313.9 ms, 328.5 ms/window, 276 tok
+final_r6_2_on large-v3 float16 ts=True b5 n=8: 2092.0 ms, 261.5 ms/window, 592 tok
+final_r6_2_on large-v3 float16 ts=False b1 n=1: 253.6 ms, 253.6 ms/window, 26 tok
+final_r6_2_on large-v3 float16 ts=False b1 n=4: 988.3 ms, 247.1 ms/window, 255 tok
+final_r6_2_on large-v3 float16 ts=False b1 n=8: 1466.4 ms, 183.3 ms/window, 555 tok
+final_r6_2_on large-v3 float16 ts=False b5 n=1: 300.6 ms, 300.6 ms/window, 23 tok
+final_r6_2_on large-v3 float16 ts=False b5 n=4: 1222.5 ms, 305.6 ms/window, 237 tok
+final_r6_2_on large-v3 float16 ts=False b5 n=8: 1926.5 ms, 240.8 ms/window, 515 tok
+final_r6_2_on large-v3 int8_float16 ts=True b1 n=1: 154.7 ms, 154.7 ms/window, 11 tok
+final_r6_2_on large-v3 int8_float16 ts=True b1 n=4: 1030.1 ms, 257.5 ms/window, 252 tok
+final_r6_2_on large-v3 int8_float16 ts=True b1 n=8: 1561.1 ms, 195.1 ms/window, 570 tok
+final_r6_2_on large-v3 int8_float16 ts=True b5 n=1: 386.5 ms, 386.5 ms/window, 35 tok
+final_r6_2_on large-v3 int8_float16 ts=True b5 n=4: 1422.3 ms, 355.6 ms/window, 276 tok
+final_r6_2_on large-v3 int8_float16 ts=True b5 n=8: 2220.6 ms, 277.6 ms/window, 593 tok
+final_r6_2_on large-v3 int8_float16 ts=False b1 n=1: 260.2 ms, 260.2 ms/window, 26 tok
+final_r6_2_on large-v3 int8_float16 ts=False b1 n=4: 981.8 ms, 245.4 ms/window, 255 tok
+final_r6_2_on large-v3 int8_float16 ts=False b1 n=8: 1469.8 ms, 183.7 ms/window, 555 tok
+final_r6_2_on large-v3 int8_float16 ts=False b5 n=1: 300.5 ms, 300.5 ms/window, 24 tok
+final_r6_2_on large-v3 int8_float16 ts=False b5 n=4: 1332.6 ms, 333.1 ms/window, 237 tok
+final_r6_2_on large-v3 int8_float16 ts=False b5 n=8: 2028.3 ms, 253.5 ms/window, 516 tok
+wrote /opt/real/r6/final_r6_2_on.json 48
+== final_r6_2 on done 18:33:29

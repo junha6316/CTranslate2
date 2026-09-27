@@ -1,0 +1,3 @@
+s1 flash_b5 memcheck: ========= ERROR SUMMARY: 0 errors | SANCELL flash_b5 [84] [-0.19494] | 
+s1 flash_b5 init_gather: ========= ERROR SUMMARY: 1075718 errors
+========= ERROR SUMMARY: 1075688 errors were not printed. Use --print-limit option to adjust the number of printed errors | SANCELL flash_b5 [84] [-0.19494] |      30 at error;      1 at 0xe26d205a0 on access by cudaMemcpy source;      1 at 0xe26d20580 on access by cudaMemcpy source;

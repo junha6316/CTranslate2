@@ -1,0 +1,12 @@
+WARNING: The version of the system or its configuration does not allow enabling CPU profiling:
+- CPU IP/backtrace sampling will be disabled.
+- CPU context switch tracing will be disabled.
+Try the 'nsys status --environment' command to learn more.
+
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2
+done ntok 84
+Collecting data...
+Generating '/tmp/nsys-report-1345.qdstrm'
+[1/1] [0%                          ] base_tiers_std0.nsys-rep[1/1] [0%                          ] base_tiers_std0.nsys-rep[1/1] [0%                          ] base_tiers_std0.nsys-rep[1/1] [0%                          ] base_tiers_std0.nsys-rep[1/1] [13%                         ] base_tiers_std0.nsys-rep[1/1] [====25%                     ] base_tiers_std0.nsys-rep[1/1] [=======38%                  ] base_tiers_std0.nsys-rep[1/1] [===========50%              ] base_tiers_std0.nsys-rep[1/1] [========================100%] base_tiers_std0.nsys-rep[1/1] [========================100%] base_tiers_std0.nsys-rep
+Generated:
+	/opt/real/r6/gg/base_tiers_std0.nsys-rep

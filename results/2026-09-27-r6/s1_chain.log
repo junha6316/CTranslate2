@@ -1,0 +1,97 @@
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+wrote s1_sc_off.json 48
+wrote s1_sc_on.json 48
+wrote s1p0_sc_off.json 48
+wrote s1p0_sc_on.json 48
+base_off.json -> s1_off.json: 48 cfgs, tokens identical 48/48, median +0.2%, range -0.4..+1.7%
+base_on.json -> s1_on.json: 48 cfgs, tokens identical 48/48, median -1.5%, range -31.8..+1.6%
+   -31.8%  ('small', 'float16', True, 5, 8)  781.2 -> 532.9
+   -31.5%  ('large-v3', 'float16', False, 5, 8)  2806.9 -> 1924.0
+   -31.4%  ('large-v3', 'float16', True, 5, 8)  3047.2 -> 2091.3
+   -30.3%  ('large-v3', 'int8_float16', False, 5, 8)  2903.6 -> 2024.9
+   -30.1%  ('large-v3', 'int8_float16', True, 5, 8)  3175.7 -> 2221.0
+   -27.9%  ('small', 'int8_float16', True, 5, 8)  883.1 -> 636.5
+   -26.3%  ('small', 'float16', True, 5, 4)  477.2 -> 351.9
+   -25.2%  ('large-v3', 'float16', False, 5, 4)  1631.7 -> 1221.0
+   -25.2%  ('large-v3', 'float16', True, 5, 4)  1755.4 -> 1313.5
+   -24.1%  ('small', 'float16', False, 5, 8)  498.9 -> 378.9
+   -23.5%  ('large-v3', 'int8_float16', True, 5, 4)  1860.0 -> 1422.4
+   -23.5%  ('large-v3', 'int8_float16', False, 5, 4)  1739.2 -> 1330.8
+   -22.7%  ('small', 'int8_float16', False, 5, 8)  598.0 -> 462.2
+   -21.2%  ('small', 'int8_float16', True, 5, 4)  567.4 -> 446.9
+   -19.9%  ('small', 'int8_float16', False, 5, 4)  454.3 -> 363.7
+   -18.5%  ('small', 'float16', False, 5, 4)  336.5 -> 274.3
+   -12.3%  ('large-v3', 'float16', True, 5, 1)  441.3 -> 387.2
+   -12.2%  ('large-v3', 'int8_float16', True, 5, 1)  440.3 -> 386.5
+   -11.9%  ('small', 'float16', True, 5, 1)  248.2 -> 218.7
+   -11.7%  ('large-v3', 'int8_float16', False, 5, 1)  340.4 -> 300.4
+   -11.6%  ('large-v3', 'float16', False, 5, 1)  340.5 -> 300.9
+    -9.4%  ('small', 'float16', False, 5, 1)  57.6 -> 52.2
+    -3.4%  ('small', 'int8_float16', False, 5, 1)  76.7 -> 74.1
+base_sc_off.json vs s1_sc_off.json: 48 cfgs, diffs 0 []
+base_sc_off.json vs s1p0_sc_off.json: 48 cfgs, diffs 0 []
+base_sc_on.json vs s1_sc_on.json: 48 cfgs, diffs 0 []
+base_sc_on.json vs s1p0_sc_on.json: 48 cfgs, diffs 0 []
+nsys_N_base_cuda_gpu_kern_sum.csv:11.8,65149494,176,370167.6,386080.5,234976,389856,36522.2,"ctranslate2::ops::gather_ro
+nsys_N_s1_cuda_gpu_kern_sum.csv:0.3,1287586,176,7315.8,6576.0,3072,11904,2480.5,"ctranslate2::ops::gather_rows_kernel(ct
+prealloc     ('std:0:nots', 5)          64.6 ->     64.9  +0.48% SAME
+prealloc     ('std:0', 1)              167.7 ->    165.8  -1.16% SAME
+prealloc     ('std:1', 1)              156.1 ->    154.2  -1.22% SAME
+prealloc     ('std:2', 1)              173.8 ->    174.1  +0.13% SAME
+prealloc     ('std:3', 1)              168.7 ->    169.0  +0.15% SAME
+prealloc     ('std:0:nots', 1)          35.3 ->     35.3  +0.17% SAME
+prealloc_b4  ('b4', 5)                 475.4 ->    475.8  +0.09% SAME
+padkv        ('std:0', 5)              254.2 ->    254.8  +0.21% SAME
+padkv        ('std:1', 5)              224.6 ->    225.2  +0.26% SAME
+padkv        ('std:2', 5)              250.5 ->    250.9  +0.19% SAME
+padkv        ('std:3', 5)              277.9 ->    278.6  +0.26% SAME
+padkv        ('std:0:nots', 5)          67.5 ->     67.6  +0.06% SAME
+padkv        ('std:0', 1)              169.8 ->    169.8  +0.01% SAME
+padkv        ('std:1', 1)              157.9 ->    157.9  -0.03% SAME
+padkv        ('std:2', 1)              177.4 ->    177.7  +0.16% SAME
+padkv        ('std:3', 1)              173.1 ->    173.2  +0.04% SAME
+padkv        ('std:0:nots', 1)          35.6 ->     35.6  -0.06% SAME
+padkv_b4     ('b4', 5)                 529.0 ->    529.1  +0.02% SAME
+g128         ('std:0', 5)              201.6 ->    202.3  +0.36% SAME
+g128         ('std:1', 5)              179.2 ->    179.9  +0.35% SAME
+g128         ('std:2', 5)              196.2 ->    197.0  +0.39% SAME
+g128         ('std:3', 5)              219.2 ->    219.9  +0.31% SAME
+g128         ('std:0:nots', 5)          61.1 ->     61.3  +0.36% SAME
+g128         ('std:0', 1)              150.1 ->    150.2  +0.07% SAME
+g128         ('std:1', 1)              139.9 ->    140.0  +0.04% SAME
+g128         ('std:2', 1)              157.3 ->    157.3  -0.02% SAME
+g128         ('std:3', 1)              153.0 ->    152.9  -0.05% SAME
+g128         ('std:0:nots', 1)          36.8 ->     36.9  +0.22% SAME
+g128_b4      ('b4', 5)                 383.4 ->    384.0  +0.16% SAME
+g448         ('std:0', 5)              233.8 ->    234.5  +0.30% SAME
+g448         ('std:1', 5)              207.3 ->    207.7  +0.17% SAME
+g448         ('std:2', 5)              230.8 ->    230.6  -0.09% SAME
+g448         ('std:3', 5)              255.3 ->    255.4  +0.05% SAME
+g448         ('std:0:nots', 5)          66.7 ->     66.7  +0.06% SAME
+g448         ('std:0', 1)              154.7 ->    153.6  -0.71% SAME
+g448         ('std:1', 1)              143.4 ->    143.3  -0.09% SAME
+g448         ('std:2', 1)              162.2 ->    161.1  -0.70% SAME
+g448         ('std:3', 1)              156.7 ->    156.6  -0.10% SAME
+g448         ('std:0:nots', 1)          37.1 ->     36.2  -2.50% SAME
+g448_b4      ('b4', 5)                 509.3 ->    509.9  +0.11% SAME
+tiers        ('std:0', 5)              201.6 ->    202.4  +0.38% SAME
+tiers        ('std:1', 5)              179.2 ->    179.9  +0.39% SAME
+tiers        ('std:2', 5)              196.5 ->    196.9  +0.22% SAME
+tiers        ('std:3', 5)              219.0 ->    219.8  +0.37% SAME
+tiers        ('std:0:nots', 5)          61.2 ->     61.2  +0.11% SAME
+tiers        ('dense:0', 5)            384.7 ->    386.9  +0.56% SAME
+tiers        ('dense:1', 5)            417.1 ->    419.7  +0.62% SAME
+tiers        ('dense:3', 5)            384.3 ->    386.7  +0.63% SAME
+tiers        ('prev:192', 5)           208.7 ->    209.6  +0.46% SAME
+tiers        ('std:0', 1)              150.3 ->    150.4  +0.13% SAME
+tiers        ('std:1', 1)              140.1 ->    140.2  +0.11% SAME
+tiers        ('std:2', 1)              157.5 ->    157.7  +0.12% SAME
+tiers        ('std:3', 1)              153.0 ->    153.0  +0.02% SAME
+tiers        ('std:0:nots', 1)          36.0 ->     36.0  -0.03% SAME
+tiers        ('dense:0', 1)            294.0 ->    294.1  +0.04% SAME
+tiers        ('dense:1', 1)            320.4 ->    320.6  +0.05% SAME
+tiers        ('dense:3', 1)            295.4 ->    295.5  +0.04% SAME
+tiers        ('prev:192', 1)           156.5 ->    156.6  +0.05% SAME
+tiers_b4     ('b4', 5)                 378.5 ->    379.7  +0.32% SAME
+G2 diffs: 0
+SCHAIN_DONE s1

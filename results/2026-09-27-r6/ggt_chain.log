@@ -1,0 +1,8 @@
+== ggt start 17:51:32
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+base tiers std:0 decodes=7 gather(total_ns,inst,avg_ns)=57127529,637,89682.1 all_kernels_ns=344278231 ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2 done ntok 84 
+base tiers dense:1 decodes=5 gather(total_ns,inst,avg_ns)=111181407,995,111740.1 all_kernels_ns=391594889 ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/base/install/lib/libctranslate2.so.4.8.2 done ntok 199 
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+s2 tiers std:0 decodes=7 gather(total_ns,inst,avg_ns)=21643161,637,33976.7 all_kernels_ns=308716830 ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r6s2/install/lib/libctranslate2.so.4.8.2 done ntok 84 
+s2 tiers dense:1 decodes=5 gather(total_ns,inst,avg_ns)=75041537,995,75418.6 all_kernels_ns=355463427 ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py  lib = /home/ubuntu/w/r6s2/install/lib/libctranslate2.so.4.8.2 done ntok 199 
+GGT_DONE 17:53:11

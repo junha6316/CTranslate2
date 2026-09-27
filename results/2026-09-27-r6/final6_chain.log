@@ -1,0 +1,126 @@
+#### MATRIX 17:58:05
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+wrote /opt/real/r6/final_base_1_on.json 48
+== final_base_1 on done 18:10:33
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+wrote /opt/real/r6/final_r6_1_on.json 48
+== final_r6_1 on done 18:22:01
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+wrote /opt/real/r6/final_r6_2_on.json 48
+== final_r6_2 on done 18:33:29
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+wrote /opt/real/r6/final_base_2_on.json 48
+== final_base_2 on done 18:45:56
+#### GRAPHS 18:45:56
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+g6_base_eager small std:0 b5: 216.3 ms (min 215.9 max 217.7) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_base_eager small dense:1 b5: 455.7 ms (min 454.0 max 458.2) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_base_eager small std:0 b1: 167.3 ms (min 165.6 max 167.8) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_base_eager small dense:1 b1: 357.6 ms (min 357.5 max 360.4) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote /opt/real/r6/final_g6_base_eager_1.json 4
+g6_base_sc128 small std:0 b5: 201.5 ms (min 201.4 max 201.7) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_base_sc128 small dense:1 b5: 430.7 ms (min 430.4 max 432.7) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+g6_base_sc128 small std:0 b1: 150.2 ms (min 150.1 max 150.4) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_base_sc128 small dense:1 b1: 335.5 ms (min 335.4 max 336.4) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+wrote /opt/real/r6/final_g6_base_sc128_1.json 4
+g6_base_sc448 small std:0 b5: 233.6 ms (min 233.5 max 233.8) 84 tok score=-0.19494 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_base_sc448 small dense:1 b5: 475.2 ms (min 475.0 max 476.2) 199 tok score=-0.135914 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+g6_base_sc448 small std:0 b1: 154.4 ms (min 153.3 max 155.4) 84 tok score=-0.195211 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_base_sc448 small dense:1 b1: 324.1 ms (min 323.8 max 325.8) 199 tok score=-0.14009 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+wrote /opt/real/r6/final_g6_base_sc448_1.json 4
+g6_base_t64 small std:0 b5: 201.6 ms (min 201.5 max 202.1) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_base_t64 small dense:1 b5: 417.5 ms (min 417.4 max 420.3) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+g6_base_t64 small std:0 b1: 152.1 ms (min 150.3 max 152.4) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_base_t64 small dense:1 b1: 320.7 ms (min 320.3 max 322.5) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+wrote /opt/real/r6/final_g6_base_t64_1.json 4
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+g6_r6_eager small std:0 b5: 217.4 ms (min 217.2 max 219.4) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_r6_eager small dense:1 b5: 457.7 ms (min 456.7 max 459.2) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_r6_eager small std:0 b1: 167.0 ms (min 166.8 max 167.2) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_r6_eager small dense:1 b1: 359.2 ms (min 358.7 max 359.4) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote /opt/real/r6/final_g6_r6_eager_1.json 4
+g6_r6_sc128 small std:0 b5: 197.7 ms (min 197.6 max 197.8) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_r6_sc128 small dense:1 b5: 426.2 ms (min 425.3 max 427.1) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+g6_r6_sc128 small std:0 b1: 150.4 ms (min 150.2 max 150.5) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_r6_sc128 small dense:1 b1: 334.9 ms (min 334.5 max 335.4) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+wrote /opt/real/r6/final_g6_r6_sc128_1.json 4
+g6_r6_sc448 small std:0 b5: 208.9 ms (min 208.9 max 210.0) 84 tok score=-0.19494 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_r6_sc448 small dense:1 b5: 427.7 ms (min 427.0 max 428.6) 199 tok score=-0.135914 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+g6_r6_sc448 small std:0 b1: 153.9 ms (min 153.5 max 154.6) 84 tok score=-0.195211 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_r6_sc448 small dense:1 b1: 325.6 ms (min 324.6 max 325.8) 199 tok score=-0.14009 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+wrote /opt/real/r6/final_g6_r6_sc448_1.json 4
+g6_r6_t64 small std:0 b5: 197.7 ms (min 197.6 max 197.9) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_r6_t64 small dense:1 b5: 412.3 ms (min 411.7 max 414.9) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+g6_r6_t64 small std:0 b1: 152.0 ms (min 150.1 max 152.2) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_r6_t64 small dense:1 b1: 320.9 ms (min 320.3 max 322.7) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+wrote /opt/real/r6/final_g6_r6_t64_1.json 4
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+g6_r6_eager small std:0 b5: 216.9 ms (min 216.4 max 218.3) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_r6_eager small dense:1 b5: 455.8 ms (min 454.5 max 456.7) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_r6_eager small std:0 b1: 166.2 ms (min 166.0 max 166.5) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_r6_eager small dense:1 b1: 358.6 ms (min 358.3 max 359.4) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote /opt/real/r6/final_g6_r6_eager_2.json 4
+g6_r6_sc128 small std:0 b5: 197.8 ms (min 197.6 max 198.0) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_r6_sc128 small dense:1 b5: 426.4 ms (min 425.9 max 428.0) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+g6_r6_sc128 small std:0 b1: 150.5 ms (min 150.3 max 150.5) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_r6_sc128 small dense:1 b1: 334.9 ms (min 334.7 max 335.6) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+wrote /opt/real/r6/final_g6_r6_sc128_2.json 4
+g6_r6_sc448 small std:0 b5: 209.7 ms (min 209.6 max 210.1) 84 tok score=-0.19494 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_r6_sc448 small dense:1 b5: 428.0 ms (min 427.2 max 428.9) 199 tok score=-0.135914 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+g6_r6_sc448 small std:0 b1: 154.6 ms (min 153.5 max 155.4) 84 tok score=-0.195211 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_r6_sc448 small dense:1 b1: 324.6 ms (min 324.2 max 326.2) 199 tok score=-0.14009 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+wrote /opt/real/r6/final_g6_r6_sc448_2.json 4
+g6_r6_t64 small std:0 b5: 197.9 ms (min 197.7 max 198.2) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_r6_t64 small dense:1 b5: 413.2 ms (min 412.7 max 415.7) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+g6_r6_t64 small std:0 b1: 152.1 ms (min 150.1 max 152.2) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_r6_t64 small dense:1 b1: 322.3 ms (min 320.5 max 323.2) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+wrote /opt/real/r6/final_g6_r6_t64_2.json 4
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+g6_base_eager small std:0 b5: 216.6 ms (min 216.3 max 218.2) 84 tok score=-0.19494 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_base_eager small dense:1 b5: 455.4 ms (min 453.3 max 458.4) 199 tok score=-0.135992 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_base_eager small std:0 b1: 168.1 ms (min 167.9 max 168.7) 84 tok score=-0.19502 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+g6_base_eager small dense:1 b1: 363.0 ms (min 359.6 max 365.6) 199 tok score=-0.139744 | tr=None cap=None rep=None seg=None tiers=[] dis=None
+wrote /opt/real/r6/final_g6_base_eager_2.json 4
+g6_base_sc128 small std:0 b5: 201.5 ms (min 201.5 max 201.6) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_base_sc128 small dense:1 b5: 430.5 ms (min 429.8 max 432.3) 199 tok score=-0.135992 | tr=0 cap=2 rep=120 seg=[120] tiers=[] dis=ineligible step mid-decode
+g6_base_sc128 small std:0 b1: 150.2 ms (min 150.0 max 150.5) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_base_sc128 small dense:1 b1: 334.9 ms (min 334.5 max 335.8) 199 tok score=-0.140005 | tr=0 cap=1 rep=122 seg=[122] tiers=[] dis=ineligible step mid-decode
+wrote /opt/real/r6/final_g6_base_sc128_2.json 4
+g6_base_sc448 small std:0 b5: 233.7 ms (min 233.6 max 234.6) 84 tok score=-0.19494 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_base_sc448 small dense:1 b5: 476.1 ms (min 474.5 max 477.2) 199 tok score=-0.135914 | tr=0 cap=2 rep=194 seg=[194] tiers=[] dis=none
+g6_base_sc448 small std:0 b1: 153.8 ms (min 153.4 max 154.4) 84 tok score=-0.195211 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_base_sc448 small dense:1 b1: 324.9 ms (min 323.7 max 325.6) 199 tok score=-0.14009 | tr=0 cap=1 rep=196 seg=[196] tiers=[] dis=none
+wrote /opt/real/r6/final_g6_base_sc448_2.json 4
+g6_base_t64 small std:0 b5: 201.9 ms (min 201.9 max 202.3) 84 tok score=-0.195126 | tr=0 cap=2 rep=86 seg=[86] tiers=[] dis=none
+g6_base_t64 small dense:1 b5: 418.9 ms (min 418.3 max 421.1) 199 tok score=-0.135835 | tr=2 cap=6 rep=188 seg=[120, 61, 7] tiers=[128->192@128,192->256@192] dis=none
+g6_base_t64 small std:0 b1: 152.3 ms (min 150.5 max 152.5) 84 tok score=-0.195099 | tr=0 cap=1 rep=81 seg=[81] tiers=[] dis=none
+g6_base_t64 small dense:1 b1: 321.7 ms (min 321.4 max 323.9) 199 tok score=-0.140005 | tr=2 cap=3 rep=192 seg=[122, 62, 8] tiers=[128->192@128,192->256@192] dis=none
+wrote /opt/real/r6/final_g6_base_t64_2.json 4
+#### NSYS 18:51:56
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+	/opt/real/r6/nsys_final_base.nsys-rep
+-rw-rw-r-- 1 ubuntu ubuntu   757 Sep 27 18:52 /opt/real/r6/nsys_final_base_cuda_api_sum.csv
+-rw-rw-r-- 1 ubuntu ubuntu 14121 Sep 27 18:52 /opt/real/r6/nsys_final_base_cuda_gpu_kern_sum.csv
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+	/opt/real/r6/nsys_final_r6.nsys-rep
+-rw-rw-r-- 1 ubuntu ubuntu   755 Sep 27 18:53 /opt/real/r6/nsys_final_r6_cuda_api_sum.csv
+-rw-rw-r-- 1 ubuntu ubuntu 14113 Sep 27 18:53 /opt/real/r6/nsys_final_r6_cuda_gpu_kern_sum.csv
+#### SAN 18:53:23
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+final_r6 flash_b5 memcheck total=0 (14s): ========= ERROR SUMMARY: 0 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 | 
+final_r6 flash_b5 init_gather total=1072291 (8s): ========= ERROR SUMMARY: 23387 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+final_r6 flash_b5 init_kv total=53323442 (43s): ========= ERROR SUMMARY: 290910 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 |      30 at void flash_fwd_kernel<Flash_fwd_kernel_traits<;
+final_r6 b5_GRAPHS memcheck total=0 (15s): ========= ERROR SUMMARY: 0 errors | SANCELL b5 [84] [-0.195126] | rc=0 | 
+final_r6 b5_GRAPHS init_gather total=1993376 (9s): ========= ERROR SUMMARY: 12002 errors | SANCELL b5 [84] [-0.195126] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+final_r6 b5_GRAPHS init_kv total=1989579073 (168s): ========= ERROR SUMMARY: 1311651 errors | SANCELL b5 [84] [-0.195126] | rc=0 |      30 at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>;
+SANDONE final_r6
+ctranslate2.__file__ = /home/ubuntu/w/base/python/ctranslate2/__init__.py
+final_base flash_b5 memcheck total=0 (14s): ========= ERROR SUMMARY: 0 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 | 
+final_base flash_b5 init_gather total=5922122 (7s): ========= ERROR SUMMARY: 1014 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+final_base flash_b5 init_kv total=59210162 (38s): ========= ERROR SUMMARY: 290910 errors | SANCELL flash_b5 [84] [-0.19494] | rc=0 |      30 at void flash_fwd_kernel<Flash_fwd_kernel_traits<;
+final_base b5_GRAPHS memcheck total=0 (16s): ========= ERROR SUMMARY: 0 errors | SANCELL b5 [84] [-0.195126] | rc=0 | 
+final_base b5_GRAPHS init_gather total=1474931 (8s): ========= ERROR SUMMARY: 612 errors | SANCELL b5 [84] [-0.195126] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+final_base b5_GRAPHS init_kv total=1968324088 (141s): ========= ERROR SUMMARY: 1161481 errors | SANCELL b5 [84] [-0.195126] | rc=0 |      30 at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>;
+SANDONE final_base
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+FINAL6_DONE 19:03:12

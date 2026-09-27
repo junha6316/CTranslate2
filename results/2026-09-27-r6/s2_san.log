@@ -1,0 +1,5 @@
+ctranslate2.__file__ = /home/ubuntu/w/r6/python/ctranslate2/__init__.py
+s2 b5_GRAPHS memcheck (17s): ========= ERROR SUMMARY: 0 errors | SANCELL b5 [84] [-0.195126] | rc=0 | 
+s2 b5_GRAPHS init_gather (474s): ========= ERROR SUMMARY: 1993330 errors | SANCELL b5 [84] [-0.195126] | rc=0 |      30 at ctranslate2::ops::gather_rows_kernel;
+s2 b5_GRAPHS init_kv (2400s):  |  | rc=124 |      30 at void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align2>;
+s2 b4_PADKV memcheck (43s): ========= ERROR SUMMARY: 0 errors | SANCELL b4 [84, 77, 88, 98] [-0.19494, -0.135146, -0.140092, -0.132334] | rc=0 | 
