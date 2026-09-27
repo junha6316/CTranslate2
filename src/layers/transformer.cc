@@ -672,6 +672,20 @@ namespace ctranslate2 {
         out.keep_tail = false;
         return true;
       }
+      if (t == 2 && _cache_reserve_steps > 0) {
+        // Preallocated MHA layout [N, H, C, D] (the opt-in PREALLOC_KV / PAD_KV / graphs
+        // reserve): one segment per head. Padded attention reads the spare tail, so it
+        // must stay byte-identical to a full-row reorder: keep_tail makes every
+        // non-steady step (first reorder, growth, batch shrink, re-paired buffers) copy
+        // full rows, which carries the source's allocation-zeroed tail into the shadow,
+        // and no write ever lands past the valid steps afterwards (appends write at the
+        // offset), so both ping-pong buffers keep zero tails by induction.
+        out.segments = v.dim(1);
+        out.length = length * v.stride(2);
+        out.pitch = v.stride(1);
+        out.keep_tail = true;
+        return true;
+      }
       return false;
     }
 

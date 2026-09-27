@@ -1682,19 +1682,23 @@ TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
   EXPECT_EQ(state.find("self_length"), state.end());
 }
 
-// Prefix-bounded beam reorder (Decoder::set_prefix_reorder, the production CPU
-// implementation of the segmented Gather::batch) against the full-row reorder, on the
-// preallocated MHA caches: the logits of every step and every self-attention cache
-// after every update_state (tails past the valid steps included) must be bit-identical.
+// Prefix-bounded beam reorder (Decoder::set_prefix_reorder, the production segmented
+// Gather::batch) against the full-row reorder (the r5 path), on the preallocated MHA
+// caches: the logits of every step, and every self-attention cache and its reorder
+// shadow after every update_state (tails past the valid steps included), must be
+// bit-identical. Runs on CPU, and on CUDA when a GPU is present (with CT2_CUDA_PAD_KV=1
+// in the environment the CUDA run also takes the padded-attention path).
 namespace {
   struct PrefixReorderRun {
     std::vector<std::vector<uint8_t>> logits;
     std::vector<std::map<std::string, std::vector<uint8_t>>> caches;
+    std::vector<std::map<std::string, std::vector<uint8_t>>> shadows;
     size_t prefix_descriptors = 0;
   };
 
   struct PrefixTestDecoder : TierTestDecoder {
     using TierTestDecoder::TierTestDecoder;
+    using TierTestDecoder::reorder_shadows;
     mutable size_t prefix_descriptors = 0;
   protected:
     bool reorder_segments(const std::string& name,
@@ -1713,6 +1717,10 @@ namespace {
     return std::vector<uint8_t>(p, p + c.size() * c.item_size());
   }
 
+  bool is_self_cache(const std::string& name) {
+    return starts_with(name, "self_keys_") || starts_with(name, "self_values_");
+  }
+
   struct PrefixReorderConfig {
     dim_t reserve = 40;
     dim_t steps = 40;
@@ -1723,12 +1731,31 @@ namespace {
     dim_t bump_to = 0;
     dim_t shrink_at = -1;    // drop batch 0 at the update_state of this step
   };
+
+  std::vector<Device> prefix_test_devices() {
+    std::vector<Device> devices{Device::CPU};
+#ifdef CT2_WITH_CUDA
+    if (get_gpu_count() > 0)
+      devices.push_back(Device::CUDA);
+#endif
+    return devices;
+  }
 }
 
 class TransformerDecoderPrefixTest : public TransformerDecoderTest {
 protected:
-  PrefixReorderRun run(const PrefixReorderConfig& cfg, bool prefix) {
-    PrefixTestDecoder decoder(*_model, "decoder");
+  std::shared_ptr<const models::Model> model_on(Device device) {
+    if (device == Device::CPU)
+      return _model;
+    if (!_cuda_model)
+      _cuda_model = models::Model::load(default_model_dir(), device);
+    return _cuda_model;
+  }
+
+  PrefixReorderRun run(const PrefixReorderConfig& cfg, bool prefix, Device device) {
+    const auto model = model_on(device);
+    layers::TransformerEncoder encoder(*model, "encoder");
+    PrefixTestDecoder decoder(*model, "decoder");
     decoder.set_cache_reserve_steps(cfg.reserve);
     decoder.set_prefix_reorder(prefix);
 
@@ -1736,10 +1763,11 @@ protected:
     for (dim_t b = 0; b < cfg.batch; ++b)
       for (int32_t v : {3, 4, 5, 6})
         src.push_back(v + int32_t(b));
-    StorageView src_ids({cfg.batch, 4}, src);
-    StorageView src_lengths({cfg.batch}, std::vector<int32_t>(cfg.batch, 4));
-    StorageView memory(_encoder.output_type());
-    _encoder({src_ids}, &src_lengths, memory);
+    StorageView src_ids = StorageView({cfg.batch, 4}, src).to(device);
+    StorageView src_lengths =
+      StorageView({cfg.batch}, std::vector<int32_t>(cfg.batch, 4)).to(device);
+    StorageView memory(encoder.output_type(), device);
+    encoder({src_ids}, &src_lengths, memory);
     auto state = decoder.initial_state();
     state.emplace("memory", std::move(memory));
     state.emplace("memory_lengths", std::move(src_lengths));
@@ -1760,8 +1788,8 @@ protected:
       std::vector<int32_t> ids(rows);
       for (dim_t r = 0; r < rows; ++r)
         ids[r] = int32_t(1 + (step * 7 + r * 3) % 6);
-      StorageView logits;
-      decoder(step, StorageView({rows}, ids), state, &logits);
+      StorageView logits(device);
+      decoder(step, StorageView({rows}, ids).to(device), state, &logits);
       out.logits.emplace_back(host_bytes(logits));
       if (beam == 1)
         continue;
@@ -1771,46 +1799,74 @@ protected:
       for (dim_t b = 0; b < batch; ++b)
         for (dim_t k = 0; k < beam; ++k)
           indices[b * beam + k] = int32_t(b * beam + (step % 3 == 0 ? 0 : (k + step) % beam));
+      const StorageView beam_indices = StorageView({rows}, indices).to(device);
       if (step == cfg.shrink_at) {
         std::vector<int32_t> keep;
         for (dim_t b = 1; b < batch; ++b)
           keep.push_back(int32_t(b));
-        const StorageView alive({batch - 1}, keep);
-        decoder.update_state(state, StorageView({rows}, indices), beam, &alive);
+        const StorageView alive = StorageView({batch - 1}, keep).to(device);
+        decoder.update_state(state, beam_indices, beam, &alive);
         --batch;
       } else {
-        decoder.update_state(state, StorageView({rows}, indices), beam);
+        decoder.update_state(state, beam_indices, beam);
       }
-      std::map<std::string, std::vector<uint8_t>> caches;
-      // The self-attention caches. self_length is excluded: only its shape is state, its
-      // bytes are never initialized or read (see kSelfCacheLengthState).
-      for (const auto& [name, value] : state)
-        if (starts_with(name, "self_keys_") || starts_with(name, "self_values_"))
+      // The self-attention caches, and the shadow each one ping-pongs with (shadow slot
+      // i pairs with the i-th replicated entry in state iteration order, which no
+      // insertion changed since the update_state above). self_length is excluded: only
+      // its shape is state, its bytes are never initialized or read (see
+      // kSelfCacheLengthState).
+      std::map<std::string, std::vector<uint8_t>> caches, shadows;
+      size_t slot = 0;
+      for (const auto& [name, value] : state) {
+        if (!decoder.replicate_state(name))
+          continue;
+        if (is_self_cache(name)) {
           caches.emplace(name, host_bytes(value));
+          const auto& bufs = decoder.reorder_shadows().bufs;
+          if (slot < bufs.size() && !bufs[slot].empty())
+            shadows.emplace(name, host_bytes(bufs[slot]));
+        }
+        ++slot;
+      }
       out.caches.emplace_back(std::move(caches));
+      out.shadows.emplace_back(std::move(shadows));
     }
     out.prefix_descriptors = decoder.prefix_descriptors;
     return out;
   }
 
-  void expect_identical(const PrefixReorderConfig& cfg) {
-    const PrefixReorderRun full = run(cfg, false);
-    const PrefixReorderRun prefix = run(cfg, true);
-    EXPECT_EQ(full.prefix_descriptors, 0u);
-    ASSERT_EQ(full.logits.size(), prefix.logits.size());
-    for (size_t s = 0; s < full.logits.size(); ++s)
-      ASSERT_EQ(full.logits[s], prefix.logits[s]) << "logits differ at step " << s;
-    ASSERT_EQ(full.caches.size(), prefix.caches.size());
-    for (size_t s = 0; s < full.caches.size(); ++s) {
-      ASSERT_EQ(full.caches[s].size(), prefix.caches[s].size());
-      for (const auto& [name, bytes] : full.caches[s])
-        ASSERT_EQ(bytes, prefix.caches[s].at(name))
-          << name << " differs after reorder " << s;
+  static void expect_same_bytes(const std::vector<std::map<std::string, std::vector<uint8_t>>>& a,
+                                const std::vector<std::map<std::string, std::vector<uint8_t>>>& b,
+                                const char* what) {
+    ASSERT_EQ(a.size(), b.size());
+    for (size_t s = 0; s < a.size(); ++s) {
+      ASSERT_EQ(a[s].size(), b[s].size()) << what << " after reorder " << s;
+      for (const auto& [name, bytes] : a[s])
+        ASSERT_EQ(bytes, b[s].at(name)) << what << " " << name << " differs after reorder " << s;
     }
-    last_prefix_descriptors = prefix.prefix_descriptors;
   }
 
-  size_t last_prefix_descriptors = 0;
+  // Runs the config on every available device, full-row vs prefix reorder.
+  void expect_identical(const PrefixReorderConfig& cfg) {
+    for (const Device device : prefix_test_devices()) {
+      SCOPED_TRACE(device == Device::CPU ? "CPU" : "CUDA");
+      const PrefixReorderRun full = run(cfg, false, device);
+      const PrefixReorderRun prefix = run(cfg, true, device);
+      EXPECT_EQ(full.prefix_descriptors, 0u);
+      // The MHA caches take a prefix descriptor on every reorder with spare capacity.
+      EXPECT_GT(prefix.prefix_descriptors, 0u);
+      ASSERT_EQ(full.logits.size(), prefix.logits.size());
+      for (size_t s = 0; s < full.logits.size(); ++s)
+        ASSERT_EQ(full.logits[s], prefix.logits[s]) << "logits differ at step " << s;
+      expect_same_bytes(full.caches, prefix.caches, "cache");
+      // The full-row CPU reorder runs the per-tensor Gather (no shadows); on CUDA both
+      // runs ping-pong with shadows, which must agree byte for byte too.
+      if (device != Device::CPU)
+        expect_same_bytes(full.shadows, prefix.shadows, "shadow");
+    }
+  }
+
+  std::shared_ptr<const models::Model> _cuda_model;
 };
 
 TEST_F(TransformerDecoderPrefixTest, LongDecodingKeepsCachedAttentionExact) {

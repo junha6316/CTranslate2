@@ -112,6 +112,10 @@ namespace ctranslate2 {
         (void)out;
         return false;
       }
+      // The beam-reorder shadow buffers (read-only, for tests).
+      const ops::GatherShadows& reorder_shadows() const {
+        return _reorder_shadows;
+      }
 
       const Device _device;
 
