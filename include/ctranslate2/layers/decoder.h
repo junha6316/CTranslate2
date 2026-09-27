@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "ctranslate2/layers/common.h"
+#include "ctranslate2/ops/gather.h"
 #include "ctranslate2/storage_view.h"
 
 namespace ctranslate2 {
@@ -51,6 +52,14 @@ namespace ctranslate2 {
       // Returns true if the state must be replicated beam_size times.
       virtual bool replicate_state(const std::string& name) const;
 
+      // Forces the prefix-bounded beam reorder (see reorder_segments) on or off for this
+      // decoder, on any device. By default it is on for CUDA unless
+      // CT2_CUDA_GATHER_PREFIX=0, and off on CPU; forcing it on is a test hook that runs
+      // the CPU implementation of the segmented gather.
+      void set_prefix_reorder(bool enable) {
+        _prefix_reorder = enable ? 1 : 0;
+      }
+
       // Restrict the output layer to a set of ids and/or resize it to a preferred size multiple.
       // Elements in restrict_ids must be unique and sorted.
       void update_output_layer(const dim_t size_multiple = 1,
@@ -89,6 +98,20 @@ namespace ctranslate2 {
       virtual dim_t batch_size(const DecoderState& state) const;
       // Returns the output linear layer.
       virtual Dense& output_layer() = 0;
+      // Beam reorder hook: when it returns true, the replicated state entry `name` (value
+      // v) only needs the part of each row described by `out` copied (see
+      // ops::GatherRowSegments), e.g. the valid prefix of a preallocated KV cache. The
+      // default copies full rows.
+      virtual bool reorder_segments(const std::string& name,
+                                    const StorageView& v,
+                                    const DecoderState& state,
+                                    ops::GatherRowSegments& out) const {
+        (void)name;
+        (void)v;
+        (void)state;
+        (void)out;
+        return false;
+      }
 
       const Device _device;
 
@@ -98,12 +121,18 @@ namespace ctranslate2 {
       dim_t _vocabulary_size = 0;
       // Shadow buffers for the fused beam-reorder gather (ops::Gather::batch): entry i
       // pairs with the i-th replicated state entry by position in the batch call. No
-      // explicit invalidation is needed: the gather resets a shadow on dtype mismatch and
-      // resizes it on shape change, and a mispairing after a state-map order change is
-      // correctness-benign — the pairing only affects buffer reuse, the gathered data
-      // always comes from the live cache with fresh indices. Mutable because
-      // update_state is const while the shadows are a pure allocation cache.
-      mutable std::vector<StorageView> _reorder_shadows;
+      // explicit invalidation is needed: the gather resets a shadow on dtype mismatch,
+      // resizes it on shape change, and tracks the buffers of its last swap, so a
+      // mispairing after a state-map order change (or any foreign or re-allocated buffer)
+      // only makes that step non-steady, which copies full rows — the prefix-bounded
+      // reorder never relies on the tail bytes of a buffer it did not pair itself.
+      // Mutable because update_state is const while the shadows are a pure allocation
+      // cache.
+      mutable ops::GatherShadows _reorder_shadows;
+      // Reads CT2_CUDA_GATHER_PREFIX once (default true).
+      static bool prefix_reorder_enabled();
+      // -1: CUDA default (CT2_CUDA_GATHER_PREFIX), 0: forced off, 1: forced on.
+      int _prefix_reorder = -1;
     };
 
 

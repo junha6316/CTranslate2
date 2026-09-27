@@ -55,6 +55,11 @@ namespace ctranslate2 {
 
       bool preallocates_cache() const override;
 
+      // [batch, heads, time, depth] cache.
+      dim_t cache_time_dim() const override {
+        return _merge_time_and_head_dims ? -1 : _cache_time_dim;
+      }
+
       void forward_merged(const StorageView& queries,
                           const StorageView* memory,
                           const StorageView* memory_lengths_mask,

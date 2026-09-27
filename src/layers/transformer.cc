@@ -1,5 +1,6 @@
 #include "ctranslate2/layers/transformer.h"
 
+#include <algorithm>
 #include <cmath>
 
 #include "dispatch.h"
@@ -625,6 +626,53 @@ namespace ctranslate2 {
     bool TransformerDecoder::replicate_state(const std::string& name) const {
       // No need to replicate projected memory keys and values as they are the same for each beam.
       return !_with_encoder_attention || !starts_with(name, "memory");
+    }
+
+    bool TransformerDecoder::reorder_segments(const std::string& name,
+                                              const StorageView& v,
+                                              const DecoderState& state,
+                                              ops::GatherRowSegments& out) const {
+      // Only the self-attention caches carry spare capacity past their valid steps.
+      // (self_length itself stays full-row: its row is exactly L * 16 bytes.)
+      std::string index;
+      if (starts_with(name, "self_keys_"))
+        index = name.substr(10);
+      else if (starts_with(name, "self_values_"))
+        index = name.substr(12);
+      else
+        return false;
+      if (index.empty() || index.size() > 6
+          || !std::all_of(index.begin(), index.end(), [](char c) { return c >= '0' && c <= '9'; }))
+        return false;
+      const size_t layer = std::stoul(index);
+      if (layer >= _layers.size() || _sliding_window > 0)
+        return false;
+      const AttentionLayer& attn = _layers[layer]->get_self_attention();
+      if (!attn.preallocates_cache())
+        return false;
+      const dim_t t = attn.cache_time_dim();
+      if (t < 1 || v.rank() != 4)
+        return false;
+      const auto it = state.find(kSelfCacheLengthState);
+      if (it == state.end() || it->second.empty() || it->second.rank() != 3)
+        return false;
+      // The valid steps: every self cache holds exactly this many written time slices
+      // (tracked_cache_length), the rest is spare capacity.
+      const dim_t length = it->second.dim(1);
+      if (length <= 0 || length >= v.dim(t))
+        return false;
+
+      if (t == 1) {
+        // Flash layout [N, C, H, D]: the valid prefix of a row is one contiguous slab.
+        // Nothing reads the flash tail (FA2 bounds keys by seqlens_k = offset, and the
+        // cache only grows, by concatenation, once it is full), so it is left as is.
+        out.segments = 1;
+        out.length = length * v.stride(1);
+        out.pitch = v.stride(0);
+        out.keep_tail = false;
+        return true;
+      }
+      return false;
     }
 
     void TransformerDecoder::set_alignment_heads(const dim_t layer,

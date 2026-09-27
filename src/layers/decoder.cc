@@ -6,6 +6,7 @@
 #include "ctranslate2/decoding_utils.h"
 #include "ctranslate2/ops/ops.h"
 #include "dispatch.h"
+#include "env.h"
 
 namespace ctranslate2 {
   namespace layers {
@@ -54,13 +55,31 @@ namespace ctranslate2 {
       // The replicated entries (the self-attention caches) all take the same indices, so
       // gather them together: on GPU that is one kernel launch instead of one per tensor.
       std::vector<StorageView*> replicated;
+      const bool prefix = _prefix_reorder < 0
+        ? _device == Device::CUDA && prefix_reorder_enabled()
+        : _prefix_reorder > 0;
+      // In parallel with `replicated`: which part of each row the reorder must copy (a
+      // default entry is the full row).
+      std::vector<ops::GatherRowSegments> segs;
       for (auto& [name, value] : state) {
-        if (replicate_state(name))
+        if (replicate_state(name)) {
           replicated.push_back(&value);
-        else if (alive_batches)
+          if (prefix) {
+            ops::GatherRowSegments seg;
+            if (!reorder_segments(name, value, state, seg))
+              seg = ops::GatherRowSegments();
+            segs.push_back(seg);
+          }
+        } else if (alive_batches)
           ops::Gather()(value, *alive_batches);
       }
-      ops::Gather::batch(replicated, indices, &_reorder_shadows);
+      ops::Gather::batch(replicated, indices, &_reorder_shadows, prefix ? &segs : nullptr);
+    }
+
+    bool Decoder::prefix_reorder_enabled() {
+      // Kill switch for the prefix-bounded beam reorder: CT2_CUDA_GATHER_PREFIX=0.
+      static const bool enabled = read_bool_from_env("CT2_CUDA_GATHER_PREFIX", true);
+      return enabled;
     }
 
     void Decoder::replicate_state(DecoderState& state, const dim_t beam_size) const {

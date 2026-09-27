@@ -495,14 +495,238 @@ TEST_P(OpDeviceTest, GatherBatchWithShadows) {
   std::vector<StorageView*> pointers;
   for (auto& value : data)
     pointers.push_back(&value);
-  std::vector<StorageView> shadows;
+  ops::GatherShadows shadows;
   ops::Gather::batch(pointers, ids1, &shadows);
   if (device == Device::CUDA)  // The CPU fallback leaves the shadow vector untouched.
-    EXPECT_EQ(shadows.size(), data.size());
+    EXPECT_EQ(shadows.bufs.size(), data.size());
   ops::Gather::batch(pointers, ids2, &shadows);
 
   for (size_t t = 0; t < data.size(); ++t)
     expect_storage_eq(data[t], expected[t]);
+}
+
+// Raw bytes of a tensor (host copy), for bit-exact comparisons that also cover NaN
+// payloads and bytes past the valid steps.
+static std::vector<uint8_t> storage_bytes(const StorageView& x) {
+  const StorageView c = x.to(Device::CPU);
+  const auto* p = static_cast<const uint8_t*>(c.buffer());
+  return std::vector<uint8_t>(p, p + c.size() * c.item_size());
+}
+
+// Whether byte b of a [rows, ...] tensor lies in the first `length` elements of one of
+// the `segments` segments (pitch elements apart) of its row.
+static bool in_segments(size_t b, dim_t row_bytes, dim_t item,
+                        const ops::GatherRowSegments& seg) {
+  const dim_t in_row = static_cast<dim_t>(b) % row_bytes;
+  const dim_t pitch = seg.pitch * item;
+  const dim_t k = pitch > 0 ? in_row / pitch : 0;
+  return k < seg.segments && in_row - k * pitch < seg.length * item;
+}
+
+// Overwrites every byte of x outside its segments with 0xFF (a NaN in float32 and
+// float16), keeping x's buffer.
+static void poison_outside(StorageView& x, const ops::GatherRowSegments& seg) {
+  StorageView host = x.to(Device::CPU);
+  auto* p = static_cast<uint8_t*>(host.buffer());
+  const dim_t item = x.item_size();
+  const dim_t row_bytes = x.stride(0) * item;
+  for (dim_t b = 0; b < x.size() * item; ++b)
+    if (!in_segments(b, row_bytes, item, seg))
+      p[b] = 0xFF;
+  const void* before = x.buffer();
+  x.copy_from(host);
+  ASSERT_EQ(x.buffer(), before);
+}
+
+TEST_P(OpDeviceTest, GatherBatchSegments) {
+  // Segmented beam reorder (Gather::batch with descriptors) against the plain Gather, in
+  // the two KV-cache layouts: flash [N, C, H, D] (one prefix slab per row, tail don't
+  // care) and MHA [N, H, C, D] (one prefix per head, tail kept). 40 tensors cross the
+  // 32-per-launch CUDA chunk; the int8 entry stands for self_length (full row) and the
+  // [6, 3] float entry for a row that is not a multiple of 16 bytes.
+  Device device = GetParam();
+  constexpr dim_t N = 6, C = 40, H = 3, D = 16, L = 7;
+  enum Kind { FlashF32, FlashF16, MhaF32, MhaF16, Int8Row, Odd, FlashZeroLen, FlashMisaligned };
+  std::vector<Kind> kinds;
+  for (int t = 0; t < 36; ++t)
+    kinds.push_back(static_cast<Kind>(t % 4));
+  kinds.push_back(Int8Row);
+  kinds.push_back(Odd);
+  kinds.push_back(FlashZeroLen);
+  kinds.push_back(FlashMisaligned);
+  ASSERT_EQ(kinds.size(), 40u);
+  const auto is_flash = [](Kind k) {
+    return k == FlashF32 || k == FlashF16 || k == FlashZeroLen || k == FlashMisaligned;
+  };
+  const auto is_mha = [](Kind k) { return k == MhaF32 || k == MhaF16; };
+
+  // Valid steps [0, L) hold row-specific values; every row's tail holds the same bytes,
+  // as the zero-initialized tail of a production cache does.
+  std::vector<StorageView> data;
+  for (size_t t = 0; t < kinds.size(); ++t) {
+    const Kind k = kinds[t];
+    Shape shape;
+    if (k == Int8Row)
+      shape = {N, L, 16};
+    else if (k == Odd)
+      shape = {N, 3};
+    else if (is_flash(k))
+      shape = {N, C, H, D};
+    else
+      shape = {N, H, C, D};
+    const dim_t size = compute_size(shape);
+    std::vector<float> values(size);
+    for (dim_t i = 0; i < size; ++i) {
+      const dim_t r = i / (size / N);
+      const dim_t in_row = i % (size / N);
+      dim_t p = 0;
+      if (is_flash(k))
+        p = in_row / (H * D);
+      else if (is_mha(k))
+        p = (in_row / D) % C;
+      values[i] = p < L ? float(t) + float(r + 1) * 3 + float(in_row % 97) * 0.0625f : 0.5f;
+    }
+    StorageView x(shape, values);
+    if (k == FlashF16 || k == MhaF16)
+      x = x.to(DataType::FLOAT16);
+    else if (k == Int8Row)
+      x = StorageView(shape, std::vector<int8_t>(values.begin(), values.end()));
+    data.emplace_back(x.to(device));
+  }
+
+  const auto descriptors = [&](bool flash_keep_tail) {
+    std::vector<ops::GatherRowSegments> segs(kinds.size());
+    for (size_t t = 0; t < kinds.size(); ++t) {
+      const Kind k = kinds[t];
+      auto& seg = segs[t];
+      if (is_flash(k)) {
+        seg = {1, L * H * D, C * H * D, flash_keep_tail};
+        if (k == FlashZeroLen)
+          seg.length = 0;
+        else if (k == FlashMisaligned)
+          seg.length -= 1;  // 4 bytes short of a 16-byte multiple.
+      } else if (is_mha(k)) {
+        seg = {H, L * D, C * D, true};
+      } else if (k == Odd) {
+        seg = {1, 1, 3, false};
+      }
+    }
+    return segs;
+  };
+  const auto gather_all = [&](const StorageView& ids) {
+    std::vector<StorageView> expected;
+    for (const auto& x : data) {
+      expected.emplace_back(x.dtype(), device);
+      ops::Gather(0)(x, ids, expected.back());
+    }
+    return expected;
+  };
+  std::vector<StorageView*> pointers;
+  for (auto& x : data)
+    pointers.push_back(&x);
+  ops::GatherShadows shadows;
+
+  // (a) Call 1, fresh shadows (non-steady): keep_tail everywhere, so every tensor must be
+  // exactly the plain gather, tails included.
+  StorageView ids1({N}, std::vector<int32_t>{4, 0, 0, 3, 1, 2}, device);
+  auto expected = gather_all(ids1);
+  auto segs = descriptors(/*flash_keep_tail=*/true);
+  ops::Gather::batch(pointers, ids1, &shadows, &segs);
+  ASSERT_EQ(shadows.bufs.size(), data.size());
+  for (size_t t = 0; t < data.size(); ++t)
+    EXPECT_EQ(storage_bytes(data[t]), storage_bytes(expected[t])) << "call 1, tensor " << t;
+
+  // Poison the shadows' bytes outside the segments: the flash tails must survive the
+  // steady call (not copied), everything else must be overwritten by a full-row copy.
+  segs = descriptors(/*flash_keep_tail=*/false);
+  const size_t mis_a = 2, mis_b = 6;  // Two MHA float32 slots, mispaired below.
+  ASSERT_EQ(kinds[mis_a], MhaF32);
+  ASSERT_EQ(kinds[mis_b], MhaF32);
+  for (size_t t = 0; t < data.size(); ++t) {
+    const Kind k = kinds[t];
+    if (is_flash(k) || t == mis_a || t == mis_b) {
+      const ops::GatherRowSegments valid = is_flash(k)
+        ? ops::GatherRowSegments{1, L * H * D, C * H * D, false}
+        : segs[t];
+      poison_outside(shadows.bufs[t], valid);
+    }
+  }
+  // (c) Swap two slots' buffers: each is now paired with a foreign tensor.
+  std::swap(shadows.bufs[mis_a], shadows.bufs[mis_b]);
+
+  // (b) Call 2, steady (same shapes, ping-pong buffers).
+  StorageView ids2({N}, std::vector<int32_t>{1, 1, 2, 0, 5, 3}, device);
+  expected = gather_all(ids2);
+  ops::Gather::batch(pointers, ids2, &shadows, &segs);
+  for (size_t t = 0; t < data.size(); ++t) {
+    const Kind k = kinds[t];
+    const auto got = storage_bytes(data[t]);
+    const auto want = storage_bytes(expected[t]);
+    ASSERT_EQ(got.size(), want.size());
+    if (k == FlashF32 || k == FlashF16) {
+      const dim_t item = data[t].item_size();
+      const dim_t row_bytes = data[t].stride(0) * item;
+      for (size_t b = 0; b < got.size(); ++b) {
+        if (in_segments(b, row_bytes, item, segs[t]))
+          ASSERT_EQ(got[b], want[b]) << "call 2, flash tensor " << t << ", byte " << b;
+        else
+          ASSERT_EQ(got[b], 0xFF) << "call 2, flash tail copied, tensor " << t << ", byte " << b;
+      }
+    } else {
+      // keep_tail (MHA, including the mispaired pair), full-row entries, and the
+      // length-0 / misaligned descriptors (d): exactly the plain gather.
+      EXPECT_EQ(got, want) << "call 2, tensor " << t;
+    }
+  }
+
+  // Batch shrink: call 3 changes dim 0 (non-steady), call 4 is the step after it (its
+  // shadow still has the pre-shrink shape, non-steady too). MHA must be the plain gather
+  // on both; poison the MHA shadows before call 4 to prove it copies full rows.
+  const auto check_shrink = [&](const StorageView& ids, int call) {
+    expected = gather_all(ids);
+    ops::Gather::batch(pointers, ids, &shadows, &segs);
+    for (size_t t = 0; t < data.size(); ++t) {
+      const Kind k = kinds[t];
+      const auto got = storage_bytes(data[t]);
+      const auto want = storage_bytes(expected[t]);
+      ASSERT_EQ(got.size(), want.size());
+      if (k == FlashF32 || k == FlashF16) {
+        const dim_t item = data[t].item_size();
+        const dim_t row_bytes = data[t].stride(0) * item;
+        for (size_t b = 0; b < got.size(); ++b)
+          if (in_segments(b, row_bytes, item, segs[t]))
+            ASSERT_EQ(got[b], want[b]) << "call " << call << ", flash tensor " << t;
+      } else {
+        EXPECT_EQ(got, want) << "call " << call << ", tensor " << t;
+      }
+    }
+  };
+  check_shrink(StorageView({3}, std::vector<int32_t>{5, 0, 2}, device), 3);
+  for (size_t t = 0; t < data.size(); ++t)
+    if (is_mha(kinds[t]))
+      poison_outside(shadows.bufs[t], segs[t]);
+  check_shrink(StorageView({3}, std::vector<int32_t>{2, 2, 0}, device), 4);
+
+  // (e) segs == nullptr is the plain shadowed batch gather.
+  std::vector<StorageView> plain;
+  for (const auto& x : data)
+    plain.emplace_back(x);
+  std::vector<StorageView*> plain_pointers;
+  for (auto& x : plain)
+    plain_pointers.push_back(&x);
+  ops::GatherShadows plain_shadows;
+  StorageView ids5({3}, std::vector<int32_t>{1, 0, 0}, device);
+  expected.clear();
+  for (const auto& x : plain) {
+    StorageView once(x.dtype(), device);
+    ops::Gather(0)(x, ids5, once);
+    expected.emplace_back(x.dtype(), device);
+    ops::Gather(0)(once, ids5, expected.back());
+  }
+  ops::Gather::batch(plain_pointers, ids5, &plain_shadows, nullptr);
+  ops::Gather::batch(plain_pointers, ids5, &plain_shadows, nullptr);
+  for (size_t t = 0; t < plain.size(); ++t)
+    EXPECT_EQ(storage_bytes(plain[t]), storage_bytes(expected[t])) << "segs == nullptr, tensor " << t;
 }
 
 TEST_P(OpDeviceTest, GatherInDepthWith1DInput) {

@@ -260,6 +260,11 @@ namespace ctranslate2 {
         return _proj;
       }
 
+      bool reorder_segments(const std::string& name,
+                            const StorageView& v,
+                            const DecoderState& state,
+                            ops::GatherRowSegments& out) const override;
+
       void decode(const StorageView& ids,
                   const StorageView* lengths,
                   dim_t step,

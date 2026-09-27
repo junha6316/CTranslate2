@@ -118,6 +118,13 @@ namespace ctranslate2 {
         return false;
       }
 
+      // The time (step) dimension of the decoder self-attention cache managed by this
+      // layer, or -1 when its layout is not a plain [batch, ..., time, ...] tensor with
+      // one time slice per step (e.g. merged time and head dimensions).
+      virtual dim_t cache_time_dim() const {
+        return -1;
+      }
+
       // Opt-in: when non-zero, a self-attention cache growing from empty is sized for
       // this many steps up front, so the block-by-block growth copies disappear and the
       // cache address stays fixed for the whole decode (a CUDA-graph capture

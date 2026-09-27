@@ -1681,3 +1681,187 @@ TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
   _decoder(target, lengths, state, logits);
   EXPECT_EQ(state.find("self_length"), state.end());
 }
+
+// Prefix-bounded beam reorder (Decoder::set_prefix_reorder, the production CPU
+// implementation of the segmented Gather::batch) against the full-row reorder, on the
+// preallocated MHA caches: the logits of every step and every self-attention cache
+// after every update_state (tails past the valid steps included) must be bit-identical.
+namespace {
+  struct PrefixReorderRun {
+    std::vector<std::vector<uint8_t>> logits;
+    std::vector<std::map<std::string, std::vector<uint8_t>>> caches;
+    size_t prefix_descriptors = 0;
+  };
+
+  struct PrefixTestDecoder : TierTestDecoder {
+    using TierTestDecoder::TierTestDecoder;
+    mutable size_t prefix_descriptors = 0;
+  protected:
+    bool reorder_segments(const std::string& name,
+                          const StorageView& v,
+                          const layers::DecoderState& state,
+                          ops::GatherRowSegments& out) const override {
+      const bool used = TierTestDecoder::reorder_segments(name, v, state, out);
+      prefix_descriptors += used;
+      return used;
+    }
+  };
+
+  std::vector<uint8_t> host_bytes(const StorageView& x) {
+    const StorageView c = x.to(Device::CPU);
+    const auto* p = static_cast<const uint8_t*>(c.buffer());
+    return std::vector<uint8_t>(p, p + c.size() * c.item_size());
+  }
+
+  struct PrefixReorderConfig {
+    dim_t reserve = 40;
+    dim_t steps = 40;
+    dim_t beam = 2;
+    dim_t batch = 1;
+    dim_t greedy_steps = 0;  // steps decoded at beam 1 before replicate_state
+    dim_t bump_at = -1;      // apply_cache_reserve(bump_to) before this step
+    dim_t bump_to = 0;
+    dim_t shrink_at = -1;    // drop batch 0 at the update_state of this step
+  };
+}
+
+class TransformerDecoderPrefixTest : public TransformerDecoderTest {
+protected:
+  PrefixReorderRun run(const PrefixReorderConfig& cfg, bool prefix) {
+    PrefixTestDecoder decoder(*_model, "decoder");
+    decoder.set_cache_reserve_steps(cfg.reserve);
+    decoder.set_prefix_reorder(prefix);
+
+    std::vector<int32_t> src;
+    for (dim_t b = 0; b < cfg.batch; ++b)
+      for (int32_t v : {3, 4, 5, 6})
+        src.push_back(v + int32_t(b));
+    StorageView src_ids({cfg.batch, 4}, src);
+    StorageView src_lengths({cfg.batch}, std::vector<int32_t>(cfg.batch, 4));
+    StorageView memory(_encoder.output_type());
+    _encoder({src_ids}, &src_lengths, memory);
+    auto state = decoder.initial_state();
+    state.emplace("memory", std::move(memory));
+    state.emplace("memory_lengths", std::move(src_lengths));
+
+    PrefixReorderRun out;
+    dim_t batch = cfg.batch;
+    dim_t beam = cfg.greedy_steps > 0 ? 1 : cfg.beam;
+    if (cfg.greedy_steps == 0)
+      decoder.layers::Decoder::replicate_state(state, cfg.beam);
+    for (dim_t step = 0; step < cfg.steps; ++step) {
+      if (step == cfg.greedy_steps && cfg.greedy_steps > 0) {
+        decoder.layers::Decoder::replicate_state(state, cfg.beam);
+        beam = cfg.beam;
+      }
+      if (step == cfg.bump_at)
+        decoder.apply_cache_reserve(cfg.bump_to);
+      const dim_t rows = batch * beam;
+      std::vector<int32_t> ids(rows);
+      for (dim_t r = 0; r < rows; ++r)
+        ids[r] = int32_t(1 + (step * 7 + r * 3) % 6);
+      StorageView logits;
+      decoder(step, StorageView({rows}, ids), state, &logits);
+      out.logits.emplace_back(host_bytes(logits));
+      if (beam == 1)
+        continue;
+
+      // Beam indices with repeats and cross-beam moves, different at every step.
+      std::vector<int32_t> indices(rows);
+      for (dim_t b = 0; b < batch; ++b)
+        for (dim_t k = 0; k < beam; ++k)
+          indices[b * beam + k] = int32_t(b * beam + (step % 3 == 0 ? 0 : (k + step) % beam));
+      if (step == cfg.shrink_at) {
+        std::vector<int32_t> keep;
+        for (dim_t b = 1; b < batch; ++b)
+          keep.push_back(int32_t(b));
+        const StorageView alive({batch - 1}, keep);
+        decoder.update_state(state, StorageView({rows}, indices), beam, &alive);
+        --batch;
+      } else {
+        decoder.update_state(state, StorageView({rows}, indices), beam);
+      }
+      std::map<std::string, std::vector<uint8_t>> caches;
+      // The self-attention caches. self_length is excluded: only its shape is state, its
+      // bytes are never initialized or read (see kSelfCacheLengthState).
+      for (const auto& [name, value] : state)
+        if (starts_with(name, "self_keys_") || starts_with(name, "self_values_"))
+          caches.emplace(name, host_bytes(value));
+      out.caches.emplace_back(std::move(caches));
+    }
+    out.prefix_descriptors = decoder.prefix_descriptors;
+    return out;
+  }
+
+  void expect_identical(const PrefixReorderConfig& cfg) {
+    const PrefixReorderRun full = run(cfg, false);
+    const PrefixReorderRun prefix = run(cfg, true);
+    EXPECT_EQ(full.prefix_descriptors, 0u);
+    ASSERT_EQ(full.logits.size(), prefix.logits.size());
+    for (size_t s = 0; s < full.logits.size(); ++s)
+      ASSERT_EQ(full.logits[s], prefix.logits[s]) << "logits differ at step " << s;
+    ASSERT_EQ(full.caches.size(), prefix.caches.size());
+    for (size_t s = 0; s < full.caches.size(); ++s) {
+      ASSERT_EQ(full.caches[s].size(), prefix.caches[s].size());
+      for (const auto& [name, bytes] : full.caches[s])
+        ASSERT_EQ(bytes, prefix.caches[s].at(name))
+          << name << " differs after reorder " << s;
+    }
+    last_prefix_descriptors = prefix.prefix_descriptors;
+  }
+
+  size_t last_prefix_descriptors = 0;
+};
+
+TEST_F(TransformerDecoderPrefixTest, LongDecodingKeepsCachedAttentionExact) {
+  // 100 beam steps inside a reserve that covers them all.
+  PrefixReorderConfig cfg;
+  cfg.reserve = 128;
+  cfg.steps = 100;
+  expect_identical(cfg);
+}
+
+TEST_F(TransformerDecoderPrefixTest, CacheReservePreallocatesUpFront) {
+  PrefixReorderConfig cfg;
+  cfg.reserve = 40;
+  cfg.steps = 40;
+  cfg.beam = 3;
+  expect_identical(cfg);
+}
+
+TEST_F(TransformerDecoderPrefixTest, CacheReserveGrowthFallback) {
+  // Past the 64-step cap: 32-block growth 64 -> 96 -> 128, each a non-steady step.
+  PrefixReorderConfig cfg;
+  cfg.reserve = 40;
+  cfg.steps = 100;
+  expect_identical(cfg);
+}
+
+TEST_F(TransformerDecoderPrefixTest, CacheReserveMidDecodeBump) {
+  // A capacity-tier regrowth (apply_cache_reserve) at the crossing step.
+  PrefixReorderConfig cfg;
+  cfg.reserve = 40;
+  cfg.steps = 128;
+  cfg.bump_at = 64;
+  cfg.bump_to = 128;
+  expect_identical(cfg);
+}
+
+TEST_F(TransformerDecoderPrefixTest, CacheLengthSurvivesReplication) {
+  // Beam expansion after two batch-1 steps (the expand-after-first-step shape).
+  PrefixReorderConfig cfg;
+  cfg.reserve = 40;
+  cfg.steps = 30;
+  cfg.greedy_steps = 2;
+  expect_identical(cfg);
+}
+
+TEST_F(TransformerDecoderPrefixTest, BatchShrinkBeam) {
+  PrefixReorderConfig cfg;
+  cfg.reserve = 40;
+  cfg.steps = 50;
+  cfg.batch = 3;
+  cfg.beam = 2;
+  cfg.shrink_at = 20;
+  expect_identical(cfg);
+}

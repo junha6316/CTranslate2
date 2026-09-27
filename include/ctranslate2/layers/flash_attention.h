@@ -47,6 +47,11 @@ namespace ctranslate2 {
         return _is_decoder && _sliding_window == 0;
       }
 
+      // [batch, time, heads, depth] cache.
+      dim_t cache_time_dim() const override {
+        return _cache_time_dim;
+      }
+
     private:
       static void split_heads(StorageView& x,
                                dim_t num_heads,
