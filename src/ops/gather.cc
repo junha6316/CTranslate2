@@ -242,6 +242,7 @@ namespace ctranslate2 {
           dst.push_back(out->buffer());
           row_words.push_back(row);
           if (use_row_segments(seg, *value, shadows != nullptr, steady)) {
+            ++shadows->segmented;
             const dim_t item = value->item_size();
             seg_words.push_back(seg->length * item / word_size);
             seg_count.push_back(seg->segments);
@@ -297,6 +298,7 @@ namespace ctranslate2 {
         const auto* src = static_cast<const char*>(value->buffer());
         auto* dst = static_cast<char*>(out.buffer());
         const bool segmented = use_row_segments(seg, *value, true, steady);
+        shadows->segmented += segmented;
         for (dim_t i = 0; i < input.size(); ++i) {
           const char* src_row = src + static_cast<dim_t>(indices[i]) * row_bytes;
           char* dst_row = dst + i * row_bytes;

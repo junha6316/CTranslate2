@@ -34,15 +34,18 @@ namespace ctranslate2 {
     // when bufs[i] is still that old data buffer, data[i] still the new one, and neither
     // was re-allocated or re-shaped: the two buffers then carry the ping-pong history of
     // this one tensor. That alone does not make their tails match a full-row gather; it
-    // does when the tails are uniform (see GatherRowSegments::keep_tail).
+    // does when the tails are uniform (see GatherRowSegments::keep_tail). segmented counts
+    // the entries that copied their segments instead of full rows since the last clear().
     struct GatherShadows {
       std::vector<StorageView> bufs;
       std::vector<const void*> last_src;
       std::vector<const void*> last_dst;
+      size_t segmented = 0;
       void clear() {
         bufs.clear();
         last_src.clear();
         last_dst.clear();
+        segmented = 0;
       }
     };
 

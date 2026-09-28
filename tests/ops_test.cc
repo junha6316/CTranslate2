@@ -635,16 +635,24 @@ TEST_P(OpDeviceTest, GatherBatchSegments) {
   ASSERT_EQ(shadows.bufs.size(), data.size());
   for (size_t t = 0; t < data.size(); ++t)
     EXPECT_EQ(storage_bytes(data[t]), storage_bytes(expected[t])) << "call 1, tensor " << t;
+  // Fresh shadows are never steady, and nothing else here takes its descriptor.
+  EXPECT_EQ(shadows.segmented, 0u);
 
-  // Poison the shadows' bytes outside the segments: the flash tails must survive the
-  // steady call (not copied), everything else must be overwritten by a full-row copy.
+  // Poison the shadows' bytes outside the segments. On the steady call the flash tails
+  // and the tails of the correctly paired MHA slots must survive (not copied: a
+  // regression to full-row copies would overwrite them), while the mispaired MHA slots
+  // and every full-row entry must be overwritten by a full-row copy.
   segs = descriptors(/*flash_keep_tail=*/false);
   const size_t mis_a = 2, mis_b = 6;  // Two MHA float32 slots, mispaired below.
   ASSERT_EQ(kinds[mis_a], MhaF32);
   ASSERT_EQ(kinds[mis_b], MhaF32);
+  const auto takes_segments = [&](size_t t) {
+    const Kind k = kinds[t];
+    return k == FlashF32 || k == FlashF16 || (is_mha(k) && t != mis_a && t != mis_b);
+  };
   for (size_t t = 0; t < data.size(); ++t) {
     const Kind k = kinds[t];
-    if (is_flash(k) || t == mis_a || t == mis_b) {
+    if (is_flash(k) || is_mha(k)) {
       const ops::GatherRowSegments valid = is_flash(k)
         ? ops::GatherRowSegments{1, L * H * D, C * H * D, false}
         : segs[t];
@@ -658,26 +666,28 @@ TEST_P(OpDeviceTest, GatherBatchSegments) {
   StorageView ids2({N}, std::vector<int32_t>{1, 1, 2, 0, 5, 3}, device);
   expected = gather_all(ids2);
   ops::Gather::batch(pointers, ids2, &shadows, &segs);
+  size_t expected_segmented = 0;
   for (size_t t = 0; t < data.size(); ++t) {
-    const Kind k = kinds[t];
     const auto got = storage_bytes(data[t]);
     const auto want = storage_bytes(expected[t]);
     ASSERT_EQ(got.size(), want.size());
-    if (k == FlashF32 || k == FlashF16) {
+    if (takes_segments(t)) {
+      ++expected_segmented;
       const dim_t item = data[t].item_size();
       const dim_t row_bytes = data[t].stride(0) * item;
       for (size_t b = 0; b < got.size(); ++b) {
         if (in_segments(b, row_bytes, item, segs[t]))
-          ASSERT_EQ(got[b], want[b]) << "call 2, flash tensor " << t << ", byte " << b;
+          ASSERT_EQ(got[b], want[b]) << "call 2, tensor " << t << ", byte " << b;
         else
-          ASSERT_EQ(got[b], 0xFF) << "call 2, flash tail copied, tensor " << t << ", byte " << b;
+          ASSERT_EQ(got[b], 0xFF) << "call 2, tail copied, tensor " << t << ", byte " << b;
       }
     } else {
-      // keep_tail (MHA, including the mispaired pair), full-row entries, and the
-      // length-0 / misaligned descriptors (d): exactly the plain gather.
+      // The mispaired MHA pair, full-row entries, and the length-0 / misaligned
+      // descriptors (d): exactly the plain gather.
       EXPECT_EQ(got, want) << "call 2, tensor " << t;
     }
   }
+  EXPECT_EQ(shadows.segmented, expected_segmented);
 
   // Batch shrink: call 3 changes dim 0 (non-steady), call 4 is the step after it (its
   // shadow still has the pre-shrink shape, non-steady too). MHA must be the plain gather
