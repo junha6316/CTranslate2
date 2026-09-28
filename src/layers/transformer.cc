@@ -679,7 +679,10 @@ namespace ctranslate2 {
         // non-steady step (first reorder, growth, batch shrink, re-paired buffers) copy
         // full rows, which carries the source's allocation-zeroed tail into the shadow,
         // and no write ever lands past the valid steps afterwards (appends write at the
-        // offset), so both ping-pong buffers keep zero tails by induction.
+        // offset), so both ping-pong buffers keep zero tails by induction. That relies on
+        // every row's tail being zero (the uniform-tail requirement of keep_tail): a
+        // future writer past the valid steps (e.g. a padded kernel writing the spare
+        // capacity) must return this layer to full-row reorders.
         out.segments = v.dim(1);
         out.length = length * v.stride(2);
         out.pitch = v.stride(1);

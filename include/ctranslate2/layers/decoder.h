@@ -135,7 +135,9 @@ namespace ctranslate2 {
       // resizes it on shape change, and tracks the buffers of its last swap, so a
       // mispairing after a state-map order change (or any foreign or re-allocated buffer)
       // only makes that step non-steady, which copies full rows — the prefix-bounded
-      // reorder never relies on the tail bytes of a buffer it did not pair itself.
+      // reorder never relies on the tail bytes of a buffer it did not pair itself, and
+      // relies on those of a paired buffer only under the uniform-tail requirement of
+      // ops::GatherRowSegments::keep_tail.
       // Mutable because update_state is const while the shadows are a pure allocation
       // cache.
       mutable ops::GatherShadows _reorder_shadows;

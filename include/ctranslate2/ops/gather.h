@@ -12,9 +12,15 @@ namespace ctranslate2 {
     // k starting at element k * pitch of the row. length == 0 means the full row. Elements
     // outside the segments are left as they are in the output buffer (a shadow), which is
     // only correct when nothing reads them. keep_tail = true means the bytes outside the
-    // segments must equal the source's: the segments are then used only on a steady step,
-    // where the output buffer already holds such bytes (see GatherShadows), and any other
-    // step copies the full row.
+    // segments must equal what a full-row gather would write: the segments are then used
+    // only on a steady step, and any other step copies the full row.
+    //
+    // keep_tail requires uniform tails: every row of the tensor must hold the same bytes
+    // outside the segments. On a steady step output row i keeps its own buffer's previous
+    // tail, where a full-row gather would write the tail of source row indices[i]; the two
+    // agree only when all tails are equal. The preallocated KV caches satisfy this because
+    // their tails are all zero (append_to_cache zeroes on growth and appends write at the
+    // offset). A writer that puts row-specific bytes past the segments breaks it silently.
     struct GatherRowSegments {
       dim_t segments = 1;
       dim_t length = 0;
@@ -27,7 +33,8 @@ namespace ctranslate2 {
     // data buffer, now in bufs[i], and the new data buffer). A call is "steady" for entry i
     // when bufs[i] is still that old data buffer, data[i] still the new one, and neither
     // was re-allocated or re-shaped: the two buffers then carry the ping-pong history of
-    // this one tensor, so their bytes outside the gathered segments agree by induction.
+    // this one tensor. That alone does not make their tails match a full-row gather; it
+    // does when the tails are uniform (see GatherRowSegments::keep_tail).
     struct GatherShadows {
       std::vector<StorageView> bufs;
       std::vector<const void*> last_src;
