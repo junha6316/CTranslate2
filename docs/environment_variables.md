@@ -63,6 +63,15 @@ export CT2_CUDA_POOL_RELEASE_THRESHOLD=8G
 
 The threshold applies to the device's current memory pool, which is shared with any other library using `cudaMallocAsync` in the same process.
 
+## `CT2_CUDA_GATHER_PREFIX`
+
+Beam search reorders the decoder self-attention caches after every step. By default on CUDA, it copies only the valid time steps of a preallocated cache (the flash attention cache and the opt-in `CT2_CUDA_PREALLOC_KV` / `CT2_CUDA_PAD_KV` / `CT2_CUDA_GRAPHS` caches) instead of the whole allocated capacity. The output is bit-identical.
+
+* `0` or `false` (any case): copy full rows, as before.
+* anything else, including unset or empty: copy the valid steps only (default).
+
+The value is read once per process.
+
 ## `CT2_CUDA_GRAPHS_TIERS`
 
 Capacity tiers for the opt-in CUDA-graph replay of the Whisper decoder (`CT2_CUDA_GRAPHS=1`). The graph path preallocates the self-attention caches for `CT2_CUDA_GRAPHS_RESERVE` decoding steps (or the whole decode length when the reserve is unset) and replays captured graphs at that fixed capacity. Without tiers, a decode that outgrows a capped reserve runs its remaining steps eagerly. With tiers, the step that crosses the capacity grows the caches to the next tier and the decoder re-captures its graphs at the new shapes, so the rest of the decode keeps replaying.

@@ -77,8 +77,8 @@ namespace ctranslate2 {
     }
 
     bool Decoder::prefix_reorder_enabled() {
-      // Kill switch for the prefix-bounded beam reorder: CT2_CUDA_GATHER_PREFIX=0.
-      static const bool enabled = read_bool_from_env("CT2_CUDA_GATHER_PREFIX", true);
+      // Kill switch for the prefix-bounded beam reorder: CT2_CUDA_GATHER_PREFIX=0 or false.
+      static const bool enabled = read_default_on_flag_from_env("CT2_CUDA_GATHER_PREFIX");
       return enabled;
     }
 

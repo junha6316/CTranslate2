@@ -20,6 +20,17 @@ namespace ctranslate2 {
     return string_to_bool(read_string_from_env(var, default_value ? "1" : "0"));
   }
 
+  bool parse_default_on_flag(const std::string& value) {
+    std::string lower = value;
+    for (char& c : lower)
+      c = std::tolower(static_cast<unsigned char>(c));
+    return lower != "0" && lower != "false";
+  }
+
+  bool read_default_on_flag_from_env(const char* var) {
+    return parse_default_on_flag(read_string_from_env(var));
+  }
+
   int read_int_from_env(const char* var, const int default_value) {
     const std::string value = read_string_from_env(var);
     if (value.empty())

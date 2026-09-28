@@ -54,7 +54,7 @@ namespace ctranslate2 {
 
       // Forces the prefix-bounded beam reorder (see reorder_segments) on or off for this
       // decoder, on any device. By default it is on for CUDA unless
-      // CT2_CUDA_GATHER_PREFIX=0, and off on CPU; forcing it on is a test hook that runs
+      // CT2_CUDA_GATHER_PREFIX is 0 or false, and off on CPU; forcing it on is a test hook that runs
       // the CPU implementation of the segmented gather.
       void set_prefix_reorder(bool enable) {
         _prefix_reorder = enable ? 1 : 0;

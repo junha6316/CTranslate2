@@ -28,3 +28,12 @@ TEST(EnvTest, ParseByteSizeRejectsMalformed) {
     EXPECT_THROW(parse_byte_size(value), std::invalid_argument) << "'" << value << "'";
   }
 }
+
+TEST(EnvTest, ParseDefaultOnFlag) {
+  // The parser behind the CT2_CUDA_GATHER_PREFIX kill switch: only an explicit 0/false
+  // turns the feature off.
+  for (const char* value : {"0", "false", "FALSE", "False"})
+    EXPECT_FALSE(parse_default_on_flag(value)) << "'" << value << "'";
+  for (const char* value : {"", "1", "true", "True", "on", "yes", "anything"})
+    EXPECT_TRUE(parse_default_on_flag(value)) << "'" << value << "'";
+}
