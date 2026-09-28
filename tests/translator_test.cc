@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <unordered_set>
 
+#include "env.h"
 #include "test_utils.h"
 
 static std::string
@@ -1686,20 +1687,30 @@ TEST_F(TransformerDecoderTest, CacheLengthGuardIgnoresScoring) {
 // Gather::batch) against the full-row reorder (the r5 path), on the preallocated MHA
 // caches: the logits of every step, and every self-attention cache and its reorder
 // shadow after every update_state (tails past the valid steps included), must be
-// bit-identical. Runs on CPU, and on CUDA when a GPU is present (with CT2_CUDA_PAD_KV=1
-// in the environment the CUDA run also takes the padded-attention path).
+// bit-identical. Runs on CPU, and on CUDA when a GPU is present. With CT2_CUDA_PAD_KV=1
+// or CT2_CUDA_GRAPHS=1 in the environment the CUDA run also takes the padded-attention
+// path, the only reader of the MHA tail, and the test checks that it did.
 namespace {
   struct PrefixReorderRun {
     std::vector<std::vector<uint8_t>> logits;
     std::vector<std::map<std::string, std::vector<uint8_t>>> caches;
     std::vector<std::map<std::string, std::vector<uint8_t>>> shadows;
     size_t prefix_descriptors = 0;
+    // Entries the gather actually copied by segments (GatherShadows::segmented), not just
+    // the descriptors reorder_segments returned.
+    size_t segmented = 0;
+    // Decoding steps that ran padded attention.
+    size_t padded_steps = 0;
   };
 
   struct PrefixTestDecoder : TierTestDecoder {
     using TierTestDecoder::TierTestDecoder;
     using TierTestDecoder::reorder_shadows;
     mutable size_t prefix_descriptors = 0;
+    // Whether the last decoding step ran padded attention in every layer.
+    bool padded_kv_step() const {
+      return _workspace.padded_kv && !_workspace.padded_kv_fallback;
+    }
   protected:
     bool reorder_segments(const std::string& name,
                           const StorageView& v,
@@ -1770,7 +1781,8 @@ protected:
     encoder({src_ids}, &src_lengths, memory);
     auto state = decoder.initial_state();
     state.emplace("memory", std::move(memory));
-    state.emplace("memory_lengths", std::move(src_lengths));
+    // No memory_lengths: padded attention is refused when the state carries them, and
+    // every source here has the same length, so the cross attention needs no mask.
 
     PrefixReorderRun out;
     dim_t batch = cfg.batch;
@@ -1791,6 +1803,7 @@ protected:
       StorageView logits(device);
       decoder(step, StorageView({rows}, ids).to(device), state, &logits);
       out.logits.emplace_back(host_bytes(logits));
+      out.padded_steps += decoder.padded_kv_step();
       if (beam == 1)
         continue;
 
@@ -1832,6 +1845,7 @@ protected:
       out.shadows.emplace_back(std::move(shadows));
     }
     out.prefix_descriptors = decoder.prefix_descriptors;
+    out.segmented = decoder.reorder_shadows().segmented;
     return out;
   }
 
@@ -1846,6 +1860,10 @@ protected:
     }
   }
 
+  static bool padded_kv_requested() {
+    return read_bool_from_env("CT2_CUDA_PAD_KV") || read_bool_from_env("CT2_CUDA_GRAPHS");
+  }
+
   // Runs the config on every available device, full-row vs prefix reorder.
   void expect_identical(const PrefixReorderConfig& cfg) {
     for (const Device device : prefix_test_devices()) {
@@ -1853,8 +1871,17 @@ protected:
       const PrefixReorderRun full = run(cfg, false, device);
       const PrefixReorderRun prefix = run(cfg, true, device);
       EXPECT_EQ(full.prefix_descriptors, 0u);
-      // The MHA caches take a prefix descriptor on every reorder with spare capacity.
+      // The MHA caches take a prefix descriptor on every reorder with spare capacity,
+      // and the steady ones must actually be copied by segments.
       EXPECT_GT(prefix.prefix_descriptors, 0u);
+      EXPECT_EQ(full.segmented, 0u);
+      EXPECT_GT(prefix.segmented, 0u);
+      if (device == Device::CUDA && padded_kv_requested()) {
+        EXPECT_GT(full.padded_steps, 0u);
+        EXPECT_EQ(prefix.padded_steps, full.padded_steps);
+      } else {
+        EXPECT_EQ(prefix.padded_steps, 0u);
+      }
       ASSERT_EQ(full.logits.size(), prefix.logits.size());
       for (size_t s = 0; s < full.logits.size(); ++s)
         ASSERT_EQ(full.logits[s], prefix.logits[s]) << "logits differ at step " << s;
