@@ -512,6 +512,11 @@ namespace ctranslate2 {
       topk_ids.at<int32_t>(i) = start_ids[i];
     }
 
+    // replicate_state drops the beam-reorder shadows too, but the expand-after-first-step
+    // path reaches its first reorder without it: shadows left by the previous search
+    // could then pass as this search's steady ping-pong pair if the allocator hands back
+    // the same addresses.
+    decoder.reset_reorder_shadows();
     if (!expand_after_first_step) {
       decoder.replicate_state(state, _beam_size);
       repeat_batch(topk_ids, _beam_size);

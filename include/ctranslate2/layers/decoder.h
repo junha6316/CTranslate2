@@ -52,6 +52,12 @@ namespace ctranslate2 {
       // Returns true if the state must be replicated beam_size times.
       virtual bool replicate_state(const std::string& name) const;
 
+      // Drops the beam-reorder shadow buffers (see _reorder_shadows). Called at the start
+      // of every beam search; replicate_state also does it.
+      void reset_reorder_shadows() const {
+        _reorder_shadows.clear();
+      }
+
       // Forces the prefix-bounded beam reorder (see reorder_segments) on or off for this
       // decoder, on any device. By default it is on for CUDA unless
       // CT2_CUDA_GATHER_PREFIX is 0 or false, and off on CPU; forcing it on is a test hook that runs
