@@ -271,10 +271,21 @@ the round".)
 
 ## Review items addressed after the round
 
-All five review items above are fixed on this branch; none changes decoding output. Local
-CPU suite 242 passed / 2 skipped / 1 known failure. The CUDA half (the `segmented`
-increment in the fused path, `TransformerDecoderPrefixTest` under `CT2_CUDA_PAD_KV=1` /
-`CT2_CUDA_GRAPHS=1`) is not yet run on a GPU.
+All five review items above are fixed on this branch; none changes decoding output.
+
+- Local macOS CPU suite: 242 passed / 2 skipped / 1 known failure.
+- A10G (fresh g5.2xlarge, CUDA 12.8, cuDNN, flash, OpenBLAS CPU backend, 2026-09-28 UTC,
+  build of `2ee7df4`): full suite **430 passed / 5 skipped / 0 failed**, 188 of them CUDA,
+  with the known `CPU/OpDeviceFPTest.Conv1DGroupNoBiasQuantized/float32` excluded (on
+  Linux it aborts the process instead of failing). `TransformerDecoderPrefixTest.*`,
+  every `Gather*` test and `EnvTest.*` (35 tests) pass under `CT2_CUDA_PAD_KV=1` and
+  under `CT2_CUDA_GRAPHS=1`, including the new padded-steps and `segmented > 0` checks.
+- Mutation on the A10G (keep_tail entries forced to full rows, `PAD_KV=1`): 8 tests fail,
+  `GatherBatchSegments` on CPU and CUDA ("tail copied") and all 6 prefix tests
+  (`segmented > 0`, on both devices); restored, they pass.
+- Without a CPU SGEMM backend (`WITH_MKL=OFF` alone) the box build throws "No SGEMM
+  backend on CPU" in every test that runs a CPU model first, the prefix tests included;
+  build the box with `-DWITH_OPENBLAS=ON`.
 
 | item | commit | change |
 | --- | --- | --- |
@@ -288,7 +299,7 @@ Still open: no deterministic regression test for the stale-shadow case (it needs
 allocator to return the same address). Under `CT2_CUDA_GRAPHS=1` the prefix test
 allocates its logits inside the step loop, so a capture is expected to abort and every
 step to run eager padded attention; graph replay is not covered by this unit test (read
-from the code, not run).
+from the code; the GRAPHS=1 run passes but does not show which branch ran).
 
 ## Round-7 levers
 
