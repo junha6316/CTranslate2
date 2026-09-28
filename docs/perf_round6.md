@@ -228,6 +228,9 @@ dense:1 the prefix gather still costs 15 ms per decode because `L` itself is lon
 
 ## Honest caveats
 
+(The review items below were fixed after the round; see "Review items addressed after
+the round".)
+
 - **The residual <= 1% on host-bound flash-off cells** (small int8 beam1) is not explained
   beyond "library-level": it appears with the kill switch and on paths that never reorder.
   `perf` needs sudo on the box (`perf_event_paranoid = 4`) and `cuobjdump` is not
@@ -279,7 +282,7 @@ increment in the fused path, `TransformerDecoderPrefixTest` under `CT2_CUDA_PAD_
 | CPU expand-after-first-step shadows | `e5c64c5` | `Decoder::reset_reorder_shadows()` at the start of every `BeamSearch::search` |
 | uniform-tail requirement | `bf11596` | stated in the `GatherRowSegments::keep_tail` / `GatherShadows` / `reorder_segments` comments (no debug check) |
 | steady MHA copy unproven | `3b0095c` | `GatherShadows::segmented` counts accepted segmented entries; `GatherBatchSegments` poisons the paired steady MHA shadows and requires the poison to survive. Forcing keep_tail to full rows now fails the test |
-| prefix test never padded | `33c4516` | the test state has no `memory_lengths`, so padded attention can run; on CUDA with PAD_KV/GRAPHS set both runs must have padded steps, and the prefix run must have `segmented > 0` |
+| prefix test never padded | `33c4516` | the test state has no `memory_lengths`, so padded attention can run; the prefix run must have `segmented > 0` on every device, and on CUDA with PAD_KV/GRAPHS set both runs must have padded steps (otherwise neither may) |
 
 Still open: no deterministic regression test for the stale-shadow case (it needs the
 allocator to return the same address). Under `CT2_CUDA_GRAPHS=1` the prefix test
