@@ -1880,6 +1880,7 @@ protected:
         EXPECT_GT(full.padded_steps, 0u);
         EXPECT_EQ(prefix.padded_steps, full.padded_steps);
       } else {
+        EXPECT_EQ(full.padded_steps, 0u);
         EXPECT_EQ(prefix.padded_steps, 0u);
       }
       ASSERT_EQ(full.logits.size(), prefix.logits.size());

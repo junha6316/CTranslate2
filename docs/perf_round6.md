@@ -266,14 +266,32 @@ dense:1 the prefix gather still costs 15 ms per decode because `L` itself is lon
 - One box session, within-session pairs only; absolute numbers are not comparable across
   sessions.
 
+## Review items addressed after the round
+
+All five review items above are fixed on this branch; none changes decoding output. Local
+CPU suite 242 passed / 2 skipped / 1 known failure. The CUDA half (the `segmented`
+increment in the fused path, `TransformerDecoderPrefixTest` under `CT2_CUDA_PAD_KV=1` /
+`CT2_CUDA_GRAPHS=1`) is not yet run on a GPU.
+
+| item | commit | change |
+| --- | --- | --- |
+| kill-switch parsing | `39d8ceb` | `CT2_CUDA_GATHER_PREFIX` is off only for `0`/`false` (any case); unset, empty, `on`, `yes` keep it on |
+| CPU expand-after-first-step shadows | `e5c64c5` | `Decoder::reset_reorder_shadows()` at the start of every `BeamSearch::search` |
+| uniform-tail requirement | `bf11596` | stated in the `GatherRowSegments::keep_tail` / `GatherShadows` / `reorder_segments` comments (no debug check) |
+| steady MHA copy unproven | `3b0095c` | `GatherShadows::segmented` counts accepted segmented entries; `GatherBatchSegments` poisons the paired steady MHA shadows and requires the poison to survive. Forcing keep_tail to full rows now fails the test |
+| prefix test never padded | `33c4516` | the test state has no `memory_lengths`, so padded attention can run; on CUDA with PAD_KV/GRAPHS set both runs must have padded steps, and the prefix run must have `segmented > 0` |
+
+Still open: no deterministic regression test for the stale-shadow case (it needs the
+allocator to return the same address). Under `CT2_CUDA_GRAPHS=1` the prefix test
+allocates its logits inside the step loop, so a capture is expected to abort and every
+step to run eager padded attention; graph replay is not covered by this unit test (read
+from the code, not run).
+
 ## Round-7 levers
 
 1. **Re-tune the tiers stride** to `+96` / `+128` against `+64` on the round-5 G-long
    workloads (prediction: optimum ~98 slots at b = 0.40 us).
-2. **Fix the review items:** clear the reorder shadows at the start of every search (not
-   only in `replicate_state`); state the uniform-tail requirement or add a debug check; make
-   the prefix test actually take padded attention and poison a steady MHA shadow tail;
-   count accepted segmented entries; treat only `0`/`false` as off for the kill switch.
+2. Fix the review items: done, see "Review items addressed after the round" above.
 3. **Remaining gather cost scales with L** (dense:1 tiers still 15 ms/decode, 75 us per
    launch at L ~ 200). Removing the copy entirely needs beam-indirect attention (read K/V
    through the parent-index chain) or a paged cache, which touches every attention kernel
