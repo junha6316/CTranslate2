@@ -134,6 +134,7 @@ set(SOURCES
   src/layers/attention.cc
   src/layers/flash_attention.cc
   src/layers/common.cc
+  src/layers/decode_core.cc
   src/layers/decoder.cc
   src/layers/transformer.cc
   src/layers/wav2vec2.cc

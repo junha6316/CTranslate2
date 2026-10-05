@@ -10,7 +10,8 @@
 //   3. on Action::Capture it wraps the ordinary forward in begin_capture() /
 //      end_capture_and_launch() (any failure or allocation inside the region aborts
 //      the capture and the step is rerun eagerly);
-//   4. on Action::Replay it skips the forward and calls replay().
+//   4. on Action::Replay it skips the forward and calls replay() (replay_piecewise()
+//      in the piecewise sub-mode below).
 // Any CUDA error degrades to eager for the remainder of the decode, logged once,
 // never fatal. Mid-decode recapture happens only at a capacity-tier transition, which
 // the decoder's host guard requests through begin_tier_transition() at the first step
@@ -19,13 +20,19 @@
 // shapes. Disabled stays sticky until the next decode boundary (reported by the
 // decoder through note_new_decode(), or detected by a step discontinuity), which also
 // restarts the warmup.
+//
+// Piecewise sub-mode (CT2_CUDA_GRAPHS_PIECEWISE=1): a captured step is a sequence of
+// graph segments split at every self-attention core, and the cores run eagerly between
+// the segment launches (see layers::CoreDesc and segment_hook / replay_piecewise).
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "ctranslate2/types.h"
+#include "layers/decode_core.h"
 
 namespace ctranslate2 {
   namespace cuda {
@@ -49,8 +56,18 @@ namespace ctranslate2 {
       // injection for the fallback tests. The tier_capture|tier_instantiate|
       // tier_replay|tier_alloc values fire once, at the first capture / instantiate /
       // replay / in-capture allocation after a tier transition (see
-      // consume_tier_fault). Empty string when unset.
+      // consume_tier_fault). The piecewise-only segment_capture|segment_instantiate|
+      // segment_replay values fire once per process, at segment 1's capture start /
+      // segment 1's instantiation / the replay between core 0 and segment 1. Empty
+      // string when unset.
       static const std::string& injected_fault();
+      // CT2_CUDA_GRAPHS_PIECEWISE=1 together with CT2_CUDA_GRAPHS=1, read once. In this
+      // mode every captured step is a sequence of segments (see layers::CoreDesc):
+      // begin_capture() opens segment 0, the hook below closes/opens one segment per
+      // self-attention core, and end_capture_and_launch() closes the last segment and
+      // commits the whole set to the parity's slot. replay() is replaced by
+      // replay_piecewise().
+      static bool piecewise_enabled();
       // CT2_CUDA_GRAPHS_TIERS_REENTRY=warmup (debug/A-B only): a tier transition
       // re-enters the full warmup instead of re-capturing at the next step.
       static bool warmup_reentry();
@@ -105,14 +122,37 @@ namespace ctranslate2 {
       // kernels did not run during recording). Returns false when anything failed;
       // the caller must then rerun the step eagerly (abort_capture was already done).
       bool end_capture_and_launch();
-      // Aborts an active capture (allocation inside the region, exception, ...).
+      // Aborts an active capture (allocation inside the region, exception, ...). In
+      // piecewise mode, also between two segments: drops the segments already
+      // instantiated for this step and releases the capture lock.
       void abort_capture(const char* reason);
-      // Launches the executable graph for the current step parity.
+      // Launches the executable graph for the current step parity. Whole-step mode
+      // only: in piecewise mode it disables the decode and returns false.
       bool replay();
+
+      // The hook the decoder threads to the layers (DecodeWorkspace::graph_hook) during a
+      // piecewise Capture step. end_segment: ends the running stream capture, checks the
+      // zero-allocation assertion, instantiates and launches the segment, records the core.
+      // begin_segment: starts the next segment's capture. On failure both disable the decode
+      // and throw std::runtime_error; the decoder then calls abort_capture() (which also
+      // drops the segments already instantiated for this step) and reruns the step eagerly.
+      // Segments that already ran on the device during the failed step are harmless: the
+      // eager rerun recomputes and overwrites every value they produced (see H1_SPEC §4).
+      layers::SegmentHook& segment_hook();
+
+      // Piecewise replay of the current parity: launches segment 0, calls run_core on
+      // core 0, launches segment 1, ..., launches the last segment. Returns false (decode
+      // disabled, logged) when a launch fails, run_core returns false, the slot holds no
+      // piecewise executable, or a replay fault is injected; the caller then reruns the
+      // step eagerly, which is correct even after some segments ran.
+      bool replay_piecewise(const std::function<bool(const layers::CoreDesc&)>& run_core);
 
       void disable_for_decode(const char* reason);
 
     private:
+      // end_capture_and_launch() in piecewise mode.
+      bool end_piecewise_capture();
+
       struct Impl;
       const std::unique_ptr<Impl> _impl;
     };

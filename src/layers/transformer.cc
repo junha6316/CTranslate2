@@ -5,6 +5,7 @@
 
 #include "dispatch.h"
 #include "env.h"
+#include "layers/decode_core.h"
 
 #ifdef CT2_WITH_CUDA
 #  include <cstring>
@@ -544,6 +545,71 @@ namespace ctranslate2 {
     // The name must not start with "memory" so replicate_state() treats it like the caches.
     static const char* kSelfCacheLengthState = "self_length";
 
+    namespace {
+
+      // Wraps the SegmentHook of a piecewise step (the graph runner's, or the CPU test
+      // hook) with the structural checks both paths share: the cores arrive in layer
+      // order, each at the step's exact cached length (step + 1: the iterative path
+      // appends one step at offset == step), with strictly alternating end/begin calls.
+      // The state advances before the inner call, so a reentrant or repeated call from
+      // the inner hook is also refused.
+      class PiecewiseStepHook : public SegmentHook {
+      public:
+        PiecewiseStepHook(SegmentHook& inner, const dim_t step)
+          : _inner(inner)
+          , _step(step) {
+        }
+
+        void end_segment(const CoreDesc& core) override {
+          if (_in_core)
+            throw std::runtime_error("piecewise: segment closed twice without a core");
+          if (core.index != _cores)
+            throw std::runtime_error("piecewise: core " + std::to_string(core.index)
+                                     + " reported out of order (expected "
+                                     + std::to_string(_cores) + ")");
+          if (core.length != _step + 1)
+            throw std::runtime_error("piecewise: core length " + std::to_string(core.length)
+                                     + " does not match step " + std::to_string(_step));
+          _in_core = true;
+          _inner.end_segment(core);
+        }
+
+        void begin_segment() override {
+          if (!_in_core)
+            throw std::runtime_error("piecewise: segment opened without a core");
+          _in_core = false;
+          ++_cores;
+          _inner.begin_segment();
+        }
+
+      private:
+        SegmentHook& _inner;
+        const dim_t _step;
+        dim_t _cores = 0;
+        bool _in_core = false;
+      };
+
+      // Installs a piecewise hook on the workspace for one forward and always removes it,
+      // exceptions included, so the eager rerun of an aborted step never reaches it.
+      class HookScope {
+      public:
+        HookScope(DecodeWorkspace& workspace, SegmentHook* hook)
+          : _workspace(workspace) {
+          _workspace.graph_hook = hook;
+          _workspace.piecewise_cores = 0;
+        }
+        ~HookScope() {
+          _workspace.graph_hook = nullptr;
+        }
+        HookScope(const HookScope&) = delete;
+        HookScope& operator=(const HookScope&) = delete;
+
+      private:
+        DecodeWorkspace& _workspace;
+      };
+
+    }
+
     TransformerDecoder::TransformerDecoder(const models::Model& model, const std::string& scope)
       : Decoder(model.device())
       , _num_heads(model.get_attribute_with_default<int32_t>(scope + "/num_heads", 8))
@@ -852,12 +918,40 @@ namespace ctranslate2 {
       _workspace.padded_kv = false;
       _workspace.graph_indirect = false;
       _workspace.padded_kv_fallback = false;
-      if (step >= 0 && !is_sequence && !lengths && !attention && tracked_cache_length
-          && _cache_reserve_steps > 0 && device == Device::CUDA
-          && !_tensor_parallel && state.find("memory_lengths") == state.end()) {
-        static const bool padded_kv_env = read_bool_from_env("CT2_CUDA_PAD_KV")
-                                          || read_bool_from_env("CT2_CUDA_GRAPHS");
-        if (padded_kv_env) {
+      _workspace.exact_core = false;
+      _workspace.piecewise_cores = 0;
+      const bool kv_mode_eligible = step >= 0 && !is_sequence && !lengths && !attention
+                                    && tracked_cache_length && _cache_reserve_steps > 0
+                                    && !_tensor_parallel
+                                    && state.find("memory_lengths") == state.end();
+      // Piecewise CUDA graphs (opt-in sub-mode of CT2_CUDA_GRAPHS, see
+      // DecodeWorkspace::exact_core): the self-attention cores keep their exact length, so
+      // there is no self_lengths fill and the padded mode is not used, CT2_CUDA_PAD_KV
+      // included. The test hook takes the same path on any device (see
+      // _piecewise_test_hook); it never applies when the CUDA mode does. The env selection is
+      // select_decode_kv_mode (decode_core.h), shared with the CUDA graph runner.
+      const DecodeKvEnv& kv_env = decode_kv_env();
+      const DecodeKvMode kv_mode = select_decode_kv_mode(kv_env, device, kv_mode_eligible);
+      const bool piecewise_graphs = kv_mode == DecodeKvMode::ExactCore;
+      const bool piecewise_test = !piecewise_graphs && _piecewise_test_hook && kv_mode_eligible
+                                  && outputs && return_logits && reuse_layer_slots
+                                  && !_use_flash_attention;
+      if (piecewise_graphs) {
+#ifdef CT2_WITH_CUDA
+        static const bool pad_kv_ignored = [] {
+          const bool set = decode_kv_env().pad_kv;
+          if (set)
+            spdlog::debug("CUDA graphs: CT2_CUDA_GRAPHS_PIECEWISE=1 runs the self-attention"
+                          " cores at their exact length, CT2_CUDA_PAD_KV is ignored");
+          return set;
+        }();
+        (void)pad_kv_ignored;
+#endif
+        _workspace.exact_core = true;
+      } else if (piecewise_test) {
+        _workspace.exact_core = true;
+      } else if (kv_mode_eligible && device == Device::CUDA) {
+        if (kv_mode == DecodeKvMode::Padded) {
           StorageView& self_lengths = _workspace.self_lengths;
           if (self_lengths.dtype() != DataType::INT32 || self_lengths.device() != device)
             self_lengths = StorageView(DataType::INT32, device);
@@ -870,6 +964,38 @@ namespace ctranslate2 {
           _workspace.padded_kv = true;
         }
       }
+
+      // The time capacity of the preallocated self-attention caches (0 before the first
+      // append): the host guards of the graph paths compare it with the step.
+      const auto self_cache_capacity = [&]() -> dim_t {
+        const auto cache_it = state.find("self_keys_0");
+        return (cache_it != state.end() && cache_it->second.rank() == 4)
+          ? cache_it->second.dim(2)
+          : 0;
+      };
+
+      if (_workspace.exact_core) {
+        // An exact-length core writes B x H x L scores into whichever slot holds the
+        // fused_proj buffer at that point, and L grows every step: reserve the slots that
+        // can carry it for the full capacity now, outside any captured region, so the core
+        // never re-allocates a buffer that a captured segment bakes. A no-op once reserved;
+        // after a tier transition the next step reserves for the new capacity.
+        const dim_t capacity = (std::max(_cache_reserve_steps, self_cache_capacity()) + 31)
+                               / 32 * 32;
+        _workspace.reserve_core_slots(dtype, device, ids.dim(0) * _num_heads * capacity);
+      }
+
+      // Seeds the device step record consumed by the indirect kernels ({position index,
+      // cache offset}, both equal to the step on the single-token iterative path).
+      const auto seed_step_state = [&]() {
+        StorageView& step_state = _workspace.step_state;
+        if (step_state.dtype() != DataType::INT32 || step_state.device() != device)
+          step_state = StorageView(DataType::INT32, device);
+        step_state.resize({2});
+        DEVICE_DISPATCH(device, primitives<D>::fill(step_state.data<int32_t>(),
+                                                    int32_t(step), dim_t(2)));
+        _workspace.graph_indirect = true;
+      };
 
       // Bookkeeping entry update shared by the eager forward and the graph replay
       // path (see kSelfCacheLengthState above the constructor).
@@ -901,7 +1027,9 @@ namespace ctranslate2 {
 #ifdef CT2_WITH_CUDA
       // CUDA graphs (opt-in): decide what this step does before any device work.
       auto graph_action = cuda::DecoderGraphRunner::Action::Eager;
-      const bool graph_step = _workspace.padded_kv && outputs && return_logits
+      // exact_core only counts in the piecewise sub-mode (the CPU test hook never captures).
+      const bool graph_step = (_workspace.padded_kv || (_workspace.exact_core && piecewise_graphs))
+                              && outputs && return_logits
                               && reuse_layer_slots && !_use_flash_attention
                               && cuda::DecoderGraphRunner::env_enabled();
       if (graph_step) {
@@ -925,11 +1053,7 @@ namespace ctranslate2 {
           // executables (before this eager step frees the old buffers) and re-capture
           // at the new shapes from the next step on, while this step grows the caches,
           // the self_length record and the capacity-dependent workspace to the tier.
-          const auto cache_it = state.find("self_keys_0");
-          const dim_t cache_capacity =
-              (cache_it != state.end() && cache_it->second.rank() == 4)
-              ? cache_it->second.dim(2)
-              : 0;
+          const dim_t cache_capacity = self_cache_capacity();
           if (_position_encoder)
             encodings = &_position_encoder->ensure_position_encoding(step + 1);
           const bool cap_over = step + 1 > cache_capacity;
@@ -959,15 +1083,7 @@ namespace ctranslate2 {
           }
         }
         if (eligible) {
-          // Seed the device step record consumed by the indirect kernels
-          // ({position index, cache offset}, both equal to the step here).
-          StorageView& step_state = _workspace.step_state;
-          if (step_state.dtype() != DataType::INT32 || step_state.device() != device)
-            step_state = StorageView(DataType::INT32, device);
-          step_state.resize({2});
-          DEVICE_DISPATCH(device, primitives<D>::fill(step_state.data<int32_t>(),
-                                                      int32_t(step), dim_t(2)));
-          _workspace.graph_indirect = true;
+          seed_step_state();
 
           // Pointer fingerprint: critical entries first (rotated between steps by
           // eager code even while replays run), then the workspace slots (frozen once
@@ -993,6 +1109,23 @@ namespace ctranslate2 {
             // (sinusoidal encoder) reallocates it and must disable the replays.
             fingerprint.push_back(reinterpret_cast<std::uintptr_t>(encodings->buffer()));
             fingerprint.push_back(std::uintptr_t(encodings->dim(0)));
+          }
+          if (_workspace.exact_core) {
+            // Piecewise: the eager cores between the segments read and write the slots
+            // through pointers baked at capture (CoreDesc), so a re-allocated slot must
+            // stop the replays like a moved cache does. The forward swaps buffers between
+            // the slots, and at period 2 the assignment frozen after the last capture need
+            // not be the identity, so compare the set of buffers, not their order.
+            std::vector<std::uintptr_t> slots;
+            for (const StorageView* slot : {&_workspace.fused_proj, &_workspace.queries_proj,
+                                            &_workspace.keys_proj, &_workspace.values_proj,
+                                            &_workspace.attn, &_workspace.cross_context,
+                                            &_workspace.ffn_inner, &_workspace.ffn_linear,
+                                            &_workspace.layer_in, &_workspace.layer_out,
+                                            &_workspace.head_transpose})
+              slots.push_back(reinterpret_cast<std::uintptr_t>(slot->buffer()));
+            std::sort(slots.begin(), slots.end());
+            fingerprint.insert(fingerprint.end(), slots.begin(), slots.end());
           }
           const std::size_t num_critical = fingerprint.size();
           for (const StorageView* slot : {&_workspace.fused_proj, &_workspace.queries_proj,
@@ -1267,14 +1400,42 @@ namespace ctranslate2 {
       }
       };  // run_forward
 
+      // A piecewise step (device-agnostic: used by the CUDA capture and by the CPU test
+      // path): the forward with every self-attention core boundary reported to "inner"
+      // through the structural guard. Throws when the step cannot be re-issued core by
+      // core -- a layer reported the fallback, or a layer never reached the hook (merged
+      // encoder attention, flash attention, a cache that is not preallocated), whose
+      // exact-length attention would then be baked into a segment.
+      const auto piecewise_forward = [&](SegmentHook& inner) {
+        PiecewiseStepHook guard(inner, step);
+        HookScope scope(_workspace, &guard);
+        run_forward();
+        if (_workspace.padded_kv_fallback)
+          throw std::runtime_error("a layer cannot re-issue its self-attention core");
+        if (_workspace.piecewise_cores != dim_t(_layers.size()))
+          throw std::runtime_error("piecewise: not every layer reported its self-attention "
+                                   "core");
+      };
+
 #ifdef CT2_WITH_CUDA
       if (graph_action == cuda::DecoderGraphRunner::Action::Replay) {
         // Host bookkeeping the graph cannot do, then launch the captured executable.
         // Any failure falls back to the eager forward for a correct step.
         update_length_record(ids.dim(0), 1);
         outputs->resize(Shape(_workspace.graph_logits_shape));
+        // Piecewise: the segments are launched in order with each self-attention core
+        // re-issued in between at this step's exact cached length (the host knows it; the
+        // cores are outside the graphs, so their shapes may change every step).
+        const dim_t core_length = step + 1;
+        const auto replay = [&]() {
+          if (!_workspace.exact_core)
+            return _graph_runner->replay();
+          return _graph_runner->replay_piecewise([core_length](const CoreDesc& core) {
+            return replay_core(core, core_length);
+          });
+        };
         if (cuda::DecoderGraphRunner::check_enabled()) {
-          if (_graph_runner->replay()) {
+          if (replay()) {
             // Debug bring-up: replay AND eager on the same inputs, compare logits.
             const StorageView replayed = outputs->to(Device::CPU);
             run_forward();
@@ -1290,7 +1451,7 @@ namespace ctranslate2 {
           } else {
             run_forward();
           }
-        } else if (!_graph_runner->replay()) {
+        } else if (!replay()) {
           run_forward();
         }
         return;
@@ -1304,11 +1465,16 @@ namespace ctranslate2 {
               // Fault injection: a real allocation inside the capture window, which
               // must throw through the allocator assert-hook and abort the capture.
               get_allocator<Device::CUDA>().allocate(256);
-            run_forward();
-            if (_workspace.padded_kv_fallback)
-              // A layer consumed the cache at its exact length: the recorded forward
-              // is not shape-constant across steps and must not be instantiated.
-              throw std::runtime_error("a layer fell back from the padded KV path");
+            if (_workspace.exact_core) {
+              // Piecewise: the runner's hook closes and opens one segment per core.
+              piecewise_forward(_graph_runner->segment_hook());
+            } else {
+              run_forward();
+              if (_workspace.padded_kv_fallback)
+                // A layer consumed the cache at its exact length: the recorded forward
+                // is not shape-constant across steps and must not be instantiated.
+                throw std::runtime_error("a layer fell back from the padded KV path");
+            }
             captured = _graph_runner->end_capture_and_launch();
           } catch (const std::exception& e) {
             // Typically the allocator assert-hook (allocation inside the capture).
@@ -1318,12 +1484,36 @@ namespace ctranslate2 {
         if (captured) {
           _workspace.graph_logits_shape = outputs->shape();
         } else {
-          // Nothing ran on the device during the aborted capture: rerun eagerly.
+          // Nothing ran on the device during an aborted whole-step capture. An aborted
+          // piecewise capture may have run its first segments and cores already; that
+          // is harmless, the eager rerun recomputes and overwrites everything they wrote
+          // (same inputs, deterministic kernels). Rerun eagerly.
           run_forward();
         }
         return;
       }
 #endif
+
+      if (piecewise_test) {
+        // Mirrors a piecewise Capture step minus the CUDA calls (see _piecewise_test_hook):
+        // the same host guard as the CUDA path (a step that outgrows the cache capacity
+        // or the position table runs eager, without the hook), the same device step
+        // record, the same piecewise_forward, and the eager rerun of an aborted capture.
+        const StorageView* encodings = _position_encoder
+          ? &_position_encoder->ensure_position_encoding(step + 1)
+          : nullptr;
+        const bool fits = step + 1 <= self_cache_capacity()
+                          && (!encodings || step + 1 <= encodings->dim(0));
+        if (fits) {
+          seed_step_state();
+          try {
+            piecewise_forward(*_piecewise_test_hook);
+          } catch (const std::exception&) {
+            run_forward();
+          }
+          return;
+        }
+      }
 
       run_forward();
 

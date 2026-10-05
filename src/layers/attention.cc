@@ -9,6 +9,7 @@
 
 #include "dispatch.h"
 #include "cpu/parallel.h"
+#include "layers/decode_core.h"
 
 namespace ctranslate2 {
   namespace layers {
@@ -606,6 +607,9 @@ namespace ctranslate2 {
       const bool preallocated_cache = preallocates_cache();
       // Non-zero when the cache holds fewer steps than its time dimension allows.
       dim_t cached_keys_length = 0;
+      // Piecewise CUDA graphs: this layer's core runs between two graph segments and is
+      // reported to workspace->graph_hook (see DecodeWorkspace::exact_core).
+      bool piecewise_core = false;
 
       if (!_self_attention) {
 
@@ -701,6 +705,19 @@ namespace ctranslate2 {
                 workspace->padded_kv_fallback = true;
               }
             }
+            // Piecewise CUDA graphs: the core stays at the exact length (no padded_kv); a
+            // layer whose core a replay could not re-issue from a CoreDesc reports the
+            // fallback. Rotary embeddings are refused because they apply the host offset
+            // inside the segment, which a replay would freeze at the capture step.
+            if (workspace && workspace->exact_core) {
+              if (values_lengths || attention || queries_proj.dim(2) != 1
+                  || _relative_attention_bias || _relative_position_keys
+                  || _relative_asymmetric_position_keys || _relative_position_values
+                  || _alibi || _rotary_embeddings)
+                workspace->padded_kv_fallback = true;
+              else
+                piecewise_core = workspace->graph_hook != nullptr;
+            }
           } else if (cached_keys->empty()) {
             // A swap: the cache takes the projected data and a workspace-backed slot
             // takes the cache's empty buffer, costing it one re-allocation on its next
@@ -746,6 +763,19 @@ namespace ctranslate2 {
       }
 
       StorageView& context = fused_proj;  // Reuse storage.
+      // Piecewise CUDA graphs: close the running segment right before the core. The QK^T
+      // product lands in the fused_proj buffer and the AV product in the attn buffer (the
+      // two swap inside dot_product_attention); the descriptor records both so a replay
+      // re-issues the core on the buffers the captured segments bake.
+      CoreDesc core;
+      if (piecewise_core) {
+        core = make_core_desc(queries_proj, *attn_keys, *attn_values, cached_keys_length,
+                              _queries_scale, /*scores_slot=*/fused_proj,
+                              /*context_slot=*/DecodeWorkspace::prepare(workspace->attn,
+                                                                         dtype, device),
+                              workspace->piecewise_cores);
+        workspace->graph_hook->end_segment(core);
+      }
       dot_product_attention(queries_proj,
                             *attn_keys,
                             *attn_values,
@@ -768,6 +798,14 @@ namespace ctranslate2 {
                             position_bias,
                             cached_keys_length,
                             workspace ? &workspace->attn : nullptr);
+      if (piecewise_core) {
+        // The core must have kept both buffers: a re-allocation would leave the next
+        // segment reading memory the captured graph does not know about.
+        if (workspace->attn.buffer() != core.scores || fused_proj.buffer() != core.context)
+          throw std::runtime_error("piecewise: self-attention core moved a workspace slot");
+        ++workspace->piecewise_cores;
+        workspace->graph_hook->begin_segment();
+      }
 
       if (prefilling && cached_keys && cached_keys->shape()[2] > _sliding_window) {
         // set only last sliding_window tokens to cached_keys and cached_values after computing attention

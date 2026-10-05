@@ -11,6 +11,7 @@ namespace ctranslate2 {
 
     class RotaryEmbeddings;
     class Alibi;
+    class SegmentHook;
 
     // Persistent temporaries for iterative decoding. A decoder owns one instance and
     // threads it down to its layers so the projection, attention and feed-forward buffers
@@ -65,6 +66,29 @@ namespace ctranslate2 {
       // Logits shape recorded at capture time, restored on every replay (the replay
       // path skips the eager code that would otherwise resize the output).
       Shape graph_logits_shape;
+
+      // Piecewise CUDA graphs (CT2_CUDA_GRAPHS_PIECEWISE=1 with CT2_CUDA_GRAPHS=1, or the
+      // decoder's CPU test hook): exact_core marks a step whose self-attention cores run at
+      // the exact cached length (padded_kv stays false), possibly outside a captured graph.
+      // A self-attention layer that could not re-issue its core from a CoreDesc (relative
+      // positions/bias, alibi, rotary, a mask or attention weights, q_len != 1) reports
+      // padded_kv_fallback, exactly like the padded mode does.
+      bool exact_core = false;
+      // Set only while a piecewise capture (or the CPU test path) runs the forward: the
+      // self-attention layers report every core boundary to it (see layers::SegmentHook).
+      SegmentHook* graph_hook = nullptr;
+      // Cores reported through graph_hook during the current forward; also the index of
+      // the next one. The decoder checks it equals the number of layers.
+      dim_t piecewise_cores = 0;
+
+      // Reserves the slots that can carry a self-attention QK^T product during a decode
+      // step -- fused_proj, queries_proj, attn and head_transpose, which swap buffers
+      // between themselves inside the forward -- to at least "elements" values, so the
+      // exact-length core never re-allocates a buffer that a captured segment bakes.
+      void reserve_core_slots(DataType dtype, Device device, dim_t elements) {
+        for (StorageView* slot : {&fused_proj, &queries_proj, &attn, &head_transpose})
+          prepare(*slot, dtype, device).reserve(elements);
+      }
 
       // Returns the slot ready to stand in for a local StorageView(dtype, device). The
       // reassignment normally runs once, before the slot's first allocation; a later

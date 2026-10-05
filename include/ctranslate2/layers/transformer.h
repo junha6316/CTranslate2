@@ -314,6 +314,13 @@ namespace ctranslate2 {
       // same reason decode() and operator() are non-const: each model replica is only
       // ever run by one thread at a time (update_output_layer already relies on this).
       DecodeWorkspace _workspace;
+      // Test hook for the device-agnostic half of the piecewise CUDA-graph path: when set,
+      // every step that would be graph-eligible under CT2_CUDA_GRAPHS_PIECEWISE (minus the
+      // CUDA device requirement) runs as a piecewise capture does -- exact-length cores,
+      // device-indirect append/position, reserved core slots, a SegmentHook call at every
+      // core boundary, and an eager rerun of the whole step when the hook throws. Never set
+      // in production code; tests reach it through a subclass, like _workspace.
+      SegmentHook* _piecewise_test_hook = nullptr;
       // CUDA graph capture/replay controller for the iterative decode path (created
       // lazily; always null in CPU builds and when CT2_CUDA_GRAPHS is not set).
       std::unique_ptr<cuda::DecoderGraphRunner> _graph_runner;

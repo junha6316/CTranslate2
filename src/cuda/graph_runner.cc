@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <atomic>
 #include <mutex>
+#include <stdexcept>
 
 #include <spdlog/spdlog.h>
 
@@ -42,18 +43,47 @@ namespace ctranslate2 {
         return "?";
       }
 
+      // Destroys every executable of the list. An executable still in flight on the
+      // stream completes normally: the driver defers its release.
+      void destroy_execs(std::vector<cudaGraphExec_t>& execs) {
+        for (cudaGraphExec_t exec : execs) {
+          if (exec)
+            cudaGraphExecDestroy(exec);
+        }
+        execs.clear();
+      }
+
       struct GraphExec {
-        cudaGraphExec_t exec = nullptr;
+        cudaGraphExec_t exec = nullptr;            // Whole-step mode.
+        std::vector<cudaGraphExec_t> segments;     // Piecewise: cores.size() + 1.
+        std::vector<layers::CoreDesc> cores;       // Piecewise.
         std::vector<std::uintptr_t> fingerprint;
+
+        bool ready() const {
+          return exec || !segments.empty();
+        }
 
         void destroy() {
           if (exec) {
             cudaGraphExecDestroy(exec);
             exec = nullptr;
           }
+          destroy_execs(segments);
+          cores.clear();
           fingerprint.clear();
         }
       };
+
+      // Fault injection for the piecewise-only faults: true once per process, so the
+      // next decode of the same process demonstrates the recovery. One flag is enough:
+      // CT2_CUDA_GRAPHS_FAULT names a single fault.
+      bool consume_segment_fault(const char* name) {
+        static std::atomic<bool> fired(false);
+        if (DecoderGraphRunner::injected_fault() != name)
+          return false;
+        bool expected = false;
+        return fired.compare_exchange_strong(expected, true);
+      }
 
     }
 
@@ -69,11 +99,19 @@ namespace ctranslate2 {
       // Live capture state.
       bool capturing = false;
       std::unique_lock<std::mutex> capture_lock;
-      std::uint64_t violations_at_capture = 0;
+      std::uint64_t violations_at_capture = 0;  // Piecewise: at the running segment's start.
       std::vector<std::uintptr_t> capture_fingerprint;
       dim_t current_parity = 0;
       dim_t current_step = -1;
       dim_t current_batch = 0;
+
+      // Live piecewise capture state, from begin_capture() to the commit in
+      // end_capture_and_launch() or abort_capture(). The capture lock is held for the
+      // whole step, eager cores included; "capturing" is true only inside a segment.
+      bool piecewise_active = false;
+      std::vector<cudaGraphExec_t> pending_segments;  // Instantiated (and launched).
+      std::vector<layers::CoreDesc> pending_cores;
+      dim_t piecewise_segments = 0;  // Segments per step of the last commit (summary).
 
       // Per-decode tier state and counters (cleared by reset_decode).
       bool captured_this_decode = false;
@@ -111,12 +149,17 @@ namespace ctranslate2 {
             segments += ",";
           segments += std::to_string(segment_replays[i]);
         }
+        const std::string piecewise =
+          DecoderGraphRunner::piecewise_enabled()
+          ? ", piecewise=1, segments=" + std::to_string(piecewise_segments)
+          : std::string();
         spdlog::debug("CUDA graphs: decode summary (steps={}, captures={}, replays={},"
                       " transitions={}, segment_replays=[{}], tiers=[{}], phase={},"
-                      " disabled={})",
+                      " disabled={}{})",
                       decode_steps, captures, replays, tier_transitions, segments,
                       tier_log, phase_name(phase),
-                      disable_reason.empty() ? std::string("none") : disable_reason);
+                      disable_reason.empty() ? std::string("none") : disable_reason,
+                      piecewise);
       }
 
       void reset_decode() {
@@ -136,6 +179,7 @@ namespace ctranslate2 {
         segment_replays.assign(1, 0);
         tier_log.clear();
         disable_reason.clear();
+        piecewise_segments = 0;
       }
 
       void disable(const char* reason) {
@@ -145,13 +189,152 @@ namespace ctranslate2 {
         }
         phase = Phase::Disabled;
       }
+
+      void release_capture_lock() {
+        if (capture_lock.owns_lock()) {
+          capture_lock.unlock();
+          capture_lock.release();
+        }
+      }
+
+      // Ends the piecewise step's state: destroys the segments instantiated so far (the
+      // launched ones complete normally, see destroy_execs) and forgets the cores.
+      void drop_pending() {
+        destroy_execs(pending_segments);
+        pending_cores.clear();
+        piecewise_active = false;
+      }
+
+      [[noreturn]] void fail_segment(const char* reason) {
+        disable(reason);
+        throw std::runtime_error(std::string("CUDA graphs: ") + reason);
+      }
+
+      // Ends the running segment's capture, instantiates it and launches it (the
+      // recorded kernels did not run yet, and the eager core that follows reads their
+      // outputs). Returns nullptr on success, with the executable appended to
+      // pending_segments, or the failure reason (the executable, if any, is still in
+      // pending_segments for drop_pending()).
+      const char* close_segment(DecoderGraphRunner& runner) {
+        set_capture_active(false);
+        capturing = false;
+
+        cudaGraph_t graph = nullptr;
+        const cudaError_t end_status = cudaStreamEndCapture(get_cuda_stream(), &graph);
+        if (end_status != cudaSuccess || !graph) {
+          spdlog::debug("CUDA graphs: cudaStreamEndCapture failed: {}",
+                        cudaGetErrorString(end_status));
+          cudaGetLastError();  // Clear any capture-invalidation error, as abort_capture does.
+          if (graph)
+            cudaGraphDestroy(graph);
+          return "end capture failed";
+        }
+
+        // Zero-allocation assertion over this segment, with the semantics described in
+        // end_capture_and_launch(). The eager cores between the segments are not
+        // recorded, so their allocator activity does not count; a core that moved a
+        // buffer a segment bakes is caught by the decoder's pointer checks instead.
+        if (capture_violation_count() != violations_at_capture) {
+          cudaGraphDestroy(graph);
+          return "allocator activity inside the capture";
+        }
+
+        // The whole-step faults keep their meaning on segment 0.
+        const std::size_t index = pending_segments.size();
+        const bool instantiate_fault =
+          index == 0
+          ? (DecoderGraphRunner::injected_fault() == "instantiate"
+             || runner.consume_tier_fault("tier_instantiate"))
+          : (index == 1 && consume_segment_fault("segment_instantiate"));
+        cudaGraphExec_t exec = nullptr;
+        const cudaError_t inst_status =
+          instantiate_fault
+          ? cudaErrorUnknown
+          : cudaGraphInstantiate(&exec, graph, nullptr, nullptr, 0);
+        cudaGraphDestroy(graph);
+        if (inst_status != cudaSuccess) {
+          spdlog::debug("CUDA graphs: cudaGraphInstantiate failed for segment {}: {}",
+                        index, cudaGetErrorString(inst_status));
+          return "instantiate failed";
+        }
+        pending_segments.push_back(exec);
+
+        const cudaError_t launch_status = cudaGraphLaunch(exec, get_cuda_stream());
+        if (launch_status != cudaSuccess) {
+          spdlog::debug("CUDA graphs: post-capture launch failed for segment {}: {}",
+                        index, cudaGetErrorString(launch_status));
+          return "post-capture launch failed";
+        }
+        return nullptr;
+      }
+
+      // SegmentHook::end_segment: closes the running segment before core.index runs.
+      void end_segment(DecoderGraphRunner& runner, const layers::CoreDesc& core) {
+        if (!piecewise_active || !capturing)
+          fail_segment("segment boundary outside a piecewise capture");
+        if (core.index != dim_t(pending_cores.size()))
+          fail_segment("self-attention core reported out of order");
+        const char* reason = close_segment(runner);
+        if (reason)
+          fail_segment(reason);
+        pending_cores.push_back(core);
+      }
+
+      // SegmentHook::begin_segment: opens the next segment after the eager core.
+      void begin_segment() {
+        if (!piecewise_active || capturing)
+          fail_segment("segment boundary outside a piecewise capture");
+        if (pending_segments.size() == 1 && consume_segment_fault("segment_capture"))
+          fail_segment("injected segment capture failure");
+        violations_at_capture = capture_violation_count();
+        const cudaError_t status =
+          cudaStreamBeginCapture(get_cuda_stream(), cudaStreamCaptureModeRelaxed);
+        if (status != cudaSuccess) {
+          spdlog::debug("CUDA graphs: cudaStreamBeginCapture failed for segment {}: {}",
+                        pending_segments.size(), cudaGetErrorString(status));
+          fail_segment("begin segment capture failed");
+        }
+        capturing = true;
+        set_capture_active(true);
+      }
+
+      // The SegmentHook handed to the decoder (see segment_hook()).
+      class Hook : public layers::SegmentHook {
+      public:
+        Hook(Impl& impl, DecoderGraphRunner& runner)
+          : _state(impl)
+          , _runner(runner) {
+        }
+
+        void end_segment(const layers::CoreDesc& core) override {
+          _state.end_segment(_runner, core);
+        }
+
+        void begin_segment() override {
+          _state.begin_segment();
+        }
+
+      private:
+        Impl& _state;
+        DecoderGraphRunner& _runner;
+      };
+
+      Hook hook;
+
+      explicit Impl(DecoderGraphRunner& runner)
+        : hook(*this, runner) {
+      }
     };
 
     DecoderGraphRunner::DecoderGraphRunner()
-      : _impl(new Impl()) {
+      : _impl(new Impl(*this)) {
     }
 
     DecoderGraphRunner::~DecoderGraphRunner() {
+      // A piecewise step cut short (never expected: the decoder commits or aborts every
+      // capture) still holds pending segments and the capture lock.
+      if (_impl->piecewise_active)
+        abort_capture("graph runner destroyed mid-capture");
       // Logs the last decode's summary and destroys both executables.
       _impl->reset_decode();
     }
@@ -169,6 +352,15 @@ namespace ctranslate2 {
     const std::string& DecoderGraphRunner::injected_fault() {
       static const std::string fault = read_string_from_env("CT2_CUDA_GRAPHS_FAULT");
       return fault;
+    }
+
+    bool DecoderGraphRunner::piecewise_enabled() {
+      // The same switches the decoder selects its KV mode from (layers::select_decode_kv_mode).
+      return layers::decode_kv_env().piecewise_graphs();
+    }
+
+    layers::SegmentHook& DecoderGraphRunner::segment_hook() {
+      return _impl->hook;
     }
 
     bool DecoderGraphRunner::warmup_reentry() {
@@ -228,6 +420,7 @@ namespace ctranslate2 {
       Impl& impl = *_impl;
       if (impl.phase == Phase::Disabled
           || impl.capturing
+          || impl.piecewise_active
           || (impl.captured_this_decode && batch != impl.captured_batch))
         return false;
 
@@ -303,7 +496,7 @@ namespace ctranslate2 {
       case Phase::Ready: {
         static bool fingerprint_fault_pending = injected_fault() == "fingerprint";
         const GraphExec& g = impl.execs[impl.slot_index(impl.current_parity)];
-        if (!g.exec
+        if (!g.ready()
             || fingerprint_fault_pending
             || !Impl::critical_match(g.fingerprint, fingerprint, impl.num_critical)) {
           fingerprint_fault_pending = false;
@@ -391,11 +584,35 @@ namespace ctranslate2 {
       }
       impl.capturing = true;
       set_capture_active(true);
+      if (piecewise_enabled()) {
+        // Segment 0 is open; the segment hook closes and opens the following ones, and
+        // the capture lock stays held until the commit or the abort.
+        destroy_execs(impl.pending_segments);
+        impl.pending_cores.clear();
+        impl.piecewise_active = true;
+      }
       return true;
     }
 
     void DecoderGraphRunner::abort_capture(const char* reason) {
       Impl& impl = *_impl;
+      if (impl.piecewise_active) {
+        // Also reached between two segments, when no stream capture is open: an eager
+        // core, a pointer check or a segment hook call failed.
+        if (impl.capturing) {
+          set_capture_active(false);
+          cudaGraph_t graph = nullptr;
+          cudaStreamEndCapture(get_cuda_stream(), &graph);
+          cudaGetLastError();  // Clear any capture-invalidation error.
+          if (graph)
+            cudaGraphDestroy(graph);
+          impl.capturing = false;
+        }
+        impl.drop_pending();
+        impl.release_capture_lock();
+        disable_for_decode(reason);
+        return;
+      }
       if (!impl.capturing)
         return;
       set_capture_active(false);
@@ -414,6 +631,8 @@ namespace ctranslate2 {
 
     bool DecoderGraphRunner::end_capture_and_launch() {
       Impl& impl = *_impl;
+      if (impl.piecewise_active)
+        return end_piecewise_capture();
       if (!impl.capturing)
         return false;
       set_capture_active(false);
@@ -496,8 +715,119 @@ namespace ctranslate2 {
       return true;
     }
 
+    bool DecoderGraphRunner::end_piecewise_capture() {
+      Impl& impl = *_impl;
+      // Closes the last segment (output norm and projection), then commits the step's
+      // segments and cores to the parity's slot. Segments 0..N-1 and every core already
+      // ran on the device; a failure here leaves the eager rerun to overwrite them.
+      const char* reason =
+        impl.capturing ? impl.close_segment(*this) : "no open segment at the end of the step";
+      impl.release_capture_lock();
+      if (reason) {
+        impl.drop_pending();
+        disable_for_decode(reason);
+        return false;
+      }
+
+      const dim_t slot_id = impl.slot_index(impl.current_parity);
+      GraphExec& slot = impl.execs[slot_id];
+      slot.destroy();
+      slot.segments = std::move(impl.pending_segments);
+      slot.cores = std::move(impl.pending_cores);
+      slot.fingerprint = impl.capture_fingerprint;
+      impl.pending_segments.clear();
+      impl.pending_cores.clear();
+      impl.piecewise_active = false;
+      impl.piecewise_segments = dim_t(slot.segments.size());
+
+      impl.captured_this_decode = true;
+      impl.captured_batch = impl.current_batch;
+      ++impl.captures;
+      spdlog::debug("CUDA graphs: captured step {} into slot {} ({}, piecewise, {} segments)",
+                    impl.current_step, slot_id,
+                    impl.tier_transitions > 0 ? "re-entry" : "initial",
+                    slot.segments.size());
+      if (spdlog::should_log(spdlog::level::debug)) {
+        // The buffers every replay of this slot re-issues the cores on: they must not
+        // move for the rest of the decode (see layers::CoreDesc).
+        for (const layers::CoreDesc& core : slot.cores)
+          spdlog::debug("CUDA graphs: slot {} core {} (batch={}, heads={}, capacity={},"
+                        " depth={}, length={}): queries={:#x} keys={:#x} values={:#x}"
+                        " scores={:#x} context={:#x}",
+                        slot_id, core.index, core.batch, core.heads, core.capacity,
+                        core.depth, core.length,
+                        reinterpret_cast<std::uintptr_t>(core.queries),
+                        reinterpret_cast<std::uintptr_t>(core.keys),
+                        reinterpret_cast<std::uintptr_t>(core.values),
+                        reinterpret_cast<std::uintptr_t>(core.scores),
+                        reinterpret_cast<std::uintptr_t>(core.context));
+      }
+
+      if (impl.period == 2 && impl.phase == Phase::Warmup)
+        impl.phase = Phase::CaptureSecond;
+      else if (impl.period == 2 && impl.phase == Phase::Reentry)
+        impl.phase = Phase::ReentrySecond;
+      else
+        impl.phase = Phase::Ready;
+      return true;
+    }
+
+    bool DecoderGraphRunner::replay_piecewise(
+      const std::function<bool(const layers::CoreDesc&)>& run_core) {
+      Impl& impl = *_impl;
+      // The whole-step replay faults keep their meaning: nothing is launched.
+      static bool replay_fault_pending = injected_fault() == "replay";
+      if (replay_fault_pending || consume_tier_fault("tier_replay")) {
+        replay_fault_pending = false;
+        disable_for_decode("injected replay failure");
+        return false;
+      }
+      const GraphExec& g = impl.execs[impl.slot_index(impl.current_parity)];
+      // Defense in depth, as in replay(): begin_step only returns Replay for a ready slot.
+      if (g.segments.empty()
+          || g.segments.size() != g.cores.size() + 1
+          || g.fingerprint.empty()) {
+        disable_for_decode("no piecewise executable for this parity");
+        return false;
+      }
+      for (std::size_t k = 0; k < g.segments.size(); ++k) {
+        if (k == 1 && consume_segment_fault("segment_replay")) {
+          disable_for_decode("injected segment replay failure");
+          return false;
+        }
+        const cudaError_t status = cudaGraphLaunch(g.segments[k], get_cuda_stream());
+        if (status != cudaSuccess) {
+          spdlog::debug("CUDA graphs: cudaGraphLaunch failed for segment {}: {}",
+                        k, cudaGetErrorString(status));
+          disable_for_decode("replay launch failed");
+          return false;
+        }
+        if (k == g.cores.size())
+          break;  // The last segment has no core after it.
+        // The core runs eagerly on the same stream, after segment k and before k + 1.
+        bool core_ok = false;
+        try {
+          core_ok = run_core(g.cores[k]);
+        } catch (const std::exception& e) {
+          spdlog::debug("CUDA graphs: piecewise core {} replay failed: {}", k, e.what());
+        }
+        if (!core_ok) {
+          disable_for_decode("piecewise core replay failed");
+          return false;
+        }
+      }
+      ++impl.replays;
+      ++impl.segment_replays.back();
+      return true;
+    }
+
     bool DecoderGraphRunner::replay() {
       Impl& impl = *_impl;
+      if (piecewise_enabled()) {
+        // The decoder calls replay_piecewise() in this mode: the slots hold segments.
+        disable_for_decode("whole-step replay in piecewise mode");
+        return false;
+      }
       static bool replay_fault_pending = injected_fault() == "replay";
       if (replay_fault_pending || consume_tier_fault("tier_replay")) {
         replay_fault_pending = false;
