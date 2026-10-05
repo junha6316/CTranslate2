@@ -13,6 +13,7 @@ add_executable(ctranslate2_test
   model_test.cc
   storage_view_test.cc
   ops_test.cc
+  piecewise_test.cc
   primitives_test.cc
   translator_test.cc
   test_utils.cc
